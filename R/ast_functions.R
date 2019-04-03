@@ -3,7 +3,7 @@
 #' @description Probablity density function (pdf), Cumulative distribution function (cdf), quantile function and random generation of AST
 #' @param
 #' @keywords
-#' @export
+#' @export dast past qast rast
 #' @examples
 #' dast()
 #' past()
