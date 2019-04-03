@@ -14,6 +14,19 @@ dast = function(x, location, scale, skewness, dof1, dof2) {
   dens
 }
 
+dast2 = function(x, location, scale, skewness, dof1, dof2) {
+  K = function(dof) {
+    gamma(0.5*(dof+1)) / (sqrt(pi*dof)*gamma(0.5*dof))
+  }
+  alpha_star = skewness*K(dof1) / (skewness * K(dof1)+(1-skewness)*K(dof2))
+  x1 = x[x <= location]
+  x2 = x[x > location]
+  dens = numeric(length(x))
+  dens[x <= location] = K(dof1) * skewness/ alpha_star / scale * (1 + ((x1-location)/(2*alpha_star*scale))^2/dof1)^(-0.5*(dof1+1))
+  dens[x > location] = K(dof2) * (1-skewness) / (1- alpha_star)/ scale * (1 + ((x2-location)/(2*(1-alpha_star)*scale))^2/dof1)^(-0.5*(dof2+1))
+  dens
+}
+
 den_plot = function(location, scale, skewness, dof1, dof2) {
 
 }
@@ -88,6 +101,7 @@ pgat(0, 0, 1, 1, 1, 1, 1)
 
 # random generation
 rgat = function(n, location, scale, dof, skewness, tpa, sa) {
+  r = tpa; c = sa
   a = dof/skewness/(1+r^2)
   b = dof*r^2/skewness/(1+r^2)
   q = rbeta(n, a, b)
