@@ -3,7 +3,6 @@
 #' @description Probablity density function (pdf), Cumulative distribution function (cdf), quantile function and random generation of AST
 #' @param
 #' @keywords
-#' @export dast past qast rast
 #' @examples
 #' dast()
 #' past()
@@ -11,6 +10,7 @@
 #' rast()
 #' @aliases past qast rast
 
+#' @export dast
 dast = function(x, mu, sigma, alpha, nu1, nu2) {
   K = function(nu) {
     gamma(0.5*(nu+1)) / (sqrt(pi*nu)*gamma(0.5*nu))
@@ -23,6 +23,7 @@ dast = function(x, mu, sigma, alpha, nu1, nu2) {
   dens
 }
 
+#' @export past
 past = function(x, location, scale, skewness, dof1, dof2) {
   K = function(dof) {
     gamma(0.5*(dof+1)) / (sqrt(pi*dof)*gamma(0.5*dof))
@@ -32,6 +33,7 @@ past = function(x, location, scale, skewness, dof1, dof2) {
   probs
 }
 
+#' @export qast
 qast = function(x, location, scale, skewness, dof1, dof2) {
   K = function(dof) {
     gamma(0.5*(dof+1)) / (sqrt(pi*dof)*gamma(0.5*dof))
@@ -41,6 +43,7 @@ qast = function(x, location, scale, skewness, dof1, dof2) {
   quans
 }
 
+#' @export rast
 rast = function(x, location, scale, skewness, dof1, dof2) {
   K = function(dof) {
     gamma(0.5*(dof+1)) / (sqrt(pi*dof)*gamma(0.5*dof))
