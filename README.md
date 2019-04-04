@@ -1,8 +1,8 @@
 # st
 
-The goal of **st** is to provide applications for two families of skew-t distributions[1]. Thus providing the ability to model and analyze asymmetric tail behaviors in skewed and leptokurtic data.
+The goal of **st** is to provide applications for two families of skew-t distributions<sup>[1](#footnote1)</sup>. Thus providing the ability to model and analyze asymmetric tail behaviors in skewed and leptokurtic data.
 
-[1]: Asymmetric Student t-distribution (AST) and Generalized Asymmetric t-distribution (GAT)
+<a name="footnote1">1</a>:: Asymmetric Student t-distribution (AST) and Generalized Asymmetric t-distribution (GAT)
 
 ## Installation
 
