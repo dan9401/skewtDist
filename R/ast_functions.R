@@ -9,8 +9,10 @@
 #' qast()
 #' rast()
 #' @aliases past qast rast
+#' @name ast
 
-#' @export dast
+#' @rdname ast
+#' @export
 dast = function(x, mu, sigma, alpha, nu1, nu2) {
   K = function(nu) {
     gamma(0.5*(nu+1)) / (sqrt(pi*nu)*gamma(0.5*nu))
@@ -23,7 +25,8 @@ dast = function(x, mu, sigma, alpha, nu1, nu2) {
   dens
 }
 
-#' @export past
+#' @rdname ast
+#' @export
 past = function(x, location, scale, skewness, dof1, dof2) {
   K = function(dof) {
     gamma(0.5*(dof+1)) / (sqrt(pi*dof)*gamma(0.5*dof))
@@ -33,7 +36,8 @@ past = function(x, location, scale, skewness, dof1, dof2) {
   probs
 }
 
-#' @export qast
+#' @rdname ast
+#' @export
 qast = function(x, location, scale, skewness, dof1, dof2) {
   K = function(dof) {
     gamma(0.5*(dof+1)) / (sqrt(pi*dof)*gamma(0.5*dof))
@@ -43,7 +47,8 @@ qast = function(x, location, scale, skewness, dof1, dof2) {
   quans
 }
 
-#' @export rast
+#' @rdname ast
+#' @export
 rast = function(x, location, scale, skewness, dof1, dof2) {
   K = function(dof) {
     gamma(0.5*(dof+1)) / (sqrt(pi*dof)*gamma(0.5*dof))
