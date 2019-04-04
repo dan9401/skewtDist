@@ -2,8 +2,6 @@
 
 The goal of **st** is to provide applications for two families of skew-t distributions<sup>[1](#footnote1)</sup>. Thus providing the ability to model and analyze asymmetric tail behaviors in skewed and leptokurtic data.
 
-<a name="footnote1">1</a>:: Asymmetric Student t-distribution (AST) and Generalized Asymmetric t-distribution (GAT)
-
 ## Installation
 
 You can install the released version of st from GitHub with:
@@ -25,3 +23,5 @@ install_.packages_github("dan9401/st")
 ## basic example code
 ```--->
 
+
+<a name="footnote1">1</a>: Asymmetric Student t-distribution (AST) and Generalized Asymmetric t-distribution (GAT)
