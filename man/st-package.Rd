@@ -6,8 +6,7 @@
 \alias{st-package}
 \title{st: Asymmetric Student t-distributions}
 \description{
-More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Methods and Applications for AST and GAT distributions
 }
 \seealso{
 Useful links:
