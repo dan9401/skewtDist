@@ -38,7 +38,7 @@ pgat = function(q, mu, sigma, alpha, r, c, nu){
 
 #' @rdname gatDist
 #' @export
-qat = function(p, mu, sigma, alpha, r, c, nu){
+qgat = function(p, mu, sigma, alpha, r, c, nu){
   if(!is.numeric(p)) stop("p must be numeric")
   if(p < 0 || p > 1) stop("p must be in (0,1)")
   q = 1 / (1 + c^(-alpha*(1 + r^2)/r)*(((x-mu)/sigma)+sqrt(1+(x-mu)^2/sigma^2))^(-alpha*(1+r^2)/r))

@@ -5,7 +5,7 @@
 \title{AST fit
 the object currently have a S3 structure which will be shifted into S4 in future development}
 \usage{
-astfit(spec, data, solver, solver.control, fit.control)
+astfit(spec, data, solver, solver.control)
 }
 \arguments{
 \item{spec}{An AST specification object of class \code{\link{astspec}}}
@@ -20,4 +20,9 @@ astfit(spec, data, solver, solver.control, fit.control)
 }
 \description{
 Method for fitting a AST distribution
+}
+\examples{
+spec = astspec(c(0, 1, 0.5, 1, 1))
+data = rast(1000, 1.5, 1.2, 0.8, 3, 4)
+fit = astfit(spec, data, "nloptr", list("algorithm" = "NLOPT_LN_COBYLA", "maxeval" = 1.0e5, "xtol_rel" = 1.0e-8))
 }

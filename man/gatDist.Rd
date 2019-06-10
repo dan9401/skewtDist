@@ -4,29 +4,36 @@
 \alias{gatDist}
 \alias{dgat}
 \alias{pgat}
+\alias{qgat}
 \alias{rgat}
 \title{Generalized Asymmetric t-distribution}
 \usage{
-dgat(x, mu, sigma, dof, skewness, r, c)
+dgat(x, mu, sigma, alpha, r, c, nu)
 
-pgat(x, mu, sigma, dof, skewness, r, c)
+pgat(q, mu, sigma, alpha, r, c, nu)
 
-rgat(n, mu, sigma, dof, skewness, r, c)
+qgat(p, mu, sigma, alpha, r, c, nu)
+
+rgat(n, mu, sigma, alpha, r, c, nu)
 }
 \arguments{
+\item{x, q}{vector of quantiles}
+
 \item{mu}{location parameter}
 
 \item{sigma}{scale parameter}
+
+\item{alpha}{how early tail behavior is apparent}
 
 \item{r}{tail power asymmetry}
 
 \item{c}{scale asymmetry}
 
+\item{nu}{degrees of freedom / tail parameter}
+
+\item{p}{vector of probablilities}
+
 \item{n}{number of observations for random generation}
-
-\item{xvector}{of quantiles}
-
-\item{alpha}{how early tail behavior is apparent}
 }
 \description{
 Probablity density function (pdf), Cumulative distribution function (cdf), quantile function and random generation of GAT distributions
