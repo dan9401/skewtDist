@@ -13,3 +13,5 @@ BugReports: https://github.com/dan9401/st/issues
 RoxygenNote: 6.1.1
 Suggests: 
     testthat
+Imports: 
+    nloptr
