@@ -7,7 +7,10 @@
 #' @param solver.control Control arguments passed to the optimization algorithm ...
 #' @param fit.control Control arguments passed to the fitting routine...
 #' @name astfit
-#'
+#' @examples
+#' spec = astspec(c(0, 1, 0.5, 1, 1))
+#' data = rast(1000, 1.5, 1.2, 0.8, 3, 4)
+#' fit = astfit(spec, data, "nloptr", list("algorithm" = "NLOPT_LN_COBYLA", "maxeval" = 1.0e5, "xtol_rel" = 1.0e-8))
 
 #' @rdname astfit
 #' @export
