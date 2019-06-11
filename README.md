@@ -12,7 +12,7 @@ install.packages("st")
 ```--->
 
 ``` r
-install_.packages_github("dan9401/st")
+devtools::install__github("dan9401/st")
 ```
 
 ## Example
