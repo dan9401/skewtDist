@@ -3,12 +3,12 @@
 \name{plot-methods}
 \alias{plot-methods}
 \alias{plot_density}
-\alias{qqplot}
+\alias{qqast}
 \title{AST plots}
 \usage{
 plot_density(fit)
 
-qqplot(fit, method = "normal")
+qqast(fit, method = "normal")
 }
 \arguments{
 \item{fit}{A AST fit object of class \code{\link{astfit}}}

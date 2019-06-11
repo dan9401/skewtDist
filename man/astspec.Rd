@@ -3,15 +3,21 @@
 \name{astspec}
 \alias{astspec}
 \title{AST Specification
-the object currently have a S3 structure which will be shifted into S4 in future development}
+the object currently have a S3 structure which may be shifted into S4 in future development}
 \usage{
-astspec(start.pars = list(), fixed.pars = list())
+astspec(data, start_pars = c(0, 1, 0.5, 1, 1), fixed_pars = c())
 }
 \arguments{
-\item{start.pars}{List of starting parameters for the optimization algorithm}
+\item{data}{A univariate data object, can be ... for the AST distribution to fit on.}
 
-\item{fixed.pars}{List of parameters to be kept fixed during the optimization routine.}
+\item{start_pars}{Numeric vector of starting parameters for the optimization algorithm.}
+
+\item{fixed_pars}{Numeric vector of parameters to be kept fixed during the optimization routine.}
 }
 \description{
-Constructor of a AST distribution object before fitting the parameters
+Method for creating an AST distribution object prior to fitting.
+}
+\examples{
+data = rast(1000, 1.5, 2, 0.8, 3, 4)
+spec = astspec(data)
 }

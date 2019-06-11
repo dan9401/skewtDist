@@ -3,26 +3,23 @@
 \name{astfit}
 \alias{astfit}
 \title{AST fit
-the object currently have a S3 structure which will be shifted into S4 in future development}
+the object currently have a S3 structure which may be shifted into S4 in future development}
 \usage{
-astfit(spec, data, solver, solver.control)
+astfit(spec, solver, solver_control)
 }
 \arguments{
 \item{spec}{An AST specification object of class \code{\link{astspec}}}
 
-\item{data}{A univariate data object to fit on}
+\item{solver}{Optimizer used for fitting, one of "nloptr", ...}
 
-\item{solver}{Optimization algorithm used, one of ...}
-
-\item{solver.control}{Control arguments passed to the optimization algorithm ...}
-
-\item{fit.control}{Control arguments passed to the fitting routine...}
+\item{solver_control}{Control arguments list passed to the optimizer.}
 }
 \description{
 Method for fitting a AST distribution
 }
 \examples{
-spec = astspec(c(0, 1, 0.5, 1, 1))
-data = rast(1000, 1.5, 1.2, 0.8, 3, 4)
-fit = astfit(spec, data, "nloptr", list("algorithm" = "NLOPT_LN_COBYLA", "maxeval" = 1.0e5, "xtol_rel" = 1.0e-8))
+data = rast(1000, 1.5, 2, 0.8, 3, 4)
+spec = astspec(data)
+solver_control = list("algorithm" = "NLOPT_LN_COBYLA", "maxeval" = 1.0e5, "xtol_rel" = 1.0e-8)
+fit = astfit(spec, "nloptr", solver_control)
 }

@@ -15,6 +15,11 @@
 #' @aliases qast
 #' @aliases rast
 #' @name astDist
+#' @examples
+#' d = dast(0, 1.5, 1.2, 0.8, 3, 4)
+#' p = past(1.5, 1.5, 1.2, 0.8, 3, 4)
+#' q = qast(0.8, 1.5, 1.2, 0.8, 3, 4)
+#' x = rast(1000, 1.5, 1.2, 0.8, 3, 4)
 
 #' @rdname astDist
 #' @export
@@ -72,5 +77,4 @@ K = function(nu) {
     # seems to be correct, need to check
     dnorm(0)
   }
-
 }

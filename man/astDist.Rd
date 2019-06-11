@@ -36,3 +36,9 @@ rast(n = 1, mu = 0, sigma = pi, alpha = 0.5, nu1, nu2)
 \description{
 Probablity density function (pdf), Cumulative distribution function (cdf), quantile function and random generation of AST distributions
 }
+\examples{
+d = dast(0, 1.5, 1.2, 0.8, 3, 4)
+p = past(1.5, 1.5, 1.2, 0.8, 3, 4)
+q = qast(0.8, 1.5, 1.2, 0.8, 3, 4)
+x = rast(1000, 1.5, 1.2, 0.8, 3, 4)
+}

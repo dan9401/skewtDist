@@ -7,8 +7,10 @@
 #' @rdname plot-methods
 #' @export
 plot_density = function(fit) {
-  list2env(fit$fitted.pars, envir = parent.frame())
   data = fit$data
+  pars = fit$fitted_pars
+  mu = pars[1]; sigma = pars[2]; alpha = pars[3]; nu1 = pars[4]; nu2 = pars[5]
+
   hist(data, breaks = 50, prob = TRUE)
   par(new = TRUE)
   # lines(density(data))
@@ -19,25 +21,33 @@ plot_density = function(fit) {
 
 #' @rdname plot-methods
 #' @export
-qqplot = function(fit, method = "normal") {
+qqast = function(fit, method = "normal") {
   y = fit$data
-  list2env(fit$fitted.pars, envir = parent.frame())
+  pars = fit$fitted_pars
+  mu = pars[1]; sigma = pars[2]; alpha = pars[3]; nu1 = pars[4]; nu2 = pars[5]
+
   p = past(y, mu, sigma, alpha, nu1, nu2)
   if(method == "normal") {
     x = qnorm(p, mean = mu, sd = sigma)
+    px = qnorm(c(0.25, 0.75))
   } else if (method == "t") {
     x = qt(p, df = max(nu1, nu2))
   } else if (method == "ast") {
     x = qast(p, mu, sigma, alpha, nu1, nu2)
   }
-  qqplot(x, y)
-  abline(0, 1, col = 2, lty = 2)
+  qqplot(x, y, xlim = c())
+
+  py = quantile(y, c(0.25, 0.75))
+  slope = diff(y) / diff(x)
+  int = y[1L] - slope * x[1L]
+  abline(int, slope)
+
 }
 
 #' #' @rdname plot-methods
 #' #' @export
 #' plot_density.gat = function(fit) {
-#'   list2env(fit$fitted.pars, envir = parent.frame())
+#'   list2env(fit$fitted_pars, envir = parent.frame())
 #'   data = fit$data
 #'   hist(data, breaks = 50, prob = TRUE)
 #'   par(new = TRUE)
@@ -51,7 +61,7 @@ qqplot = function(fit, method = "normal") {
 #' #' @export
 #' qqplot.gatfit = function(fit, method = "normal") {
 #'   y = fit$data
-#'   list2env(fit$fitted.pars, envir = parent.frame())
+#'   list2env(fit$fitted_pars, envir = parent.frame())
 #'   p = past(y, mu, sigma, alpha, nu1, nu2)
 #'   if(method == "normal") {
 #'     x = qnorm(p, mean = mu, sd = sigma)

@@ -1,39 +1,43 @@
 #' @title AST fit
-#' the object currently have a S3 structure which will be shifted into S4 in future development
+#' the object currently have a S3 structure which may be shifted into S4 in future development
 #' @description Method for fitting a AST distribution
 #' @param spec An AST specification object of class \code{\link{astspec}}
-#' @param data A univariate data object to fit on
-#' @param solver Optimization algorithm used, one of ...
-#' @param solver.control Control arguments passed to the optimization algorithm ...
-#' @param fit.control Control arguments passed to the fitting routine...
+#' @param solver Optimizer used for fitting, one of "nloptr", ...
+#' @param solver_control Control arguments list passed to the optimizer.
 #' @name astfit
 #' @examples
-#' spec = astspec(c(0, 1, 0.5, 1, 1))
-#' data = rast(1000, 1.5, 1.2, 0.8, 3, 4)
-#' fit = astfit(spec, data, "nloptr", list("algorithm" = "NLOPT_LN_COBYLA", "maxeval" = 1.0e5, "xtol_rel" = 1.0e-8))
+#' data = rast(1000, 1.5, 2, 0.8, 3, 4)
+#' spec = astspec(data)
+#' solver_control = list("algorithm" = "NLOPT_LN_COBYLA", "maxeval" = 1.0e5, "xtol_rel" = 1.0e-8)
+#' fit = astfit(spec, "nloptr", solver_control)
 
 #' @rdname astfit
 #' @export
-astfit = function(spec, data, solver, solver.control) {
-  if(!is.numeric(data)) stop("data must be numeric")
+# fit function for ast distribution
+astfit = function(spec, solver, solver_control) {
   if(class(spec) != "astspec") stop("spec must be an astspec object")
 
   lb = c(-Inf, 0, 0, 0, 0)
   ub = c(Inf, Inf, 1, Inf, Inf)
 
-  # The line below will be substituted by the optimization algorithm in the actual implementation
-  # maybe expanded by number of solvers developed
+  # will be expanded by number of solvers developed
+  # should also implement a fixed parameter version for this
   if (solver == "nloptr") {
-    res =  nloptr::nloptr(x0 = spec$start.pars,
+    res =  nloptr::nloptr(x0 = spec$start_pars,
                   eval_f = llast,
                   lb = lb,
                   ub = ub,
-                  opts = solver.control,
+                  opts = solver_control,
                   y = data)
   }
 
-  fitted = res #list(res$pars, ...)
-  structure(list(data = data, start.pars = spec$start.pars, fitted = fitted),
+  # this is temporary, fitted should be a list with its own elements
+  sol_res = res #list(res$pars, ...)
+  fitted_pars = res$solution
+
+  structure(list(data = spec$data,
+                 start_pars = spec$start_pars, fixed_pars = spec$fixed_pars, fitted_pars = fitted_pars,
+                 solver = solver, solver_control = solver_control, sol_res = sol_res),
             class = "astfit")
 }
 
@@ -41,8 +45,7 @@ astfit = function(spec, data, solver, solver.control) {
 # pars: parameter values
 # y: data which you fit the distribution on
 llast = function(pars, y) {
-  #list2env(pars, envir = parent.frame())
-  mu = pars[1]; sigma = pars[2]; alpha = pars[3]; nu1 = pars[4]; nu2 = pars[5];
+  mu = pars[1]; sigma = pars[2]; alpha = pars[3]; nu1 = pars[4]; nu2 = pars[5]
   T_ = length(y)
   y1 = y[y <= mu]
   y2 = y[y > mu]

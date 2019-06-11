@@ -100,3 +100,28 @@
 #
 #
 #
+aaa = function(start.pars = c(), fixed.pars = c()) {
+  # if(!is.list(start.pars)) stop("start.pars must be a named list")
+  # if(!is.list(fixed.pars)) stop("fixed.pars must be a named list")
+  if (length(start.pars) == 5) {
+    start.pars = list(mu = start.pars[1], sigma = start.pars[2], alpha = start.pars[3], nu1 = start.pars[3], nu2 = start.pars[5])
+  }
+  # fixed.pars = list(mu = start.pars[1], sigma = start.pars[2], alpha = start.pars[3], nu1 = start.pars[3], nu2 = start.pars[5])
+  do.call(check_bound, start.pars)
+  # do.call(check_bound, fixed.pars)
+  structure(list(start.pars = start.pars, fixed.pars = fixed.pars),
+            class = "astspec")
+}
+
+
+bbb = function(pars, y) {
+  list2env(pars, envir = parent.frame())
+  #mu = pars[1]; sigma = pars[2]; alpha = pars[3]; nu1 = pars[4]; nu2 = pars[5];
+  T_ = length(y)
+  y1 = y[y <= mu]
+  y2 = y[y > mu]
+  logl = -T_ * log(sigma) - 0.5 * (nu1 + 1) * sum(log(1 + ((y1 - mu)/(2 * alpha * sigma * K(nu1)))^2/nu1)) -
+    0.5 * (nu2 + 1) * sum(log(1 + ((y2 - mu)/(2 * (1-alpha) * sigma * K(nu2)))^2/nu2))
+  -logl
+}
+
