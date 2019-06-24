@@ -10,7 +10,7 @@ astfit(spec, solver, solver_control)
 \arguments{
 \item{spec}{An AST specification object of class \code{\link{astspec}}}
 
-\item{solver}{Optimizer used for fitting, one of "nloptr", ...}
+\item{solver}{Optimizer used for fitting, one of 'nloptr', ...}
 
 \item{solver_control}{Control arguments list passed to the optimizer.}
 }
@@ -18,8 +18,8 @@ astfit(spec, solver, solver_control)
 Method for fitting a AST distribution
 }
 \examples{
-data = rast(1000, 1.5, 2, 0.8, 3, 4)
-spec = astspec(data)
-solver_control = list("algorithm" = "NLOPT_LN_COBYLA", "maxeval" = 1.0e5, "xtol_rel" = 1.0e-8)
-fit = astfit(spec, "nloptr", solver_control)
+data <- rast(1000, 1.5, 2, 0.8, 3, 4)
+spec <- astspec(data)
+solver_control <- list('algorithm' = 'NLOPT_LN_COBYLA', 'maxeval' = 1.0e5, 'xtol_rel' = 1.0e-8)
+fit <- astfit(spec, 'nloptr', solver_control)
 }

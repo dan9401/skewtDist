@@ -5,7 +5,8 @@
 \title{AST Specification
 the object currently have a S3 structure which may be shifted into S4 in future development}
 \usage{
-astspec(data, start_pars = c(0, 1, 0.5, 1, 1), fixed_pars = c())
+astspec(data, start_pars = c(mu = 0, sigma = 1, alpha = 0.5, nu1 = 1, nu2
+  = 1), fixed_pars = c())
 }
 \arguments{
 \item{data}{A univariate data object, can be ... for the AST distribution to fit on.}
@@ -18,6 +19,6 @@ astspec(data, start_pars = c(0, 1, 0.5, 1, 1), fixed_pars = c())
 Method for creating an AST distribution object prior to fitting.
 }
 \examples{
-data = rast(1000, 1.5, 2, 0.8, 3, 4)
-spec = astspec(data)
+data <- rast(1000, 1.5, 2, 0.8, 3, 4)
+spec <- astspec(data)
 }

@@ -18,39 +18,42 @@
 
 #' @rdname gatDist
 #' @export
-dgat = function(x, mu, sigma, alpha, r, c, nu) {
-  if(!is.numeric(x)) stop("x must be numeric")
-  g = (x-mu)/sigma + sqrt(1+((x-mu)/sigma)^2)
-  A = alpha * (1 + r^2) / (r * sigma)
-  B = (((c*g)^(alpha*r))+((c*g)^(-alpha/r)))^(-nu/alpha)/beta(nu/alpha/(1+r^2), r^2*nu/alpha/(1+r^2))
-  C = (1+((x-mu)/sigma)^2)^(-0.5)
-  d = A * B * C
-  d
+dgat <- function(x, mu, sigma, alpha, r, c, nu) {
+    if (!is.numeric(x))
+        stop("x must be numeric")
+    g <- (x - mu)/sigma + sqrt(1 + ((x - mu)/sigma)^2)
+    A <- alpha * (1 + r^2)/(r * sigma)
+    B <- (((c * g)^(alpha * r)) + ((c * g)^(-alpha/r)))^(-nu/alpha)/beta(nu/alpha/(1 + r^2), r^2 * nu/alpha/(1 + r^2))
+    C <- (1 + ((x - mu)/sigma)^2)^(-0.5)
+    d <- A * B * C
+    d
 }
 
 #' @rdname gatDist
 #' @export
-pgat = function(q, mu, sigma, alpha, r, c, nu){
-  if(!is.numeric(x)) stop("x must be numeric")
-  q = 1 / (1 + c^(-alpha*(1 + r^2)/r)*(((x-mu)/sigma)+sqrt(1+(x-mu)^2/sigma^2))^(-alpha*(1+r^2)/r))
-  p = pbeta(q, nu/alpha/(1+r^2), r^2*nu/alpha/(1+r^2))
-  p
+pgat <- function(q, mu, sigma, alpha, r, c, nu) {
+    if (!is.numeric(x))
+        stop("x must be numeric")
+    q <- 1/(1 + c^(-alpha * (1 + r^2)/r) * (((x - mu)/sigma) + sqrt(1 + (x - mu)^2/sigma^2))^(-alpha * (1 + r^2)/r))
+    p <- pbeta(q, nu/alpha/(1 + r^2), r^2 * nu/alpha/(1 + r^2))
+    p
 }
 
 #' @rdname gatDist
 #' @export
-qgat = function(p, mu, sigma, alpha, r, c, nu){
-  # tbd, use newton-raphson
+qgat <- function(p, mu, sigma, alpha, r, c, nu) {
+    # tbd, use newton-raphson
 }
 
 #' @rdname gatDist
 #' @export
-rgat = function(n, mu, sigma, alpha, r, c, nu) {
-  if(n < 0) stop("x must be non-negative")
-  a = nu/alpha/(1+r^2)
-  b = nu*r^2/alpha/(1+r^2)
-  q = rbeta(n, a, b)
-  del = r / alpha / (1 + r^2)
-  x = mu + 0.5*sigma*((q/(1-q))^del/c - c*(q/(1-q))^(-del))
-  x
+rgat <- function(n, mu, sigma, alpha, r, c, nu) {
+    if (n < 0)
+        stop("x must be non-negative")
+    a <- nu/alpha/(1 + r^2)
+    b <- nu * r^2/alpha/(1 + r^2)
+    q <- rbeta(n, a, b)
+    del <- r/alpha/(1 + r^2)
+    x <- mu + 0.5 * sigma * ((q/(1 - q))^del/c - c * (q/(1 - q))^(-del))
+    x
 }

@@ -18,12 +18,12 @@ Plot methods for the AST fit class
 }
 \examples{
 data = rast(1000, 1.5, 2, 0.8, 3, 4)
-spec = astspec(data)
-solver_control = list("algorithm" = "NLOPT_LN_COBYLA", "maxeval" = 1.0e5, "xtol_rel" = 1.0e-8)
-fit = astfit(spec, "nloptr", solver_control)
+spec <- astspec(data)
+solver_control <- list('algorithm' = 'NLOPT_LN_COBYLA', 'maxeval' = 1.0e5, 'xtol_rel' = 1.0e-8)
+fit <- astfit(spec, 'nloptr', solver_control)
 
 density_ast(fit)
-qqplot_ast(fit, dist = "normal")
-qqplot_ast(fit, dist = "t")
-qqplot_ast(fit, dist = "ast")
+qqplot_ast(fit, dist = 'normal')
+qqplot_ast(fit, dist = 't')
+qqplot_ast(fit, dist = 'ast')
 }

@@ -8,13 +8,13 @@
 \alias{rast}
 \title{Asymmetric Student t-distribution}
 \usage{
-dast(x, mu = 0, sigma = pi, alpha = 0.5, nu1, nu2)
+dast(x, mu, sigma, alpha, nu1, nu2)
 
-past(q, mu = 0, sigma = pi, alpha = 0.5, nu1, nu2)
+past(q, mu, sigma, alpha, nu1, nu2)
 
-qast(p, mu = 0, sigma = pi, alpha = 0.5, nu1, nu2)
+qast(p, mu, sigma, alpha, nu1, nu2)
 
-rast(n = 1, mu = 0, sigma = pi, alpha = 0.5, nu1, nu2)
+rast(n, mu, sigma, alpha, nu1, nu2)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
@@ -37,8 +37,8 @@ rast(n = 1, mu = 0, sigma = pi, alpha = 0.5, nu1, nu2)
 Probablity density function (pdf), Cumulative distribution function (cdf), quantile function and random generation of AST distributions
 }
 \examples{
-d = dast(0, 1.5, 1.2, 0.8, 3, 4)
-p = past(1.5, 1.5, 1.2, 0.8, 3, 4)
-q = qast(0.8, 1.5, 1.2, 0.8, 3, 4)
-x = rast(1000, 1.5, 1.2, 0.8, 3, 4)
+d <- dast(0, 1.5, 1.2, 0.8, 3, 4)
+p <- past(1.5, 1.5, 1.2, 0.8, 3, 4)
+q <- qast(0.8, 1.5, 1.2, 0.8, 3, 4)
+x <- rast(1000, 1.5, 1.2, 0.8, 3, 4)
 }

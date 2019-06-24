@@ -6,32 +6,37 @@
 #' @param fixed_pars Numeric vector of parameters to be kept fixed during the optimization routine.
 #' @name astspec
 #' @examples
-#' data = rast(1000, 1.5, 2, 0.8, 3, 4)
-#' spec = astspec(data)
+#' data <- rast(1000, 1.5, 2, 0.8, 3, 4)
+#' spec <- astspec(data)
 
 #' @rdname astspec
 #' @export
-astspec = function(data, start_pars = c(0, 1, 0.5, 1, 1), fixed_pars = c()) {
-  if (!is.numeric(data)) stop("data must be numeric")
-  if (length(start_pars) != 5) stop("start_pars must be a numeric of length 5")
-  # if (!is.list(fixed_pars)) stop("fixed_pars must be a named list")
+astspec <- function(data, start_pars = c("mu" = 0, "sigma" = 1, "alpha" = 0.5, "nu1" = 1, "nu2" = 1), fixed_pars = c()) {
+    if (!is.numeric(data))
+        stop("data must be numeric")
+    if (length(start_pars) != 5)
+        stop("start_pars must be a numeric of length 5")
+    # if (!is.list(fixed_pars)) stop('fixed_pars must be a named list')
 
-  check_bound(start_pars)
-  # if (length(fixed_pars) != 0) do.call(check_bound, as.list(fixed_pars))
-  structure(list(data = data, start_pars = start_pars, fixed_pars = fixed_pars),
-            class = "astspec")
+    check_bound(start_pars)
+    bounds <- data.frame(name = c("mu", "sigma", "alpha", "nu1", "nu2"),
+                         lower_bound = c(-Inf, 0, 0, 0, 0),
+                         upper_bound = c(Inf, Inf, 1, Inf, Inf))
+    sp_df <- data.frame(start_pars = start_pars,
+                       name = names(start_pars))
+    fp_df <- data.frame(fixed_pars = fixed_pars,
+                        name = names(fixed_pars))
+    if (length(fp_df != 0)) {
+      p_df <- merge(sp_df, fp_df, by = "name", all = T)
+    } else {
+      sp_df$fixed_pars = NA
+      p_df = sp_df
+    }
+    ipars <- merge(p_df, bounds, by = "name", all = T)
+    rownames(ipars) <- ipars$name
+    ipars$name <- NULL
+
+    # if (length(fixed_pars) != 0) do.call(check_bound, as.list(fixed_pars))
+    structure(list(data = data, ipars = ipars), class = "astspec")
 }
 
-# check boundary
-check_bound = function(pars) {
-  mu = pars[1]; sigma = pars[2]; alpha = pars[3]; nu1 = pars[4]; nu2 = pars[5]
-  if(!is.numeric(mu)) stop("mu must be numeric")
-  if(!is.numeric(sigma)) stop("sigma must be numeric")
-  if(!is.numeric(alpha)) stop("alpha must be numeric")
-  if(!is.numeric(nu1)) stop("nu1 must be numeric")
-  if(!is.numeric(nu2)) stop("nu2 must be numeric")
-  if(sigma <= 0) stop("sigma must be greater than 0")
-  if(nu1 <= 0) stop("nu1 must be greater than 0")
-  if(nu2 <= 0) stop("nu2 must be greater than 0")
-  if(alpha <= 0 || alpha >= 1) stop("alpha must be between 0 and 1")
-}
