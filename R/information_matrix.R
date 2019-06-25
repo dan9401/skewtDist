@@ -1,32 +1,26 @@
-#' @title Asymmetric Student t-distribution
+#' @title Information Matrix for AST distributions
 #'
-#' @description Probablity density function (pdf), Cumulative distribution function (cdf), quantile function and random generation of AST distributions
-#' @param x,q vector of quantiles
-#' @param p vector of probablilities
-#' @param n number of observations for random generation
-#' @param mu location parameter
-#' @param sigma scale parameter
-#' @param alpha skewness parameter
-#' @param nu1 degrees of freedom / tail parameter 1
-#' @param nu2 degrees of freedom / tail parameter 2
+#' @description Information Matrix function for AST distributions
+#'
+#' @param pars vector of parameter values for an AST distribution
+#' @param data vector of numeric data
+#' @param method one of "expected" and "observed", calculating the expected or observed information matrix
 #'
 #' @name infoMat_ast
 #' @examples
+#' pars <- c("mu" = 0.12, "sigma" = 0.6, "alpha" = 0.7, "nu1" = 3, "nu2" = 5)
+#' data <- rast(1000, 0.12, 0.6, 0.7, 3, 5)
+#' infoMat <- infoMat_ast(pars, data, "expected")
 
 #' @rdname infoMat
 #' @export
-infoMat_ast <- function(fit, method = c("expected", "observed")) {
-  y <- fit$data
-  pars <- fit$fitted_pars
+infoMat_ast <- function(pars, data = c(), method = c("expected", "observed")) {
   method <- match.arg(method, c("expected", "observed"))
   mu <- pars["mu"]
   sigma <- pars["sigma"]
   alpha <- pars["alpha"]
   nu1 <- pars["nu1"]
   nu2 <- pars["nu2"]
-  T_ <- length(y)
-  y1 <- y[y <= mu]
-  y2 <- y[y > mu]
 
   if (method == "expected") {
     S_mu2 <- 1/(4*sigma^2) * ( (nu1+1)/(alpha*(nu1+3))/K(nu1)^2 + (nu2+1)/((1-alpha)*(nu2+3))/K(nu2)^2 )
@@ -49,6 +43,11 @@ infoMat_ast <- function(fit, method = c("expected", "observed")) {
     S_nu1nu2 <- 0
   } else {
     ###
+    if (length(data) == 0) stop("data must be provided if 'observed' method is used")
+    y <- data
+    y1 <- y[y <= mu]
+    y2 <- y[y > mu]
+
     S_mu2 <- 1/nu1 * ((nu1+1)/(2*alpha*sigma*K(nu1)))^2 * mean(1/L(pars, y1) - 1/L(pars, y1)^2) +
       1/nu2 * ((nu2+1)/(2*(1-alpha)*sigma*K(nu2)))^2 * mean(1/R(pars, y2) - 1/R(pars, y2)^2)
     S_sigma2 <- -1/sigma^2 + ((nu1+1)/sigma)^2 * mean((1 - 1/L(pars, y1))^2) +
@@ -96,16 +95,4 @@ infoMat_ast <- function(fit, method = c("expected", "observed")) {
   infoMat
 }
 
-infoMat_t <- function(sigma, nu) {
-  I11 <- 1/4*(trigamma((nu+1)/2) - trigamma(nu/2)) - 1/nu*(1/(nu+1) - 1/(2*(nu+3)) )
-  I12 <- 1/sigma*(1/(nu+3)-1/(nu+1))
-  I22 <- 2/sigma^2*nu/(nu+3)
-  I13 <- I23 <- 0
-  I33 <- 1/sigma^2*(1-2/(nu+3))
-  infoMat <- matrix(c(I11, I12, I13,
-                      I12, I22, I23,
-                      I13, I23, I33),
-                    nrow = 3, ncol = 3)
-  rownames(infoMat) = colnames(infoMat) = c("nu", "sigma", "mu")
-  infoMat
-}
+

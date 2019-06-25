@@ -6,12 +6,13 @@
 #' @param fixed_pars Numeric vector of parameters to be kept fixed during the optimization routine.
 #' @name astspec
 #' @examples
-#' data <- rast(1000, 1.5, 2, 0.8, 3, 4)
+#' data <- rast(1000, 0.12, 0.6, 0.7, 3, 5)
 #' spec <- astspec(data)
 
 #' @rdname astspec
 #' @export
-astspec <- function(data, start_pars = c("mu" = 0, "sigma" = 1, "alpha" = 0.5, "nu1" = 1, "nu2" = 1), fixed_pars = c()) {
+astspec <- function(data, start_pars = c("mu" = 0, "sigma" = 1, "alpha" = 0.5, "nu1" = 1, "nu2" = 1),
+                    fixed_pars = c()) {
     if (!is.numeric(data))
         stop("data must be numeric")
     if (length(start_pars) != 5)

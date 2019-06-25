@@ -2,13 +2,10 @@
 % Please edit documentation in R/plot-methods.R
 \name{plot-methods}
 \alias{plot-methods}
-\alias{density_ast}
-\alias{qqplot_ast}
+\alias{plot.astfit}
 \title{AST plots}
 \usage{
-density_ast(fit)
-
-qqplot_ast(fit, dist = "normal", ...)
+\method{plot}{astfit}(fit)
 }
 \arguments{
 \item{fit}{A AST fit object of class \code{\link{astfit}}}
@@ -21,9 +18,5 @@ data = rast(1000, 1.5, 2, 0.8, 3, 4)
 spec <- astspec(data)
 solver_control <- list('algorithm' = 'NLOPT_LN_COBYLA', 'maxeval' = 1.0e5, 'xtol_rel' = 1.0e-8)
 fit <- astfit(spec, 'nloptr', solver_control)
-
-density_ast(fit)
-qqplot_ast(fit, dist = 'normal')
-qqplot_ast(fit, dist = 't')
-qqplot_ast(fit, dist = 'ast')
+plot(fit)
 }

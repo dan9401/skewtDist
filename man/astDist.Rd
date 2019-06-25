@@ -25,9 +25,9 @@ rast(n, mu, sigma, alpha, nu1, nu2)
 
 \item{alpha}{skewness parameter}
 
-\item{nu1}{degrees of freedom / tail parameter 1}
+\item{nu1}{degrees of freedom / tail parameter for the left tail}
 
-\item{nu2}{degrees of freedom / tail parameter 2}
+\item{nu2}{degrees of freedom / tail parameter for the right tail}
 
 \item{p}{vector of probablilities}
 

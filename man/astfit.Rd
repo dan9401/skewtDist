@@ -2,10 +2,13 @@
 % Please edit documentation in R/astfit-method.R
 \name{astfit}
 \alias{astfit}
+\alias{summary.astfit}
 \title{AST fit
 the object currently have a S3 structure which may be shifted into S4 in future development}
 \usage{
 astfit(spec, solver, solver_control)
+
+\method{summary}{astfit}(fit)
 }
 \arguments{
 \item{spec}{An AST specification object of class \code{\link{astspec}}}

@@ -2,27 +2,22 @@
 % Please edit documentation in R/information_matrix.R
 \name{infoMat_ast}
 \alias{infoMat_ast}
-\title{Asymmetric Student t-distribution}
+\title{Information Matrix for AST distributions}
 \usage{
-infoMat_ast(fit, method = c("expected", "observed"))
+infoMat_ast(pars, data = c(), method = c("expected", "observed"))
 }
 \arguments{
-\item{x, q}{vector of quantiles}
+\item{pars}{vector of parameter values for an AST distribution}
 
-\item{p}{vector of probablilities}
+\item{data}{vector of numeric data}
 
-\item{n}{number of observations for random generation}
-
-\item{mu}{location parameter}
-
-\item{sigma}{scale parameter}
-
-\item{alpha}{skewness parameter}
-
-\item{nu1}{degrees of freedom / tail parameter 1}
-
-\item{nu2}{degrees of freedom / tail parameter 2}
+\item{method}{one of "expected" and "observed", calculating the expected or observed information matrix}
 }
 \description{
-Probablity density function (pdf), Cumulative distribution function (cdf), quantile function and random generation of AST distributions
+Information Matrix function for AST distributions
+}
+\examples{
+pars <- c("mu" = 0.12, "sigma" = 0.6, "alpha" = 0.7, "nu1" = 3, "nu2" = 5)
+data <- rast(1000, 0.12, 0.6, 0.7, 3, 5)
+infoMat <- infoMat_ast(pars, data, "expected")
 }

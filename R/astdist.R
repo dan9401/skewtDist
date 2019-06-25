@@ -7,8 +7,8 @@
 #' @param mu location parameter
 #' @param sigma scale parameter
 #' @param alpha skewness parameter
-#' @param nu1 degrees of freedom / tail parameter 1
-#' @param nu2 degrees of freedom / tail parameter 2
+#' @param nu1 degrees of freedom / tail parameter for the left tail
+#' @param nu2 degrees of freedom / tail parameter for the right tail
 #'
 #' @aliases dast
 #' @aliases past
@@ -29,6 +29,7 @@ dast <- function(x, mu, sigma, alpha, nu1, nu2) {
     x1 <- x[x <= mu]
     x2 <- x[x > mu]
     d <- numeric(length(x))
+    # refer to helper_functions.R for K(.)
     d[x <= mu] <- (1 + ((x1 - mu)/(2 * alpha * sigma * K(nu1)))^2/nu1)^(-0.5 * (nu1 + 1))/sigma
     d[x > mu] <- (1 + ((x2 - mu)/(2 * (1 - alpha) * sigma * K(nu2)))^2/nu2)^(-0.5 * (nu2 + 1))/sigma
     d
@@ -40,6 +41,7 @@ past <- function(q, mu, sigma, alpha, nu1, nu2) {
     if (!is.numeric(q))
         stop("q must be numeric")
     q <- (q - mu)/sigma
+    # refer to helper_functions.R for K(.)
     alpha_star <- alpha * K(nu1)/(alpha * K(nu1) + (1 - alpha) * K(nu2))
     p <- 2 * alpha * pt(pmin(q, 0)/(2 * alpha_star), nu1) + 2 * (1 - alpha) * (pt(pmax(q, 0)/(2 * (1 - alpha_star)), nu2) -
         0.5)
@@ -51,6 +53,7 @@ past <- function(q, mu, sigma, alpha, nu1, nu2) {
 qast <- function(p, mu, sigma, alpha, nu1, nu2) {
     if (!is.numeric(p))
         stop("p must be numeric")
+    # refer to helper_functions.R for K(.)
     alpha_star <- alpha * K(nu1)/(alpha * K(nu1) + (1 - alpha) * K(nu2))
     q <- 2 * alpha_star * (mu + sigma * qt(pmin(p, alpha)/(2 * alpha), nu1)) + 2 * (1 - alpha_star) * (mu + sigma * qt((pmax(p,
         alpha) + 1 - 2 * alpha)/(2 * (1 - alpha)), nu2))
@@ -62,6 +65,7 @@ qast <- function(p, mu, sigma, alpha, nu1, nu2) {
 rast <- function(n, mu, sigma, alpha, nu1, nu2) {
     if (n < 0)
         stop("n must be non-negative")
+    # refer to helper_functions.R for K(.)
     alpha_star <- alpha * K(nu1)/(alpha * K(nu1) + (1 - alpha) * K(nu2))
     u <- runif(n)
     t1 <- rt(n, nu1)

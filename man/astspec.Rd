@@ -19,6 +19,6 @@ astspec(data, start_pars = c(mu = 0, sigma = 1, alpha = 0.5, nu1 = 1, nu2
 Method for creating an AST distribution object prior to fitting.
 }
 \examples{
-data <- rast(1000, 1.5, 2, 0.8, 3, 4)
+data <- rast(1000, 0.12, 0.6, 0.7, 3, 5)
 spec <- astspec(data)
 }

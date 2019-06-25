@@ -6,6 +6,7 @@ llast <- function(pars, arglist) {
   fixed_pars <- ipars$fixed_pars
   names(fixed_pars) <- rownames(ipars)
   # rename the vector, because nloptr passed vector will remove names
+  # if we could only add an assert here, would force the name check, not 100% sure for now
   names(pars) <- rownames(ipars)[which(is.na(fixed_pars))]
   all_pars <- c(pars, fixed_pars[which(!is.na(fixed_pars))])
 
@@ -30,6 +31,7 @@ llast_grad <- function(pars, arglist) {
   fixed_pars <- ipars$fixed_pars
   names(fixed_pars) <- rownames(ipars)
   # rename the vector, because nloptr passed vector will remove names
+  # if we could only add an assert here, would force the name check, not 100% sure for now
   names(pars) <- rownames(ipars)[which(is.na(fixed_pars))]
   all_pars <- c(pars, fixed_pars[which(!is.na(fixed_pars))])
 
@@ -42,20 +44,15 @@ llast_grad <- function(pars, arglist) {
   y1 <- y[y <= mu]
   y2 <- y[y > mu]
 
-  # this need to reorder
-  return( -c(
-    # gradient for mu
-    sum((nu1 + 1) / L(pars, y1) / nu1 * (y1 - mu) / (2 * alpha * sigma * K(nu1))^2) +
-      sum((nu2 + 1) / R(pars, y2) / nu2 * (y2 - mu) / (2 * (1 - alpha) * sigma * K(nu2))^2),
-    # gradient for sigma
-    - T_ / sigma + (nu1 + 1) / sigma * sum(1 - 1 / L(pars, y1)) + (nu2 + 1) / sigma * sum(1 - 1 / R(pars, y2)),
-    # gradient for alpha
-    (nu1 + 1) / alpha * sum(1 - 1 / L(pars, y1)) - (nu2 + 1) / (1 - alpha) * sum(1 - 1 / R(pars, y2)),
-    # gradient for nu1
-    sum(- log(L(pars, y1)) / 2 + (nu1 + 1) / 2 * D(nu1) * (L(pars, y1) - 1) / L(pars, y1)),
-    # gradient for nu2
-    sum(- log(R(pars, y2)) / 2 + (nu2 + 1) / 2 * D(nu2) * (R(pars, y2) - 1) / R(pars, y2))
-  ))
+  g_mu <- sum((nu1 + 1) / L(pars, y1) / nu1 * (y1 - mu) / (2 * alpha * sigma * K(nu1))^2) +
+    sum((nu2 + 1) / R(pars, y2) / nu2 * (y2 - mu) / (2 * (1 - alpha) * sigma * K(nu2))^2)
+  g_sigma<- -T_ / sigma + (nu1 + 1) / sigma * sum(1 - 1 / L(pars, y1)) + (nu2 + 1) / sigma * sum(1 - 1 / R(pars, y2))
+  g_alpha <- (nu1 + 1) / alpha * sum(1 - 1 / L(pars, y1)) - (nu2 + 1) / (1 - alpha) * sum(1 - 1 / R(pars, y2))
+  g_nu1 <- sum(- log(L(pars, y1)) / 2 + (nu1 + 1) / 2 * D(nu1) * (L(pars, y1) - 1) / L(pars, y1))
+  g_nu2 <- sum(- log(R(pars, y2)) / 2 + (nu2 + 1) / 2 * D(nu2) * (R(pars, y2) - 1) / R(pars, y2))
+  gradient <- -c(mu = g_mu, sigma = g_sigma, alpha = g_alpha, nu1 = g_nu1, nu2 = g_nu2)
+
+  return(gradient[names(pars)])
 }
 
 K <- function(nu) {

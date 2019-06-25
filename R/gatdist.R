@@ -10,6 +10,7 @@
 #' @param c scale asymmetry
 #' @param alpha how early tail behavior is apparent
 #' @param nu degrees of freedom / tail parameter
+#'
 #' @aliases dgat
 #' @aliases pgat
 #' @aliases rgat
