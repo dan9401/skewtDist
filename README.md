@@ -24,7 +24,7 @@ devtools::install__github("dan9401/st")
 ```--->
 
 ## To do list
-[] difference between "expected" and "observed" information matrix
-[] moment function with mu & analytical for mean, sd, skewness and kurtosis
+- [] difference between "expected" and "observed" information matrix
+- [] moment function with mu & analytical for mean, sd, skewness and kurtosis
 
 <a name="footnote1">1</a>: Asymmetric Student t-distribution (AST) and Generalized Asymmetric t-distribution (GAT)
