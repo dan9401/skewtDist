@@ -37,8 +37,9 @@ rast(n, mu, sigma, alpha, nu1, nu2)
 Probablity density function (pdf), Cumulative distribution function (cdf), quantile function and random generation of AST distributions
 }
 \examples{
-d <- dast(0, 1.5, 1.2, 0.8, 3, 4)
-p <- past(1.5, 1.5, 1.2, 0.8, 3, 4)
-q <- qast(0.8, 1.5, 1.2, 0.8, 3, 4)
-x <- rast(1000, 1.5, 1.2, 0.8, 3, 4)
+# The parameter values are specially set for a volatile portfolio.
+d <- dast(0, 0.12, 0.6, 0.3, 3, 5)
+p <- past(1.5, 0.12, 0.6, 0.3, 3, 5)
+q <- qast(0.8, 0.12, 0.6, 0.3, 3, 5)
+x <- rast(1000, 0.12, 0.6, 0.3, 3, 5)
 }

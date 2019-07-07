@@ -1,28 +1,7 @@
-#' @title AST plots
-#'
-#' @description Plot methods for the AST fit class
-#' @param fit A AST fit object of class \code{\link{astfit}}
-#' @name plot-methods
-#' @examples
-#' data = rast(1000, 1.5, 2, 0.8, 3, 4)
-#' spec <- astspec(data)
-#' solver_control <- list('algorithm' = 'NLOPT_LN_COBYLA', 'maxeval' = 1.0e5, 'xtol_rel' = 1.0e-8)
-#' fit <- astfit(spec, 'nloptr', solver_control)
-#' plot(fit)
-
-#' @rdname plot-methods
-#' @export
-plot.astfit <- function(fit) {
-  selection <- 1
-  while (selection) {
-    selection <- menu(c("Density", "QQplot"), title = "Make a plot selection (or 0 to exit)")
-    if (selection == 1) {
-      density_ast(fit)
-    } else if(selection == 2) {
-      qqplot_ast(fit, dist = "normal")
-    }
-  }
-}
+# Plot methods for the AST and GAT distribuitons, the aesthetics would require further adjustment, either adjust the graphic parameters, or a new graphics engine
+# we may also want to keep separate files for both distributions, doesn't seem necessary at the time
+# and plot method for ast & gat class without data, just for exploration uses
+# authorized domain, here or in the moment file
 
 density_ast <- function(fit) {
   data <- fit$data
@@ -72,3 +51,35 @@ qqplot_ast <- function(fit, dist = "normal", ...) {
   points(px, py, col = 2)
 }
 
+# has no documentation developed yet
+#' @export
+surfacePlot <- function(n, pars, plotPars, ...) {
+  mu <- pars[1]
+  sigma <- pars[2]
+  alpha <- pars[3]
+  nu1 <- pars[4]
+  nu2 <- pars[5]
+  data <- rast(n, mu, sigma, alpha, nu1, nu2)
+
+  xName <- plotPars[1]
+  yName <- plotPars[2]
+  xVec <- parVec(pars[xName], xName)
+  yVec <- parVec(pars[yName], yName)
+  xLen <- length(xVec)
+  yLen <- length(yVec)
+  xMat <- matrix(rep(xVec, yLen), xLen, yLen)
+  yMat <- matrix(rep(yVec, xLen), xLen, yLen, byrow = TRUE)
+  parGrid <- array(c(xMat, yMat), c(xLen, yLen, 2))
+
+  start_pars <- c(mu = 0, sigma = 1, alpha = 0.5, nu1 = 2, nu2 = 2)
+  fixed_pars <- c()
+  solver <- "Rsolnp"
+  solver_control <- list(trace = 0)
+  valGrid <- apply(parGrid, 1:2, obj_surface, data, start_pars, fixed_pars, solver, solver_control, xName, yName)
+
+  persp(xVec, yVec, valGrid, xlab = xName, ylab = yName, ...)
+  return(list(xVec, yVec, valGrid))
+  # p <- plot_ly(z = ~valueGrid) %>% add_surface()
+  # chart_link = api_create(p, filename = paste("grid", plotPars[1], plotPars[2], sep = ""))
+  # chart_link
+}

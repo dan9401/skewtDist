@@ -15,11 +15,13 @@
 #' @aliases qast
 #' @aliases rast
 #' @name astDist
+#'
 #' @examples
-#' d <- dast(0, 1.5, 1.2, 0.8, 3, 4)
-#' p <- past(1.5, 1.5, 1.2, 0.8, 3, 4)
-#' q <- qast(0.8, 1.5, 1.2, 0.8, 3, 4)
-#' x <- rast(1000, 1.5, 1.2, 0.8, 3, 4)
+#' # The parameter values are specially set for a volatile portfolio.
+#' d <- dast(0, 0.12, 0.6, 0.3, 3, 5)
+#' p <- past(1.5, 0.12, 0.6, 0.3, 3, 5)
+#' q <- qast(0.8, 0.12, 0.6, 0.3, 3, 5)
+#' x <- rast(1000, 0.12, 0.6, 0.3, 3, 5)
 
 #' @rdname astDist
 #' @export
@@ -43,9 +45,8 @@ past <- function(q, mu, sigma, alpha, nu1, nu2) {
     q <- (q - mu)/sigma
     # refer to helper_functions.R for K(.)
     alpha_star <- alpha * K(nu1)/(alpha * K(nu1) + (1 - alpha) * K(nu2))
-    p <- 2 * alpha * pt(pmin(q, 0)/(2 * alpha_star), nu1) + 2 * (1 - alpha) * (pt(pmax(q, 0)/(2 * (1 - alpha_star)), nu2) -
-        0.5)
-    p
+    # return value
+    2 * alpha * pt(pmin(q, 0)/(2 * alpha_star), nu1) + 2 * (1 - alpha) * (pt(pmax(q, 0)/(2 * (1 - alpha_star)), nu2) - 0.5)
 }
 
 #' @rdname astDist
@@ -55,9 +56,8 @@ qast <- function(p, mu, sigma, alpha, nu1, nu2) {
         stop("p must be numeric")
     # refer to helper_functions.R for K(.)
     alpha_star <- alpha * K(nu1)/(alpha * K(nu1) + (1 - alpha) * K(nu2))
-    q <- 2 * alpha_star * (mu + sigma * qt(pmin(p, alpha)/(2 * alpha), nu1)) + 2 * (1 - alpha_star) * (mu + sigma * qt((pmax(p,
-        alpha) + 1 - 2 * alpha)/(2 * (1 - alpha)), nu2))
-    q
+    # return value
+    2 * alpha_star * (mu + sigma * qt(pmin(p, alpha)/(2 * alpha), nu1)) + 2 * (1 - alpha_star) * (mu + sigma * qt((pmax(p, alpha) + 1 - 2 * alpha)/(2 * (1 - alpha)), nu2))
 }
 
 #' @rdname astDist
@@ -71,7 +71,7 @@ rast <- function(n, mu, sigma, alpha, nu1, nu2) {
     t1 <- rt(n, nu1)
     t2 <- rt(n, nu2)
     x <- alpha_star * abs(t1) * (sign(u - alpha) - 1) + (1 - alpha_star) * abs(t2) * (sign(u - alpha) + 1)
+    # return value
     # important note here!  sigma has been transformed
-    x <- mu + x * sigma * (alpha * K(nu1) + (1 - alpha) * K(nu2))
-    x
+    mu + x * sigma * (alpha * K(nu1) + (1 - alpha) * K(nu2))
 }

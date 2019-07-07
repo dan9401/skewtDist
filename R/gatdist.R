@@ -15,8 +15,19 @@
 #' @aliases pgat
 #' @aliases rgat
 #' @name gatDist
+#'
 #' @examples
+#' # The parameter values are specially set for a volatile portfolio.
+#' # The sample code are not yet decided because of the incompleteness
+#' # of code for GAT distributions.
+#' d <- dgat(0, 0.12, 0.6, 0.3, 3, 5)
+#' p <- pgat(1.5, 0.12, 0.6, 0.3, 3, 5)
+#' q <- qgat(0.8, 0.12, 0.6, 0.3, 3, 5)
+#' x <- rgat(1000, 0.12, 0.6, 0.3, 3, 5)
 
+
+
+####### all functions needs further checking. Quantile requires newton's method
 #' @rdname gatDist
 #' @export
 dgat <- function(x, mu, sigma, alpha, r, c, nu) {
