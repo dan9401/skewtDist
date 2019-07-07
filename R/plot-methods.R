@@ -76,7 +76,8 @@ surfacePlot <- function(n, pars, plotPars, ...) {
   solver <- "Rsolnp"
   solver_control <- list(trace = 0)
   valGrid <- apply(parGrid, 1:2, obj_surface, data, start_pars, fixed_pars, solver, solver_control, xName, yName)
-
+  rownames(valGrid) <- xVec
+  colnames(valGrid) <- yVec
   persp(xVec, yVec, valGrid, xlab = xName, ylab = yName, ...)
   return(list(xVec, yVec, valGrid))
   # p <- plot_ly(z = ~valueGrid) %>% add_surface()

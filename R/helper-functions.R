@@ -56,7 +56,7 @@ parVal <- function(x, lower, upper) {
   } else if (abs(x) < 4) {
     seq(max(x - 1, lower), min(x + 1, upper), length.out = 11)
   } else {
-    seq(max(x - 5, lower), min(x + 5, upper), length.out = 11)
+    seq(max(x - 2, lower), min(x + 2, upper), length.out = 11)
   }
 }
 

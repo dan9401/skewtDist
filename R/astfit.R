@@ -122,7 +122,7 @@ astfit_local <- function(data, start_pars = c(), fixed_pars = c(), solver, solve
                          control = solver_control,
                          arglist = arglist)
     sol_res <- res  #list(res$pars, ...)
-    fitted_pars <- res$solution
+    fitted_pars <- res$pars
     names(fitted_pars) <- ipars$name[est_idx]
     objective <- sol_res$values[length(sol_res$values)]
   } else if (solver == "nlminb") {

@@ -3,16 +3,16 @@ library(nloptr)
 library(st)
 source("R/helper_functions.R")
 
-set.seed(22)
-data <- rast(1000, 0.12, 0.6, 0.4, 3, 5)
-ipars <- data.frame(name = c("alpha", "mu", "nu1", "nu2", "sigma"),
-                    lb = c(0, -Inf, 1e-7, 1e-7, 1e-7),
-                    ub = c(1, Inf, Inf, Inf, Inf),
-                    start_pars = c(0.5, 0, 2, 2, 1),
+seed = 22
+set.seed(seed)
+data <- rast(10^n, 1.5, 2, 0.8, 0.7, 0.7)
+ipars <- data.frame(lb = c(-Inf, 0, 0, 0, 0),
+                    ub = c(Inf, Inf, 1, Inf, Inf),
+                    start_pars = c(0, 1, 0.5, 2, 2),
                     fixed_pars = c(NA, NA, NA, NA, NA))
-rownames(ipars) <- ipars$name
-arglist <- list(data = data, ipars = ipars)
+# rownames(ipars) <- name = c("mu", "sigma", "alpha", "nu1", "nu2")
 
+arglist <- list(data = data, fixed_pars = ipars$fixed_pars)
 lb <- ipars$lb
 ub <- ipars$ub
 x0 <- ipars$start_pars
@@ -35,7 +35,7 @@ nloptr.print.options(opts.show = "algorithm")
 opts_g <- list('algorithm' = 'NLOPT_LD_MMA',
              'maxeval' = 1.0e5,
              'xtol_rel' = 1.0e-8)
-resG <- nloptr(x0,
+resG <- nloptr::nloptr(x0,
                eval_f = llast,
                eval_grad_f = llast_grad,
                lb = lb,

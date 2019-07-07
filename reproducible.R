@@ -1,5 +1,5 @@
 library(st)
-source("R/helper-functions.R") #
+source("R/helper-functions.R") # for llast & llast_grad
 source("R/astfit.R") # for llast & llast_grad
 
 # 1. BOBYQA
@@ -100,7 +100,7 @@ report(pars, n, seed)
 pars1 = c(1.5, 2, 0.8, 2, 4)
 report(pars1, n, seed)
 
-pars2 = c(1.5, 2, 0.8, 2, 4)
+pars2 = c(1.5, 2, 0.8, 0.7, 0.7)
 report(pars1, n, seed)
 
 # proof that gradient is most likely correct
@@ -112,3 +112,6 @@ c((llast(c(0.001, 1, 0.5, 2, 2), arglist) - llast(c(-0.001, 1, 0.5, 2, 2), argli
   (llast(c(0, 1, 0.501, 2, 2), arglist) - llast(c(0, 1, 0.499, 2, 2), arglist))/0.002,
   (llast(c(0, 1, 0.5, 2.001, 2), arglist) - llast(c(0, 1, 0.5, 1.999, 2), arglist))/0.002,
   (llast(c(0, 1, 0.5, 2, 2.001), arglist) - llast(c(0, 1, 0.5, 2, 1.999), arglist))/0.002)
+
+# surface plot
+surfacePlot(10000, pars, c("nu1", "nu2"), theta = 100, col = 3, shade = 0.75)
