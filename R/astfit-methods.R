@@ -24,7 +24,7 @@ summary.astfit <- function(fit) {
   fit
 }
 
-#' @rdname astfit-class
+#' @rdname astfit-methods
 #' @export
 plot.astfit <- function(fit) {
   selection <- 1
@@ -47,6 +47,21 @@ moment.astfit <- function(fit, n, method = c("numerical", "analytical")) {
   alpha <- pars["alpha"]
   nu1 <- pars["nu1"]
   nu2 <- pars["nu2"]
-  # return value
-  moment_ast(n, mu, sigma, alpha, nu1, nu2, method)
+  method <- match.arg(method)
+  if (method == "analytical") {
+    if (mu != 0) {
+      stop("Analytical formula of moments cannot calculate with location parameters other than 0.")
+    }
+    # return value - analytical
+    moment_ast_analytical(n, mu, sigma, alpha, nu1, nu2)
+  } else {
+    # return value - numerical
+    moment_ast_numerical(n, mu, sigma, alpha, nu1, nu2)
+  }
+}
+
+# putting it here temporarily
+#' @export
+moment <- function(x, ...) {
+  UseMethod("moment", x)
 }

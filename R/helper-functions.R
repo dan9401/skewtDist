@@ -24,17 +24,19 @@ Dprime <- function(nu) {
 
 L <- function(pars, y) {
   mu <- pars[1]
+  sigma <- pars[2]
   alpha <- pars[3]
   nu1 <- pars[4]
-  L <- 1 + 1 / nu1 * ( (y - mu) / (2 * alpha * K(nu1)) )^2
+  L <- 1 + 1 / nu1 * ( (y - mu) / (2 * alpha * sigma * K(nu1)) )^2
   L
 }
 
 R <- function(pars, y) {
   mu <- pars[1]
+  sigma <- pars[2]
   alpha <- pars[3]
   nu2 <- pars[5]
-  R <- 1 + 1 / nu2 * ( (y - mu) / (2 * (1 - alpha) * K(nu2)) )^2
+  R <- 1 + 1 / nu2 * ( (y - mu) / (2 * (1 - alpha) * sigma * K(nu2)) )^2
   R
 }
 
