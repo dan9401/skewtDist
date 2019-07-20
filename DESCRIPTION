@@ -1,7 +1,7 @@
 Package: st
 Type: Package
 Title: Asymmetric Student t-distributions
-Version: 0.2.0
+Version: 0.2.1
 Author: Zhiye Xia
 Maintainer: Zhiye Xia <dansummer94@gmail.com>
 Description: Methods and Applications for AST and GAT distributions
