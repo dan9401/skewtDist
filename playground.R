@@ -177,5 +177,87 @@ list(resGL$values[length(resGL$values)], resGL$pars,
      Sys.time() - tt)
 
 # 1. reproducible
+
+
 # 2. authorized domain
 # 3. mean, var, ...
+# 4. check the infoMat functions
+# 5. cross-sectional & real data
+# 7. gatfit
+# 8.
+
+
+
+llast <- function(pars, arglist) {
+  y <- arglist$data
+  fixed_pars <- arglist$fixed_pars
+
+  est_idx <- which(is.na(fixed_pars))
+  fix_idx <- which(!(is.na(fixed_pars)))
+  all_pars <- c()
+  all_pars[est_idx] <- pars
+  all_pars[fix_idx] <- fixed_pars[fix_idx]
+
+  mu <- all_pars[1]
+  sigma <- all_pars[2]
+  alpha <- all_pars[3]
+  nu1 <- all_pars[4]
+  nu2 <- all_pars[5]
+  T_ <- length(y)
+  y1 <- y[y <= Re(mu)]
+  y2 <- y[y > Re(mu)]
+
+  logl <- -T_ * log(sigma) - 0.5 * (nu1 + 1) * sum(log(1 + ((y1 - mu)/(2 * alpha * sigma * K(nu1)))^2/nu1)) -
+    0.5 * (nu2 + 1) * sum(log(1 + ((y2 - mu)/(2 * (1 - alpha) * sigma * K(nu2)))^2/nu2))
+  -logl
+}
+
+K <- function(nu) {
+  # there is a precision error here, numerical expert needed may need a c++ version
+  # nu = 1e10 and greater start to be varying
+  if (Re(nu) < 1000) {
+    gammaz(0.5 * (nu + 1)) / sqrt(pi * nu) / gammaz(0.5 * nu)
+  } else {
+    # seems to be correct, need to check
+    dnorm(0)
+  }
+}
+
+
+pars = c(0, 1.5, 0.5, 2, 2)
+cbind(llast_grad(pars, arglist),numDeriv::grad(llast, pars,
+                                               arglist=arglist))
+
+
+
+# newton raphson
+pfunc <- function(q) {
+  pgat(q, 1.5, 2, 2, 2, 2, 5) - 0.5440223
+}
+
+newton_raphson(pfunc)
+x0 = 0
+maxiter = 100
+tol = 1e-8
+h <- 1e-7
+i <- 1
+x1 <- x0
+# p <- numeric(maxiter)
+while(i <= maxiter) {
+  fprime <- (pfunc(x0 + h) - pfunc(x0)) / h
+  x1 <- x0 - pfunc(x0) / fprime
+  # p = x1
+  i <- i + 1
+  if (abs(x1 - x0) < tol) {
+    break
+  }
+  x0 <- x1
+}
+x1
+
+
+res6 <- Rsolnp::solnp(pars = ipars$start_pars,
+                      fun = llast,
+                      LB= ipars$lb,
+                      UB = ipars$ub,
+                      arglist = arglist)

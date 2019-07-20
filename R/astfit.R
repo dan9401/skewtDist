@@ -18,7 +18,7 @@
 #' @rdname astfit
 #' @export
 # fit function for ast distribution
-astfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nloptr", "Rsolnp"), solver_control) {
+astfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control) {
   if (!is.numeric(data) || length(data) == 0)
     stop("Data must be a numeric vector of non-zero length.")
 
@@ -27,35 +27,6 @@ astfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nloptr"
   #check_bound(fixed_pars)
   solver = match.arg(solver)
 
-
-  # with the grid search commented, it is now just a wrapper
-  # # grid search 1
-  # if ("nu1" %in% names(fixed_pars)) { nu1vec <- fixed_pars["nu1"] } else { nu1vec <- seq(2, 20, by = 4) }
-  # if ("nu2" %in% names(fixed_pars)) { nu2vec <- fixed_pars["nu2"] } else { nu2vec <- seq(2, 20, by = 4) }
-  # grid <- array(c(rep(nu1vec, length(nu2vec)), rep(nu2vec, length(nu1vec))), c(length(nu1vec), length(nu2vec), 2))
-  # if (dim(grid)[1] == dim(grid)[2]) { grid[,,2] = t(grid[,,2]) }
-  # valueGrid <- apply(grid, 1:2, objective_value, data, start_pars, fixed_pars, solver, solver_control)
-  # idx <- as.numeric(which(valueGrid == min(valueGrid), arr.ind = T))
-  # idx <- c(grid[idx[1], idx[2], 1], grid[idx[1], idx[2], 2])
-  #
-  # # grid search 2
-  # if (!("nu1" %in% names(fixed_pars))) { nu1vec <- seq(idx[1]-2, idx[1]+2, by=1) }
-  # if (!("nu2" %in% names(fixed_pars))) { nu2vec <- seq(idx[2]-2, idx[2]+2, by=1) }
-  # grid <- array(c(rep(nu1vec, length(nu2vec)), rep(nu2vec, length(nu1vec))), c(length(nu1vec), length(nu2vec), 2))
-  # if (dim(grid)[1] == dim(grid)[2]) { grid[,,2] = t(grid[,,2]) }
-  # valueGrid <- apply(grid, 1:2, objective_value, data, start_pars, fixed_pars, solver, solver_control)
-  # idx <- as.numeric(which(valueGrid == min(valueGrid), arr.ind = T))
-  # idx <- c(grid[idx[1], idx[2], 1], grid[idx[1], idx[2], 2])
-  #
-  # # fit with result of grid search 2
-  # fp_tmp <- fixed_pars
-  # fp_tmp["nu1"] <- idx[1]
-  # fp_tmp["nu2"] <- idx[2]
-  # fit_tmp <- astfit_local(data, start_pars, fp_tmp, solver, solver_control)
-  #
-  # # final fit
-  # start_pars <- c(fit_tmp$sol_res$solution, c(idx[1], idx[2]))
-  # names(start_pars) <- c("mu", "sigma", "alpha", "nu1", "nu2")
   fit <- astfit_local(data, start_pars, fixed_pars, solver, solver_control)
   standard_errors <- sqrt(diag(solve(infoMat_ast(fit$fitted_pars))))
   fit$standard_errors <- standard_errors
@@ -126,7 +97,17 @@ astfit_local <- function(data, start_pars = c(), fixed_pars = c(), solver, solve
     names(fitted_pars) <- ipars$name[est_idx]
     objective <- sol_res$values[length(sol_res$values)]
   } else if (solver == "nlminb") {
-    NA
+    res <- nlminb(start = start_pars,
+                  objective = llast,
+                  gradient = llast_grad,
+                  arglist = arglist,
+                  control = list(eval.max = 10^3, iter.max = 10^3),
+                  lower = lb,
+                  upper = ub)
+    sol_res <- res  #list(res$pars, ...)
+    fitted_pars <- res$par
+    names(fitted_pars) <- ipars$name[est_idx]
+    objective <- sol_res$objective
   } else {
     NA
   }
@@ -135,17 +116,6 @@ astfit_local <- function(data, start_pars = c(), fixed_pars = c(), solver, solve
   list(data = data, sol_res = sol_res, solver = solver, solver_control = solver_control,
        start_pars = start_pars, fixed_pars = fixed_pars, fitted_pars = fitted_pars,
        objective = objective, time_elapsed = time_elapsed)
-}
-
-objective_value <- function(nus, data, start_pars, fixed_pars, solver, solver_control) {
-  if (nus[1] == 0 || nus[2] == 0) {
-    obj <- 10^5
-  } else {
-    fixed_pars["nu1"] = nus[1]
-    fixed_pars["nu2"] = nus[2]
-    obj <- astfit_local(data, start_pars, fixed_pars, solver, solver_control)$sol_res$objective
-  }
-  obj
 }
 
 # log-likelihood function of the AST distributions pars: parameter values y: data which you fit the distribution on

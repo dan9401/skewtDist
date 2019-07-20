@@ -9,7 +9,7 @@
 \usage{
 \method{summary}{astfit}(fit)
 
-\method{plot}{astfit}(fit)
+plot.astfit(fit)
 
 \method{moment}{astfit}(fit, n, method = c("numerical", "analytical"))
 }

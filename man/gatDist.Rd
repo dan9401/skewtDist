@@ -2,26 +2,27 @@
 % Please edit documentation in R/gatdist.R
 \name{gatDist}
 \alias{gatDist}
+\alias{dgat.numeric}
 \alias{dgat}
 \alias{pgat}
 \alias{qgat}
 \alias{rgat}
 \title{Generalized Asymmetric t-distribution}
 \usage{
-dgat(x, mu, sigma, alpha, r, c, nu)
+\method{dgat}{numeric}(x, mu, phi, alpha, r, c, nu)
 
-pgat(q, mu, sigma, alpha, r, c, nu)
+pgat(x, mu, phi, alpha, r, c, nu)
 
-qgat(p, mu, sigma, alpha, r, c, nu)
+qgat(p, mu, phi, alpha, r, c, nu)
 
-rgat(n, mu, sigma, alpha, r, c, nu)
+rgat(n, mu, phi, alpha, r, c, nu)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
 
 \item{mu}{location parameter}
 
-\item{sigma}{scale parameter}
+\item{phi}{scale parameter}
 
 \item{alpha}{how early tail behavior is apparent}
 

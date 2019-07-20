@@ -4,8 +4,8 @@
 \alias{astfit}
 \title{AST fit}
 \usage{
-astfit(data, start_pars = c(), fixed_pars = c(), solver = c("nloptr",
-  "Rsolnp"), solver_control)
+astfit(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb",
+  "nloptr", "Rsolnp"), solver_control)
 }
 \arguments{
 \item{data}{A univariate data object, can be ... for the AST distribution to fit on.}

@@ -97,3 +97,36 @@ obj_surface <- function(pars, data, start_pars, fixed_pars, solver, solver_contr
   fixed_pars[yName] <- pars[2]
   return(astfit_local(data, start_pars, fixed_pars, solver, solver_control)$objective)
 }
+
+safeIntegrate <- function(f, lower, upper, ..., subdivisions = 1000L,
+                          rel.tol = .Machine$double.eps^0.25, abs.tol = rel.tol,
+                          stop.on.error = TRUE, keep.xy = FALSE, aux = NULL) {
+  res <- integrate(f, lower, upper, ..., subdivisions = subdivisions,
+                   rel.tol = rel.tol, abs.tol = abs.tol,
+                   stop.on.error = stop.on.error, keep.xy = keep.xy, aux = aux)
+  # the safeIntegrate in HyperbolicDist has different rules
+  # don't seem to be necessary
+  if (lower == upper) {
+    res$value <- 0
+    res$abs.error <- 0
+  }
+  res
+}
+
+newton_raphson <- function(f, x0 = 0.5, maxiter = 1e2, tol = 1e-8) {
+  h <- 1e-8
+  i <- 1
+  x1 <- x0
+  # p <- numeric(maxiter)
+  while(i <= maxiter) {
+    fprime <- (f(x0 + h) - f(x0)) / h
+    x1 <- (x0 - (f(x0) / fprime))
+    # p = x1
+    i <- i + 1
+    if (abs(x1 - x0) < tol) {
+      break
+    }
+    x0 <- x1
+  }
+  x1
+}

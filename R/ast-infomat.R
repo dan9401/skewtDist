@@ -99,3 +99,30 @@ infoMat_ast <- function(pars, data = c(), method = c("expected", "observed")) {
 }
 
 
+infoMat_sst <- function(pars) {
+  mu <- pars["mu"]
+  sigma <- pars["sigma"]
+  alpha <- pars["alpha"]
+  nu <- pars["nu"]
+
+  S_mu2 <- (nu + 1) / ((4*sigma^2) * alpha * (1 - alpha) * (nu + 3) * K(nu)^2 )
+  S_sigma2 <- 2 * nu / (sigma^2 * (nu+3) )
+  S_alpha2 <- 3 * (nu+1) / (alpha * (1-alpha) * (nu+3) )
+  S_nu2 <- 1/2 * ( nu/(nu+3)*D(nu)^2 - 2/(nu+1)*D(nu) - Dprime(nu) )
+
+  S_mualpha <- -2/sigma * (nu+1) / (alpha * (1-alpha) * (nu+3) )
+  S_sigmanu <- 1/sigma * ( -1/(nu+1) + nu*D(nu)/(nu+3) )
+
+  S_musigma <- 0
+  S_munu <- 0
+  S_sigmaalpha <- 0
+  S_alphanu <- 0
+
+  infoMat <- matrix(c(S_mu2, S_musigma, S_mualpha, S_munu,
+                      S_musigma, S_sigma2, S_sigmaalpha, S_sigmanu,
+                      S_mualpha, S_sigmaalpha, S_alpha2, S_alphanu,
+                      S_munu, S_sigmanu, S_alphanu, S_nu2),
+                    nrow = 4, ncol = 4)
+  rownames(infoMat) = colnames(infoMat) = c("mu", "sigma", "alpha", "nu")
+  infoMat
+}

@@ -21,7 +21,7 @@ density_ast <- function(fit) {
   abline(v = mu, col = 2)
 }
 
-qqplot_ast <- function(fit, dist = "normal", ...) {
+qqplot_ast <- function(fit, dist = "ast", ...) {
   y <- fit$data
   pars <- fit$fitted_pars
   mu <- pars["mu"]
@@ -30,24 +30,21 @@ qqplot_ast <- function(fit, dist = "normal", ...) {
   nu1 <- pars["nu1"]
   nu2 <- pars["nu2"]
 
-  p <- past(y, mu, sigma, alpha, nu1, nu2)
+  y <- y[order(y)]
+  p <- ppoints(length(y))
+  #p <- past(y, mu, sigma, alpha, nu1, nu2)
   if (dist == "normal") {
     x <- qnorm(p, mean = mean(y), sd = sigma)
-    #px <- qnorm(c(0.25, 0.75), mean = mu, sd = sigma)
-  } else if (dist == "t") {
-    df = 0.5 * (nu1 + nu2)
-    x <- qt(p, df = df)
-    #px <- qast(c(0.25, 0.75), mu, sigma, 0.5, df, df)
+    px <- qnorm(c(0.25, 0.75), mean = mu, sd = sigma)
   } else if (dist == "ast") {
     x <- qast(p, mu, sigma, alpha, nu1, nu2)
-    #px <- qast(c(0.25, 0.75), mu, sigma, alpha, nu1, nu2)
+    px <- qast(c(0.25, 0.75), mu, sigma, alpha, nu1, nu2)
   }
-  qqplot(x, y, ...)
-  px <- quantile(x, c(0.25, 0.75))
+  plot(x, y, ...)
   py <- quantile(y, c(0.25, 0.75))
   slope <- diff(py)/diff(px)
   int <- py[1L] - slope * px[1L]
-  abline(int, slope)
+  abline(int, slope, col = 4)
   points(px, py, col = 2)
 }
 

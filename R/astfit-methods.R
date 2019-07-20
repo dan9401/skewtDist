@@ -33,7 +33,7 @@ plot.astfit <- function(fit) {
     if (selection == 1) {
       density_ast(fit)
     } else if(selection == 2) {
-      qqplot_ast(fit, dist = "normal")
+      qqplot_ast(fit, dist = "ast")
     }
   }
 }

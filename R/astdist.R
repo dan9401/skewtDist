@@ -36,7 +36,6 @@ dast <- function(x, mu, sigma, alpha, nu1, nu2) {
     d[x > mu] <- (1 + ((x2 - mu)/(2 * (1 - alpha) * sigma * K(nu2)))^2/nu2)^(-0.5 * (nu2 + 1))/sigma
     d
 }
-
 #' @rdname astDist
 #' @export
 past <- function(q, mu, sigma, alpha, nu1, nu2) {
