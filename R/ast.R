@@ -1,8 +1,10 @@
 
+#' @export
 ast <- function(mu, sigma, alpha, nu1, nu2) {
   structure(c(mu = mu, sigma = sigma, alpha = alpha, nu1 = nu1, nu2 = nu2), class = "ast")
 }
 
+#' @export
 dast.ast <- function(x, ast) {
   mu <- ast[1]
   sigma <- ast[2]
@@ -14,6 +16,7 @@ dast.ast <- function(x, ast) {
   d
 }
 
+#' @export
 past.ast <- function(x, ast) {
   mu <- ast[1]
   sigma <- ast[2]
@@ -25,6 +28,7 @@ past.ast <- function(x, ast) {
   p
 }
 
+#' @export
 qast.ast <- function(x, ast) {
   mu <- ast[1]
   sigma <- ast[2]
@@ -36,6 +40,7 @@ qast.ast <- function(x, ast) {
   q
 }
 
+#' @export
 rast.ast <- function(x, ast) {
   mu <- ast[1]
   sigma <- ast[2]
@@ -47,19 +52,23 @@ rast.ast <- function(x, ast) {
   r
 }
 
+#' @export
 dast <- function(x, class, ...) {
   UseMethod("dast", class)
 }
 
-past <- function(x, class...) {
+#' @export
+past <- function(x, class, ...) {
   UseMethod("past", class)
 }
 
-qast <- function(x, class...) {
+#' @export
+qast <- function(x, class, ...) {
   UseMethod("qast", class)
 }
 
-rast <- function(x, class...) {
+#' @export
+rast <- function(x, class, ...) {
   UseMethod("rast", class)
 }
 

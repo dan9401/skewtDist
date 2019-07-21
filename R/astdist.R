@@ -25,7 +25,7 @@
 
 #' @rdname astDist
 #' @export
-dast <- function(x, mu, sigma, alpha, nu1, nu2) {
+dast.numeric <- function(x, mu, sigma, alpha, nu1, nu2) {
     if (!is.numeric(x))
         stop("x must be numeric")
     x1 <- x[x <= mu]
@@ -38,7 +38,7 @@ dast <- function(x, mu, sigma, alpha, nu1, nu2) {
 }
 #' @rdname astDist
 #' @export
-past <- function(q, mu, sigma, alpha, nu1, nu2) {
+past.numeric <- function(q, mu, sigma, alpha, nu1, nu2) {
     if (!is.numeric(q))
         stop("q must be numeric")
     q <- (q - mu)/sigma
@@ -50,7 +50,7 @@ past <- function(q, mu, sigma, alpha, nu1, nu2) {
 
 #' @rdname astDist
 #' @export
-qast <- function(p, mu, sigma, alpha, nu1, nu2) {
+qast.numeric <- function(p, mu, sigma, alpha, nu1, nu2) {
     if (!is.numeric(p))
         stop("p must be numeric")
     # refer to helper_functions.R for K(.)
@@ -61,7 +61,7 @@ qast <- function(p, mu, sigma, alpha, nu1, nu2) {
 
 #' @rdname astDist
 #' @export
-rast <- function(n, mu, sigma, alpha, nu1, nu2) {
+rast.numeric <- function(n, mu, sigma, alpha, nu1, nu2) {
     if (n < 0)
         stop("n must be non-negative")
     # refer to helper_functions.R for K(.)

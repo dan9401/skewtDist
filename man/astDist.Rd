@@ -2,19 +2,20 @@
 % Please edit documentation in R/astdist.R
 \name{astDist}
 \alias{astDist}
+\alias{dast.numeric}
 \alias{dast}
-\alias{past}
-\alias{qast}
-\alias{rast}
+\alias{past.numeric}
+\alias{qast.numeric}
+\alias{rast.numeric}
 \title{Asymmetric Student t-distribution}
 \usage{
-dast(x, mu, sigma, alpha, nu1, nu2)
+\method{dast}{numeric}(x, mu, sigma, alpha, nu1, nu2)
 
-past(q, mu, sigma, alpha, nu1, nu2)
+\method{past}{numeric}(q, mu, sigma, alpha, nu1, nu2)
 
-qast(p, mu, sigma, alpha, nu1, nu2)
+\method{qast}{numeric}(p, mu, sigma, alpha, nu1, nu2)
 
-rast(n, mu, sigma, alpha, nu1, nu2)
+\method{rast}{numeric}(n, mu, sigma, alpha, nu1, nu2)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
