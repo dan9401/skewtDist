@@ -41,9 +41,10 @@ dast.numeric <- function(x, mu, sigma, alpha, nu1, nu2) {
 past.numeric <- function(q, mu, sigma, alpha, nu1, nu2) {
     if (!is.numeric(q))
         stop("q must be numeric")
-    q <- (q - mu)/sigma
+    B <- alpha * K(nu1) + (1 - alpha) * K(nu2)
+    q <- (q - mu) / (sigma * B)
     # refer to helper_functions.R for K(.)
-    alpha_star <- alpha * K(nu1)/(alpha * K(nu1) + (1 - alpha) * K(nu2))
+    alpha_star <- alpha * K(nu1)/ B
     # return value
     2 * alpha * pt(pmin(q, 0)/(2 * alpha_star), nu1) + 2 * (1 - alpha) * (pt(pmax(q, 0)/(2 * (1 - alpha_star)), nu2) - 0.5)
 }
@@ -54,9 +55,10 @@ qast.numeric <- function(p, mu, sigma, alpha, nu1, nu2) {
     if (!is.numeric(p))
         stop("p must be numeric")
     # refer to helper_functions.R for K(.)
-    alpha_star <- alpha * K(nu1)/(alpha * K(nu1) + (1 - alpha) * K(nu2))
+    B <- alpha * K(nu1) + (1 - alpha) * K(nu2)
+    alpha_star <- alpha * K(nu1)/ B
     # return value
-    2 * alpha_star * (mu + sigma * qt(pmin(p, alpha)/(2 * alpha), nu1)) + 2 * (1 - alpha_star) * (mu + sigma * qt((pmax(p, alpha) + 1 - 2 * alpha)/(2 * (1 - alpha)), nu2))
+    mu + sigma * B * (2 * alpha_star * ( qt(pmin(p, alpha)/(2 * alpha), nu1)) + 2 * (1 - alpha_star) * ( qt((pmax(p, alpha) + 1 - 2 * alpha)/(2 * (1 - alpha)), nu2)))
 }
 
 #' @rdname astDist

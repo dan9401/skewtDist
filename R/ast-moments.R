@@ -43,7 +43,7 @@ kurtosis_ast <- function(mu, sigma, alpha, nu1, nu2) {
   safeIntegrate(integrand, -Inf, Inf)$value
 }
 
-moment_ast_analytical <- function(n, sigma, alpha, nu1, nu2) {
+moment_ast_centralized <- function(n, sigma, alpha, nu1, nu2) {
   B <- alpha * K(nu1) + (1 - alpha) * K(nu2)
   alpha_star <- alpha * K(nu1)/B
   # return value
@@ -64,3 +64,12 @@ moment_ast_numerical <- function(n, mu, sigma, alpha, nu1, nu2) {
   safeIntegrate(integrand, -Inf, Inf)$value
 }
 
+
+moment_ast_test <- function(n, mu, sigma, alpha, nu1, nu2) {
+  sum( choose(n, 0:n) * sapply(n:0, moment_ast_centralized, sigma, alpha, nu1, nu2) * mu^(0:n) )
+}
+
+central_ast <- function(n, mu, sigma, alpha, nu1, nu2) {
+  mean <- moment_ast_test(1, mu, sigma, alpha, nu1, nu2)
+  sum( (-1)^(n - n:0) * choose(n, 0:n) * sapply(n:0, moment_ast_test, mu, sigma, alpha, nu1, nu2) * mean^(0:n) )
+}

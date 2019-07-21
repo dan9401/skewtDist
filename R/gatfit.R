@@ -1,9 +1,20 @@
-gatfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nloptr", "Rsolnp"), solver_control) {
+gatfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control) {
+  if (!is.numeric(data) || length(data) == 0)
+    stop("Data must be a numeric vector of non-zero length.")
 
+  # function that checks parameter bounds, needs to be edited
+  #check_bound(start_pars)
+  #check_bound(fixed_pars)
+  solver = match.arg(solver)
 
+  fit <- gatfit_local(data, start_pars, fixed_pars, solver, solver_control)
+  standard_errors <- sqrt(diag(solve(infoMat_gat(fit$fitted_pars))))
+  fit$standard_errors <- standard_errors
 
-
+  structure(fit, class = "astfit")
 }
+
+
 
 llgat <- function(pars, arglist) {
   y <- arglist$data

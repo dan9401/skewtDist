@@ -24,5 +24,7 @@ Method for fitting a AST distribution
 \examples{
 data <- rast(1000, 0.12, 0.6, 0.3, 3, 5)
 solver_control <- list('algorithm' = 'NLOPT_LN_BOBYQA', 'maxeval' = 1.0e5, 'xtol_rel' = 1.0e-8)
+# solver_control <- list(eval.max = 10^3, iter.max = 10^3)
 fit <- astfit(data, solver = 'nloptr', solver_control = solver_control)
+# fit <- astfit(data, solver = 'nlminb', solver_control = solver_control)
 }
