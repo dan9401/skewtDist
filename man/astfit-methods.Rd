@@ -4,14 +4,14 @@
 \alias{astfit-methods}
 \alias{summary.astfit}
 \alias{plot.astfit}
-\alias{moment.astfit}
+\alias{moments.astfit}
 \title{Methods for astfit class}
 \usage{
 \method{summary}{astfit}(fit)
 
-plot.astfit(fit)
+plot.astfit(fit, selection = NULL, ...)
 
-\method{moment}{astfit}(fit, n, method = c("numerical", "analytical"))
+\method{moments}{astfit}(fit, n, method = c("analytical", "numerical"))
 }
 \arguments{
 \item{fit}{A AST fit object of class \code{\link{astfit}}}

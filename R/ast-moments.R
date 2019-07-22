@@ -5,8 +5,18 @@
 # authorized domain, here or in the plot file
 
 #' @export
-moment_ast <- function(n, mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+moment_ast <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
   method <- match.arg(method)
+  if (!is.null(pars)) {
+    if (!missing(mu)) {
+      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    mu <- pars[1]
+    sigma <- pars[2]
+    alpha <- pars[3]
+    nu1 <- pars[4]
+    nu2 <- pars[5]
+  }
   if (method == "analytical") {
     # return
     mo <- sum( choose(n, 0:n) * sapply(n:0, moment_ss, sigma, alpha, nu1, nu2) * mu^(0:n) )
@@ -22,33 +32,83 @@ moment_ast <- function(n, mu, sigma, alpha, nu1, nu2, method = c("analytical", "
 }
 
 #' @export
-mean_ast <- function(mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+mean_ast <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+  if (!is.null(pars)) {
+    if (!missing(mu)) {
+      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    mu <- pars[1]
+    sigma <- pars[2]
+    alpha <- pars[3]
+    nu1 <- pars[4]
+    nu2 <- pars[5]
+  }
   # return
   moment_ast(1, mu, sigma, alpha, nu1, nu2, method = method)
 }
 
 #' @export
-var_ast <- function(mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+var_ast <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+  if (!is.null(pars)) {
+    if (!missing(mu)) {
+      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    mu <- pars[1]
+    sigma <- pars[2]
+    alpha <- pars[3]
+    nu1 <- pars[4]
+    nu2 <- pars[5]
+  }
   # return
   moment_central_ast(2, mu, sigma, alpha, nu1, nu2, method = method)
 }
 
 #' @export
-sd_ast <- function(mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+sd_ast <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+  if (!is.null(pars)) {
+    if (!missing(mu)) {
+      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    mu <- pars[1]
+    sigma <- pars[2]
+    alpha <- pars[3]
+    nu1 <- pars[4]
+    nu2 <- pars[5]
+  }
   var <- moment_central_ast(2, mu, sigma, alpha, nu1, nu2, method = method)
   # return
   sqrt(var)
 }
 
 #' @export
-skew_ast <- function(mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+skew_ast <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+  if (!is.null(pars)) {
+    if (!missing(mu)) {
+      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    mu <- pars[1]
+    sigma <- pars[2]
+    alpha <- pars[3]
+    nu1 <- pars[4]
+    nu2 <- pars[5]
+  }
   sd <- sd_ast(mu, sigma, alpha, nu1, nu2, method = method)
   # return
   moment_central_ast(3, mu, sigma, alpha, nu1, nu2, method = method) / sd^3
 }
 
 #' @export
-kurt_ast <- function(mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+kurt_ast <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+  if (!is.null(pars)) {
+    if (!missing(mu)) {
+      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    mu <- pars[1]
+    sigma <- pars[2]
+    alpha <- pars[3]
+    nu1 <- pars[4]
+    nu2 <- pars[5]
+  }
   var <- var_ast(mu, sigma, alpha, nu1, nu2, method = method)
   # return
   moment_central_ast(4, mu, sigma, alpha, nu1, nu2, method = method) / var^2

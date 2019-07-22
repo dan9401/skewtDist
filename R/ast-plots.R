@@ -3,7 +3,7 @@
 # and plot method for ast & gat class without data, just for exploration uses
 # authorized domain, here or in the moment file
 
-density_ast <- function(fit) {
+density_ast <- function(fit, ...) {
   data <- fit$data
   pars <- fit$fitted_pars
   mu <- pars["mu"]
@@ -21,7 +21,7 @@ density_ast <- function(fit) {
   # lines(density(data))
   x <- seq(min(data), max(data), length.out = 1000)
   y <- dast(x, mu, sigma, alpha, nu1, nu2)
-  plot(x, y, axes = FALSE, xlab = "", ylab = "", col = 4, type = "l")
+  plot(x, y, axes = FALSE, xlab = "", ylab = "", col = 4, type = "l", ...)
   abline(v = mu, col = 2)
 }
 

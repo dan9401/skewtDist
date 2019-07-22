@@ -25,9 +25,19 @@
 
 #' @rdname astDist
 #' @export
-dast.default <- function(x, mu, sigma, alpha, nu1, nu2) {
+dast <- function(x, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
+    if (!is.null(pars)) {
+      if (!missing(mu)) {
+        stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      }
+      mu <- pars[1]
+      sigma <- pars[2]
+      alpha <- pars[3]
+      nu1 <- pars[4]
+      nu2 <- pars[5]
+    }
     if (!is.numeric(x))
-        stop("x must be numeric")
+      stop("x must be numeric")
     x1 <- x[x <= mu]
     x2 <- x[x > mu]
     d <- numeric(length(x))
@@ -36,11 +46,22 @@ dast.default <- function(x, mu, sigma, alpha, nu1, nu2) {
     d[x > mu] <- (1 + ((x2 - mu)/(2 * (1 - alpha) * sigma * K(nu2)))^2/nu2)^(-0.5 * (nu2 + 1))/sigma
     d
 }
+
 #' @rdname astDist
 #' @export
-past.default <- function(q, mu, sigma, alpha, nu1, nu2) {
+past <- function(q, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (!is.numeric(q))
         stop("q must be numeric")
+    if (!is.null(pars)) {
+      if (!missing(mu)) {
+        stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      }
+      mu <- pars[1]
+      sigma <- pars[2]
+      alpha <- pars[3]
+      nu1 <- pars[4]
+      nu2 <- pars[5]
+    }
     B <- alpha * K(nu1) + (1 - alpha) * K(nu2)
     q <- (q - mu) / (sigma * B)
     # refer to helper_functions.R for K(.)
@@ -51,9 +72,19 @@ past.default <- function(q, mu, sigma, alpha, nu1, nu2) {
 
 #' @rdname astDist
 #' @export
-qast.default <- function(p, mu, sigma, alpha, nu1, nu2) {
+qast <- function(p, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (!is.numeric(p))
         stop("p must be numeric")
+    if (!is.null(pars)) {
+      if (!missing(mu)) {
+        stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      }
+      mu <- pars[1]
+      sigma <- pars[2]
+      alpha <- pars[3]
+      nu1 <- pars[4]
+      nu2 <- pars[5]
+    }
     # refer to helper_functions.R for K(.)
     B <- alpha * K(nu1) + (1 - alpha) * K(nu2)
     alpha_star <- alpha * K(nu1)/ B
@@ -63,10 +94,20 @@ qast.default <- function(p, mu, sigma, alpha, nu1, nu2) {
 
 #' @rdname astDist
 #' @export
-rast.default <- function(n, mu, sigma, alpha, nu1, nu2) {
+rast <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (n < 0)
         stop("n must be non-negative")
     # refer to helper_functions.R for K(.)
+    if (!is.null(pars)) {
+      if (!missing(mu)) {
+        stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      }
+      mu <- pars[1]
+      sigma <- pars[2]
+      alpha <- pars[3]
+      nu1 <- pars[4]
+      nu2 <- pars[5]
+    }
     alpha_star <- alpha * K(nu1)/(alpha * K(nu1) + (1 - alpha) * K(nu2))
     u <- runif(n)
     t1 <- rt(n, nu1)

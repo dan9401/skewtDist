@@ -26,42 +26,39 @@ summary.astfit <- function(fit) {
 
 #' @rdname astfit-methods
 #' @export
-plot.astfit <- function(fit) {
-  selection <- 1
-  while (selection) {
-    selection <- menu(c("Density", "QQplot"), title = "Make a plot selection (or 0 to exit)")
+plot.astfit <- function(fit, selection = NULL, ...) {
+  if (is.null(selection)) {
+    selection <- 1
+    while (selection) {
+      selection <- menu(c("Density", "QQplot"), title = "Make a plot selection (or 0 to exit)")
+      if (selection == 1) {
+        density_ast(fit, ...)
+      } else if(selection == 2) {
+        qqplot_ast(fit, dist = "ast", ...)
+      }
+    }
+  } else {
     if (selection == 1) {
-      density_ast(fit)
+      density_ast(fit, ...)
     } else if(selection == 2) {
-      qqplot_ast(fit, dist = "ast")
+      qqplot_ast(fit, dist = "ast", ...)
     }
   }
+
 }
 
 #' @rdname astfit-methods
 #' @export
-moment.astfit <- function(fit, n, method = c("numerical", "analytical")) {
+moments.astfit <- function(fit, n, method = c("analytical", "numerical")) {
   pars <- fit$fitted_pars
-  mu <- pars["mu"]
-  sigma <- pars["sigma"]
-  alpha <- pars["alpha"]
-  nu1 <- pars["nu1"]
-  nu2 <- pars["nu2"]
-  method <- match.arg(method)
-  if (method == "analytical") {
-    if (mu != 0) {
-      stop("Analytical formula of moments cannot calculate with location parameters other than 0.")
-    }
-    # return value - analytical
-    moment_ast_analytical(n, mu, sigma, alpha, nu1, nu2)
-  } else {
-    # return value - numerical
-    moment_ast_numerical(n, mu, sigma, alpha, nu1, nu2)
-  }
+  c(mean = mean_ast(pars = pars, method = method),
+    variance = var_ast(pars = pars, method = method),
+    skewness = skew_ast(pars = pars, method = method),
+    kurtosis = kurt_ast(pars = pars, method = method))
 }
 
 # putting it here temporarily
 #' @export
-moment <- function(x, ...) {
-  UseMethod("moment", x)
+moments <- function(x, ...) {
+  UseMethod("moments", x)
 }

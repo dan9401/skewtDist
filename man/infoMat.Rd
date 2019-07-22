@@ -2,9 +2,12 @@
 % Please edit documentation in R/ast-infomat.R
 \name{infoMat_ast}
 \alias{infoMat_ast}
+\alias{infoMat_sst}
 \title{Information Matrix for AST and GAT distributions}
 \usage{
 infoMat_ast(pars, data = c(), method = c("expected", "observed"))
+
+infoMat_sst(pars)
 }
 \arguments{
 \item{pars}{vector of parameter values for an AST distribution (or an GAT distribution)}

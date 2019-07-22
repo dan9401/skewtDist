@@ -98,7 +98,8 @@ infoMat_ast <- function(pars, data = c(), method = c("expected", "observed")) {
   infoMat
 }
 
-
+#' @rdname infoMat
+#' @export
 infoMat_sst <- function(pars) {
   mu <- pars["mu"]
   sigma <- pars["sigma"]
