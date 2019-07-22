@@ -5,7 +5,7 @@
 \title{AST fit}
 \usage{
 astfit(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb",
-  "nloptr", "Rsolnp"), solver_control)
+  "nloptr", "Rsolnp"), solver_control, symmetric = FALSE)
 }
 \arguments{
 \item{data}{A univariate data object, can be ... for the AST distribution to fit on.}

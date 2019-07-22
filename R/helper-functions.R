@@ -35,7 +35,7 @@ R <- function(pars, y) {
   mu <- pars[1]
   sigma <- pars[2]
   alpha <- pars[3]
-  nu2 <- pars[5]
+  nu2 <- ifelse(length(pars) == 4, pars[4], pars[5])
   R <- 1 + 1 / nu2 * ( (y - mu) / (2 * (1 - alpha) * sigma * K(nu2)) )^2
   R
 }

@@ -20,7 +20,7 @@
 #' @rdname astfit
 #' @export
 # fit function for ast distribution
-astfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control) {
+astfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control, symmetric = FALSE) {
   if (!is.numeric(data) || length(data) == 0)
     stop("Data must be a numeric vector of non-zero length.")
 
@@ -29,41 +29,25 @@ astfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb"
   #check_bound(fixed_pars)
   solver = match.arg(solver)
 
-  fit <- astfit_local(data, start_pars, fixed_pars, solver, solver_control)
-  standard_errors <- sqrt(diag(solve(infoMat_ast(fit$fitted_pars))))
+  fit <- astfit_local(data, start_pars, fixed_pars, solver, solver_control, symmetric)
+  if (symmetric == TRUE) {
+    standard_errors <- sqrt(diag(solve(infoMat_sst(fit$fitted_pars))))
+  } else {
+    standard_errors <- sqrt(diag(solve(infoMat_ast(fit$fitted_pars))))
+  }
+
   fit$standard_errors <- standard_errors
+  fit$symmetric <- symmetric
 
   structure(fit, class = "astfit")
 }
 
-astfit_local <- function(data, start_pars = c(), fixed_pars = c(), solver, solver_control) {
+astfit_local <- function(data, start_pars, fixed_pars, solver, solver_control, symmetric) {
   start_time <- Sys.time()
-  par_names <- c("mu", "sigma", "alpha", "nu1", "nu2")
-  # insert the initial guess problem
-  # possible code for using mode as the initial guess for mu
-  # hist <- hist(data, breaks = 1001), only work best when a large sample of data
-  # mode <- hist$mids[which(hist$counts == max(hist$counts))]
-  start_pars_default <- c(mu = 0, sigma = 1, alpha = 0.5, nu1 = 2, nu2 = 2)
-  start_pars <- c(start_pars, start_pars_default[!(par_names %in% names(start_pars))])
-
-  b_df <- data.frame(name = c("mu", "sigma", "alpha", "nu1", "nu2"),
-                     lower_bound = c(-Inf, 0, 0, 0, 0),
-                     upper_bound = c(Inf, Inf, 1, Inf, Inf),
-                     order = 1:5)
-  sp_df <- data.frame(start_pars = start_pars,
-                      name = names(start_pars))
-  fp_df <- data.frame(fixed_pars = fixed_pars,
-                      name = names(fixed_pars))
-  if (length(fp_df != 0)) {
-    p_df <- merge(sp_df, fp_df, by = "name", all = T)
-  } else {
-    sp_df$fixed_pars = NA
-    p_df = sp_df
-  }
-  ipars <- merge(p_df, b_df, by = "name", all = T)
-  ipars <- ipars[order(ipars$order), ]
+  ipars <- i_pars(start_pars, fixed_pars, symmetric)
 
   fixed_pars <- ipars$fixed_pars
+  names(fixed_pars) <- ipars$name
   est_idx <- which(is.na(fixed_pars))
   start_pars <- ipars$start_pars[est_idx]
   lb <- ipars$lower_bound[est_idx]
@@ -115,6 +99,8 @@ astfit_local <- function(data, start_pars = c(), fixed_pars = c(), solver, solve
   }
   time_elapsed <- Sys.time() - start_time
 
+  fitted_pars <- c(fitted_pars, fixed_pars[!is.na(fixed_pars)])
+
   list(data = data, sol_res = sol_res, solver = solver, solver_control = solver_control,
        start_pars = start_pars, fixed_pars = fixed_pars, fitted_pars = fitted_pars,
        objective = objective, time_elapsed = time_elapsed)
@@ -135,7 +121,7 @@ llast <- function(pars, arglist) {
   sigma <- all_pars[2]
   alpha <- all_pars[3]
   nu1 <- all_pars[4]
-  nu2 <- all_pars[5]
+  nu2 <- ifelse(length(all_pars) == 4, nu1, all_pars[5])
   T_ <- length(y)
   y1 <- y[y <= mu]
   y2 <- y[y > mu]
@@ -159,7 +145,7 @@ llast_grad <- function(pars, arglist) {
   sigma <- all_pars[2]
   alpha <- all_pars[3]
   nu1 <- all_pars[4]
-  nu2 <- all_pars[5]
+  nu2 <- ifelse(length(all_pars) == 4, nu1, all_pars[5])
   T_ <- length(y)
   y1 <- y[y <= mu]
   y2 <- y[y > mu]
@@ -175,3 +161,38 @@ llast_grad <- function(pars, arglist) {
   return(gradient[est_idx])
 }
 
+i_pars <- function(start_pars, fixed_pars, symmetric) {
+
+  # insert the initial guess problem
+  # possible code for using mode as the initial guess for mu
+  # hist <- hist(data, breaks = 1001), only work best when a large sample of data
+  # mode <- hist$mids[which(hist$counts == max(hist$counts))]
+  if (symmetric == TRUE) {
+    b_df <- data.frame(name = c("mu", "sigma", "alpha", "nu"),
+                       lower_bound = c(-Inf, 0, 0, 0),
+                       upper_bound = c(Inf, Inf, 1, Inf),
+                       order = 1:4)
+    start_pars_default <- c(mu = 0, sigma = 1, alpha = 0.5, nu = 2)
+  } else {?as
+    b_df <- data.frame(name = c("mu", "sigma", "alpha", "nu1", "nu2"),
+                       lower_bound = c(-Inf, 0, 0, 0, 0),
+                       upper_bound = c(Inf, Inf, 1, Inf, Inf),
+                       order = 1:5)
+    start_pars_default <- c(mu = 0, sigma = 1, alpha = 0.5, nu1 = 2, nu2 = 2)
+  }
+  start_pars <- c(start_pars, start_pars_default[!(b_df$name %in% names(start_pars))])
+  sp_df <- data.frame(start_pars = start_pars,
+                      name = names(start_pars))
+  fp_df <- data.frame(fixed_pars = fixed_pars,
+                      name = names(fixed_pars))
+  if (length(fp_df != 0)) {
+    p_df <- merge(sp_df, fp_df, by = "name", all = T)
+  } else {
+    sp_df$fixed_pars = NA
+    p_df = sp_df
+  }
+  ipars <- merge(p_df, b_df, by = "name", all = T)
+  ipars <- ipars[order(ipars$order), ]
+  # return
+  ipars
+}

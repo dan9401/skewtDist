@@ -30,7 +30,7 @@
 ####### all functions needs further checking. Quantile requires newton's method
 #' @rdname gatDist
 #' @export
-dgat.numeric <- function(x, mu, phi, alpha, r, c, nu) {
+dgat <- function(x, mu, phi, alpha, r, c, nu) {
     if (!is.numeric(x))
         stop("x must be numeric")
     g <- (x - mu)/phi + sqrt(1 + ((x - mu)/phi)^2)

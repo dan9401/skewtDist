@@ -201,3 +201,12 @@ objective_value <- function(nus, data, start_pars, fixed_pars, solver, solver_co
   obj
 }
 
+llast <- function(y, mu, sigma, alpha, nu1, nu2) {
+  T_ <- length(y)
+  y1 <- y[y <= mu]
+  y2 <- y[y > mu]
+
+  logl <- -T_ * log(sigma) - 0.5 * (nu1 + 1) * sum(log(1 + ((y1 - mu)/(2 * alpha * sigma * K(nu1)))^2/nu1)) -
+    0.5 * (nu2 + 1) * sum(log(1 + ((y2 - mu)/(2 * (1 - alpha) * sigma * K(nu2)))^2/nu2))
+  -logl
+}

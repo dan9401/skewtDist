@@ -9,8 +9,12 @@ density_ast <- function(fit) {
   mu <- pars["mu"]
   sigma <- pars["sigma"]
   alpha <- pars["alpha"]
-  nu1 <- pars["nu1"]
-  nu2 <- pars["nu2"]
+  if (fit$symmetric == TRUE) {
+    nu1 <- nu2 <- pars["nu"]
+  } else {
+    nu1 <- pars["nu1"]
+    nu2 <- pars["nu2"]
+  }
 
   hist(data, breaks = 50, prob = TRUE)
   par(new = TRUE)
@@ -27,8 +31,12 @@ qqplot_ast <- function(fit, dist = "ast", ...) {
   mu <- pars["mu"]
   sigma <- pars["sigma"]
   alpha <- pars["alpha"]
-  nu1 <- pars["nu1"]
-  nu2 <- pars["nu2"]
+  if (fit$symmetric == TRUE) {
+    nu1 <- nu2 <- pars["nu"]
+  } else {
+    nu1 <- pars["nu1"]
+    nu2 <- pars["nu2"]
+  }
 
   y <- y[order(y)]
   p <- ppoints(length(y))

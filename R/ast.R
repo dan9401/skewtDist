@@ -9,8 +9,8 @@ dast.ast <- function(x, ast) {
   mu <- ast[1]
   sigma <- ast[2]
   alpha <- ast[3]
-  nu <- ast[4]
-  nu <- ast[5]
+  nu1 <- ast[4]
+  nu2 <- ast[5]
   d <- dast(x, mu, sigma, alpha, nu1, nu2)
   names(d) <- NULL
   d
@@ -21,8 +21,8 @@ past.ast <- function(x, ast) {
   mu <- ast[1]
   sigma <- ast[2]
   alpha <- ast[3]
-  nu <- ast[4]
-  nu <- ast[5]
+  nu1 <- ast[4]
+  nu2 <- ast[5]
   p <- past(x, mu, sigma, alpha, nu1, nu2)
   names(p) <- NULL
   p
@@ -33,8 +33,8 @@ qast.ast <- function(x, ast) {
   mu <- ast[1]
   sigma <- ast[2]
   alpha <- ast[3]
-  nu <- ast[4]
-  nu <- ast[5]
+  nu1 <- ast[4]
+  nu2 <- ast[5]
   q <- qast(x, mu, sigma, alpha, nu1, nu2)
   names(q) <- NULL
   q
@@ -45,8 +45,8 @@ rast.ast <- function(x, ast) {
   mu <- ast[1]
   sigma <- ast[2]
   alpha <- ast[3]
-  nu <- ast[4]
-  nu <- ast[5]
+  nu1 <- ast[4]
+  nu2 <- ast[5]
   r <- rast(x, mu, sigma, alpha, nu1, nu2)
   names(r) <- NULL
   r
@@ -73,3 +73,7 @@ rast <- function(x, class, ...) {
 }
 
 moment.ast <- function() {}
+
+
+
+

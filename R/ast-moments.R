@@ -4,72 +4,84 @@
 # may also want separate functions for mean, variance, sd, skewness & kurtosis
 # authorized domain, here or in the plot file
 
-
-
-mean_ast <- function(mu, sigma, alpha, nu1, nu2) {
-  integrand <- function(x) {
-    x * dast(x, mu, sigma, alpha, nu1, nu2)
+#' @export
+moment_ast <- function(n, mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+  method <- match.arg(method)
+  if (method == "analytical") {
+    # return
+    mo <- sum( choose(n, 0:n) * sapply(n:0, moment_ss, sigma, alpha, nu1, nu2) * mu^(0:n) )
   }
-  safeIntegrate(integrand, -Inf, Inf)$value
-}
-
-variance_ast <- function(mu, sigma, alpha, nu1, nu2) {
-  mean <- mean_ast(mu, sigma, alpha, nu1, nu2)
-  integrand <- function(x) {
-    (x - mean)^2 * dast(x, mu, sigma, alpha, nu1, nu2)
+  if (method == "numerical") {
+    integrand <- function(x) {
+      x^n * dast(x, mu, sigma, alpha, nu1, nu2)
+    }
+    # return
+    mo <- safeIntegrate(integrand, -Inf, Inf)$value
   }
-  safeIntegrate(integrand, -Inf, Inf)$value
+  mo
 }
 
-sd_ast <- function(mu, sigma, alpha, nu1, nu2) {
-  sqrt(variance_ast(mu, sigma, alpha, nu1, nu2))
+#' @export
+mean_ast <- function(mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+  # return
+  moment_ast(1, mu, sigma, alpha, nu1, nu2, method = method)
 }
 
-skewness_ast <- function(mu, sigma, alpha, nu1, nu2) {
-  mean <- mean_ast(mu, sigma, alpha, nu1, nu2)
-  sd <- sd_ast(mu, sigma, alpha, nu1, nu2)
-  integrand <- function(x) {
-    ((x - mean) / sd)^3 * dast(x, mu, sigma, alpha, nu1, nu2)
+#' @export
+var_ast <- function(mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+  # return
+  moment_central_ast(2, mu, sigma, alpha, nu1, nu2, method = method)
+}
+
+#' @export
+sd_ast <- function(mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+  var <- moment_central_ast(2, mu, sigma, alpha, nu1, nu2, method = method)
+  # return
+  sqrt(var)
+}
+
+#' @export
+skew_ast <- function(mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+  sd <- sd_ast(mu, sigma, alpha, nu1, nu2, method = method)
+  # return
+  moment_central_ast(3, mu, sigma, alpha, nu1, nu2, method = method) / sd^3
+}
+
+#' @export
+kurt_ast <- function(mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+  var <- var_ast(mu, sigma, alpha, nu1, nu2, method = method)
+  # return
+  moment_central_ast(4, mu, sigma, alpha, nu1, nu2, method = method) / var^2
+}
+
+moment_central_ast <- function(n, mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+  method <- match.arg(method)
+  mean <- moment_ast(1, mu, sigma, alpha, nu1, nu2, method = method)
+  if (method == "analytical") {
+    # return
+    mo <- sum( (-1)^(n - n:0) * choose(n, 0:n) * sapply(n:0, moment_ast, mu, sigma, alpha, nu1, nu2) * mean^(0:n) )
   }
-  safeIntegrate(integrand, -Inf, Inf)$value
-}
-
-kurtosis_ast <- function(mu, sigma, alpha, nu1, nu2) {
-  mean <- mean_ast(mu, sigma, alpha, nu1, nu2)
-  sd <- sd_ast(mu, sigma, alpha, nu1, nu2)
-  integrand <- function(x) {
-    ((x - mean) / sd)^4 * dast(x, mu, sigma, alpha, nu1, nu2)
+  if (method == "numerical") {
+    integrand <- function(x) {
+      (x - mean)^n * dast(x, mu, sigma, alpha, nu1, nu2)
+    }
+    # return
+    mo <- safeIntegrate(integrand, -Inf, Inf)$value
   }
-  safeIntegrate(integrand, -Inf, Inf)$value
+  mo
 }
 
-moment_ast_centralized <- function(n, sigma, alpha, nu1, nu2) {
+moment_ss <- function(n, sigma, alpha, nu1, nu2) {
+  # moment for sz, s is scale, z is a standardi ast r.v.
   B <- alpha * K(nu1) + (1 - alpha) * K(nu2)
   alpha_star <- alpha * K(nu1)/B
-  # return value
-  alpha * (-2 * alpha_star * sigma * B)^n * moment_abs_t(nu1, n) +
-    (1 - alpha) * (2 * (1 - alpha_star) * sigma * B)^n * moment_abs_t(nu2, n)
+  # return
+  alpha * (-2 * alpha_star * sigma * B)^n * moment_abst(nu1, n) +
+    (1 - alpha) * (2 * (1 - alpha_star) * sigma * B)^n * moment_abst(nu2, n)
 }
 
-moment_abs_t <- function(nu, n) {
+moment_abst <- function(nu, n) {
+  # absolute moemnt of standard student t
   # -1 < n < nu
   sqrt(nu^n / pi) * gamma( (n+1)/2 ) * gamma( (nu-n)/2 ) / gamma(nu/2)
-}
-
-# needed change
-moment_ast_numerical <- function(n, mu, sigma, alpha, nu1, nu2) {
-  integrand <- function(x) {
-    x^n * dast(x, mu, sigma, alpha, nu1, nu2)
-  }
-  safeIntegrate(integrand, -Inf, Inf)$value
-}
-
-
-moment_ast_test <- function(n, mu, sigma, alpha, nu1, nu2) {
-  sum( choose(n, 0:n) * sapply(n:0, moment_ast_centralized, sigma, alpha, nu1, nu2) * mu^(0:n) )
-}
-
-central_ast <- function(n, mu, sigma, alpha, nu1, nu2) {
-  mean <- moment_ast_test(1, mu, sigma, alpha, nu1, nu2)
-  sum( (-1)^(n - n:0) * choose(n, 0:n) * sapply(n:0, moment_ast_test, mu, sigma, alpha, nu1, nu2) * mean^(0:n) )
 }

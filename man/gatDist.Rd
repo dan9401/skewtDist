@@ -2,14 +2,13 @@
 % Please edit documentation in R/gatdist.R
 \name{gatDist}
 \alias{gatDist}
-\alias{dgat.numeric}
 \alias{dgat}
 \alias{pgat}
 \alias{qgat}
 \alias{rgat}
 \title{Generalized Asymmetric t-distribution}
 \usage{
-\method{dgat}{numeric}(x, mu, phi, alpha, r, c, nu)
+dgat(x, mu, phi, alpha, r, c, nu)
 
 pgat(x, mu, phi, alpha, r, c, nu)
 

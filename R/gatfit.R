@@ -11,7 +11,91 @@ gatfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb"
   standard_errors <- sqrt(diag(solve(infoMat_gat(fit$fitted_pars))))
   fit$standard_errors <- standard_errors
 
-  structure(fit, class = "astfit")
+  structure(fit, class = "gatfit")
+}
+
+gatfit_local <- function(data, start_pars = c(), fixed_pars = c(), solver, solver_control) {
+  start_time <- Sys.time()
+  par_names <- c("mu", "sigma", "alpha", "nu1", "nu2")
+  # insert the initial guess problem
+  # possible code for using mode as the initial guess for mu
+  # hist <- hist(data, breaks = 1001), only work best when a large sample of data
+  # mode <- hist$mids[which(hist$counts == max(hist$counts))]
+  start_pars_default <- c(mu = 0, sigma = 1, alpha = 0.5, nu1 = 2, nu2 = 2)
+  start_pars <- c(start_pars, start_pars_default[!(par_names %in% names(start_pars))])
+
+  b_df <- data.frame(name = c("mu", "sigma", "alpha", "nu1", "nu2"),
+                     lower_bound = c(-Inf, 0, 0, 0, 0),
+                     upper_bound = c(Inf, Inf, 1, Inf, Inf),
+                     order = 1:5)
+  sp_df <- data.frame(start_pars = start_pars,
+                      name = names(start_pars))
+  fp_df <- data.frame(fixed_pars = fixed_pars,
+                      name = names(fixed_pars))
+  if (length(fp_df != 0)) {
+    p_df <- merge(sp_df, fp_df, by = "name", all = T)
+  } else {
+    sp_df$fixed_pars = NA
+    p_df = sp_df
+  }
+  ipars <- merge(p_df, b_df, by = "name", all = T)
+  ipars <- ipars[order(ipars$order), ]
+
+  fixed_pars <- ipars$fixed_pars
+  est_idx <- which(is.na(fixed_pars))
+  start_pars <- ipars$start_pars[est_idx]
+  lb <- ipars$lower_bound[est_idx]
+  ub <- ipars$upper_bound[est_idx]
+  # arglist is an argument for llgat and llgat_grad
+  arglist <- list(data = data,
+                  fixed_pars = fixed_pars)
+
+  # will be expanded by number of solvers developed should also implement a fixed parameter version for this
+  if (solver == "nloptr") {
+    res <- nloptr::nloptr(x0 = start_pars,
+                          eval_f = llgat,
+                          # eval_grad_f = llgat_grad,
+                          lb = lb,
+                          ub = ub,
+                          opts = solver_control,
+                          arglist = arglist)
+
+    # this is temporary, fitted should be a list with its own elements
+    sol_res <- res  #list(res$pars, ...)
+    fitted_pars <- res$solution
+    names(fitted_pars) <- ipars$name[est_idx]
+    objective <- sol_res$objective
+  } else if (solver == "Rsolnp") {
+    res <- Rsolnp::solnp(pars = start_pars,
+                         fun = llgat,
+                         LB= lb,
+                         UB = ub,
+                         control = solver_control,
+                         arglist = arglist)
+    sol_res <- res  #list(res$pars, ...)
+    fitted_pars <- res$pars
+    names(fitted_pars) <- ipars$name[est_idx]
+    objective <- sol_res$values[length(sol_res$values)]
+  } else if (solver == "nlminb") {
+    res <- nlminb(start = start_pars,
+                  objective = llgat,
+                  gradient = llgat_grad,
+                  arglist = arglist,
+                  control = solver_control,
+                  lower = lb,
+                  upper = ub)
+    sol_res <- res  #list(res$pars, ...)
+    fitted_pars <- res$par
+    names(fitted_pars) <- ipars$name[est_idx]
+    objective <- sol_res$objective
+  } else {
+    NA
+  }
+  time_elapsed <- Sys.time() - start_time
+
+  list(data = data, sol_res = sol_res, solver = solver, solver_control = solver_control,
+       start_pars = start_pars, fixed_pars = fixed_pars, fitted_pars = fitted_pars,
+       objective = objective, time_elapsed = time_elapsed)
 }
 
 
