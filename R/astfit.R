@@ -74,6 +74,7 @@ astfit_local <- function(data, start_pars, fixed_pars, solver, solver_control, s
     fitted_pars <- res$solution
     names(fitted_pars) <- ipars$name[est_idx]
     objective <- sol_res$objective
+    message <- sol_res$message
   } else if (solver == "Rsolnp") {
     res <- Rsolnp::solnp(pars = start_pars,
                          fun = llast,
@@ -85,6 +86,7 @@ astfit_local <- function(data, start_pars, fixed_pars, solver, solver_control, s
     fitted_pars <- res$pars
     names(fitted_pars) <- ipars$name[est_idx]
     objective <- sol_res$values[length(sol_res$values)]
+    message <- sol_res$convergence
   } else if (solver == "nlminb") {
     res <- nlminb(start = start_pars,
                   objective = llast,
@@ -97,6 +99,7 @@ astfit_local <- function(data, start_pars, fixed_pars, solver, solver_control, s
     fitted_pars <- res$par
     names(fitted_pars) <- ipars$name[est_idx]
     objective <- sol_res$objective
+    message <- sol_res$message
   } else {
     NA
   }
@@ -106,7 +109,7 @@ astfit_local <- function(data, start_pars, fixed_pars, solver, solver_control, s
 
   list(data = data, sol_res = sol_res, solver = solver, solver_control = solver_control,
        start_pars = start_pars, fixed_pars = fixed_pars, fitted_pars = fitted_pars,
-       objective = objective, time_elapsed = time_elapsed)
+       objective = objective, time_elapsed = time_elapsed, message = message)
 }
 
 # log-likelihood function of the AST distributions pars: parameter values y: data which you fit the distribution on
