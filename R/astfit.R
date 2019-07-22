@@ -1,26 +1,29 @@
 #' @title AST fit
 #'
-#' @description Method for fitting a AST distribution
+#' @description Method for fitting a AST distribution, returns an astfit object
 #'
 #' @param data A univariate data object, can be ... for the AST distribution to fit on.
-#' @param start_pars A named numeric vector of starting parameters for the optimization algorithm.
-#' @param fixed_pars A named numeric vector of parameters to be kept fixed during the optimization routine.
-#' @param solver Optimizer used for fitting, one of 'nloptr', 'Rsolnp' ...
+#' @param start_pars A named numeric vector of starting parameters for the optimization algorithm, not all parameters are needed
+#' @param fixed_pars A named numeric vector of parameters to be kept fixed during the optimization routine, not all parameters are needed
+#' @param solver Optimizer used for fitting, one of 'nlminb', 'nloptr', 'Rsolnp', default is nlminb
 #' @param solver_control Control arguments list passed to the optimizer.
+#' @param symmetric A Logical argument, when TRUE, the process become fitting an SST distribution(Symmetric Student t, nu1 = nu2), default to FALSE
 #'
 #' @name astfit
 #'
 #' @examples
-#' data <- rast(1000, 0.12, 0.6, 0.3, 3, 5)
-#' # solver_control <- list('algorithm' = 'NLOPT_LN_BOBYQA', 'maxeval' = 1.0e5, 'xtol_rel' = 1.0e-8)
+#' pars <- c(0.12, 0.6, 0.4, 3, 5)
+#' data <- rast(1000, pars)
 #' solver_control <- list(eval.max = 10^3, iter.max = 10^3)
-#' # fit <- astfit(data, solver = 'nloptr', solver_control = solver_control)
 #' fit <- astfit(data, solver = 'nlminb', solver_control = solver_control)
+#' summary(fit)
+#' moments(fit)
+#' plot(fit)
 
 #' @rdname astfit
 #' @export
 # fit function for ast distribution
-astfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control, symmetric = FALSE) {
+astfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control = list(), symmetric = FALSE) {
   if (!is.numeric(data) || length(data) == 0)
     stop("Data must be a numeric vector of non-zero length.")
 

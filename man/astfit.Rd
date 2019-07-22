@@ -5,26 +5,30 @@
 \title{AST fit}
 \usage{
 astfit(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb",
-  "nloptr", "Rsolnp"), solver_control, symmetric = FALSE)
+  "nloptr", "Rsolnp"), solver_control = list(), symmetric = FALSE)
 }
 \arguments{
 \item{data}{A univariate data object, can be ... for the AST distribution to fit on.}
 
-\item{start_pars}{A named numeric vector of starting parameters for the optimization algorithm.}
+\item{start_pars}{A named numeric vector of starting parameters for the optimization algorithm, not all parameters are needed}
 
-\item{fixed_pars}{A named numeric vector of parameters to be kept fixed during the optimization routine.}
+\item{fixed_pars}{A named numeric vector of parameters to be kept fixed during the optimization routine, not all parameters are needed}
 
-\item{solver}{Optimizer used for fitting, one of 'nloptr', 'Rsolnp' ...}
+\item{solver}{Optimizer used for fitting, one of 'nlminb', 'nloptr', 'Rsolnp', default is nlminb}
 
 \item{solver_control}{Control arguments list passed to the optimizer.}
+
+\item{symmetric}{A Logical argument, when TRUE, the process become fitting an SST distribution(Symmetric Student t, nu1 = nu2), default to FALSE}
 }
 \description{
-Method for fitting a AST distribution
+Method for fitting a AST distribution, returns an astfit object
 }
 \examples{
-data <- rast(1000, 0.12, 0.6, 0.3, 3, 5)
-# solver_control <- list('algorithm' = 'NLOPT_LN_BOBYQA', 'maxeval' = 1.0e5, 'xtol_rel' = 1.0e-8)
+pars <- c(0.12, 0.6, 0.4, 3, 5)
+data <- rast(1000, pars)
 solver_control <- list(eval.max = 10^3, iter.max = 10^3)
-# fit <- astfit(data, solver = 'nloptr', solver_control = solver_control)
 fit <- astfit(data, solver = 'nlminb', solver_control = solver_control)
+summary(fit)
+moments(fit)
+plot(fit)
 }

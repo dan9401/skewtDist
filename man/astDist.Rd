@@ -23,15 +23,17 @@ rast(n, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf,
 \arguments{
 \item{x, q}{vector of quantiles}
 
-\item{mu}{location parameter}
+\item{mu}{location parameter, the mode, not necessarily the mean}
 
-\item{sigma}{scale parameter}
+\item{sigma}{scale parameter, not necessarily the standard deviation, greater than 0}
 
-\item{alpha}{skewness parameter}
+\item{alpha}{skewness parameter, ranges from 0 to 1, when < 0.5, skew to the right, when > 0.5, skew to the left}
 
-\item{nu1}{degrees of freedom / tail parameter for the left tail}
+\item{nu1}{degrees of freedom / tail parameter for the left tail, greater than 0}
 
-\item{nu2}{degrees of freedom / tail parameter for the right tail}
+\item{nu2}{degrees of freedom / tail parameter for the right tail, greater than 0}
+
+\item{pars}{a vector that contains c(mu, sigma, alpha, nu1, nu2), one and only one of {mu, sigma, alpha, nu1, nu2} or pars should be specified}
 
 \item{p}{vector of probablilities}
 
@@ -42,8 +44,18 @@ Probablity density function (pdf), Cumulative distribution function (cdf), quant
 }
 \examples{
 # The parameter values are specially set for a volatile portfolio.
-d <- dast(0, 0.12, 0.6, 0.3, 3, 5)
-p <- past(1.5, 0.12, 0.6, 0.3, 3, 5)
-q <- qast(0.8, 0.12, 0.6, 0.3, 3, 5)
-x <- rast(1000, 0.12, 0.6, 0.3, 3, 5)
+# density at the mu is always 1 / sigma
+d <- dast(0.12, 0.12, 0.6, 0.4, 3, 5)
+# cumulative distribution at mu is alpha
+p <- past(0.12, 0.12, 0.6, 0.4, 3, 5)
+# quantile at alpha is mu
+q <- qast(0.4, 0.12, 0.6, 0.4, 3, 5)
+data <- rast(1000, 0.12, 0.6, 0.4, 3, 5)
+hist(data, breaks = 50, probability = TRUE)
+
+# now trying to use the pars argument
+pars <- c(0.12, 0.6, 0.4, 3, 5)
+x <- seq(-3, 3, 0.01)
+y <- dast(x, pars = pars)
+lines(x, y, col = 4)
 }

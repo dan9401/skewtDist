@@ -1,19 +1,23 @@
-#' @title Information Matrix for AST and GAT distributions
+#' @title Information Matrix for ASTdistributions
 #'
-#' @description Information Matrix function for AST and GAT distributions, function for GAT distributions have not yet been developed
-#' we may want information matrix for symmetric t distributions, or functions for ast & gat objects without data, for users to explore the qualities of distribuitons
-#' we may also want to keep separate files for both distributions, doesn't seem necessary at the time
-#' and infoMat functions on fit and dist objects
+#' @description Information Matrix for AST distributions
 #'
-#' @param pars vector of parameter values for an AST distribution (or an GAT distribution)
+#' @param pars vector of parameter values for an AST distribution
 #' @param data vector of numeric data
 #' @param method one of "expected" and "observed", calculating the expected / observed information matrix
 #'
 #' @name infoMat_ast
+#' @aliases infoMat_sst
+#'
+#' @details the observed method for sst is not yet implemented
+#'
 #' @examples
-#' pars <- c(mu = 0.12, sigma = 0.6, alpha = 0.7, nu1 = 3, nu2 = 5)
+#' pars <- c(0.12, 0.6, 0.4, 3, 5)
 #' data <- rast(1000, 0.12, 0.6, 0.3, 3, 5)
-#' infoMat <- infoMat_ast(pars, data, "expected")
+#' infoMat_ast(pars, data, "observed")
+#' infoMat_ast(pars, "expected")
+#' pars_s <- c(0.12, 0.6, 0.4, 4)
+#' infoMat_sst(pars)
 
 #' @rdname infoMat
 #' @export

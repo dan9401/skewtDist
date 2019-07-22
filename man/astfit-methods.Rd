@@ -3,33 +3,35 @@
 \name{astfit-methods}
 \alias{astfit-methods}
 \alias{summary.astfit}
-\alias{plot.astfit}
 \alias{moments.astfit}
+\alias{plot.astfit}
 \title{Methods for astfit class}
 \usage{
 \method{summary}{astfit}(fit)
 
-plot.astfit(fit, selection = NULL, ...)
+\method{moments}{astfit}(fit, method = c("analytical", "numerical"))
 
-\method{moments}{astfit}(fit, n, method = c("analytical", "numerical"))
+plot.astfit(fit, selection = NULL, ...)
 }
 \arguments{
 \item{fit}{A AST fit object of class \code{\link{astfit}}}
 
-\item{n}{the n-th moment to be calculated (needs better expression)}
+\item{method}{one of "numerical" and "analytical", calculating the moments using numerical integration / analytical formula}
 
-\item{method}{one of "numerical" and "analytical", calculating the moments using numerical integration / analytical formula
-only centralized moments can be calculated by analytical formula, while all moments can be calculated by numerical integration}
+\item{selection}{one of 1 & 2, for plotting the density or QQPlot}
 }
 \description{
-Methods for astfit class,
-this is not very well documented at the moment
+Methods for astfit class
+}
+\details{
+should also add the empirical moments
 }
 \examples{
-data <- rast(1000, 0.12, 0.6, 0.3, 3, 5)
-solver_control <- list('algorithm' = 'NLOPT_LN_BOBYQA', 'maxeval' = 1.0e5, 'xtol_rel' = 1.0e-8)
-fit <- astfit(data, solver = 'nloptr', solver_control = solver_control)
+pars <- c(0.12, 0.6, 0.4, 3, 5)
+data <- rast(1000, pars = pars)
+solver_control <- list(eval.max = 10^3, iter.max = 10^3)
+fit <- astfit(data, solver = 'nlminb', solver_control = solver_control)
 summary(fit)
-moment(fit, 1)
+moments(fit)
 plot(fit)
 }
