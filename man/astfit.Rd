@@ -24,8 +24,8 @@ astfit(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb",
 Method for fitting a AST distribution, returns an astfit object
 }
 \examples{
-pars <- c(0.12, 0.6, 0.4, 3, 5)
-data <- rast(1000, pars)
+pars <- c(0.12, 0.6, 0.6, 3, 5)
+data <- rast(1000, pars = pars)
 solver_control <- list(eval.max = 10^3, iter.max = 10^3)
 fit <- astfit(data, solver = 'nlminb', solver_control = solver_control)
 summary(fit)

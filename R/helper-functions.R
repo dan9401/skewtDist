@@ -44,21 +44,11 @@ R <- function(pars, y) {
 parVec <- function(x, xName) {
   eps <- 1.0e-8
   if (xName == "mu") {
-    parVal(x, -Inf, Inf)
+    seq(x - 0.5, x + 0.5, 0.1)
   } else if (xName == "alpha") {
-    parVal(x, eps, 1 - eps)
+    seq(0.1, 0.9, 0.1)
   } else {
-    parVal(x, eps, Inf)
-  }
-}
-
-parVal <- function(x, lower, upper) {
-  if (abs(x) < 1) {
-    seq(max(x - 0.5, lower), min(x + 0.5, upper), length.out = 11)
-  } else if (abs(x) < 4) {
-    seq(max(x - 1, lower), min(x + 1, upper), length.out = 11)
-  } else {
-    seq(max(x - 2, lower), min(x + 2, upper), length.out = 11)
+    seq(max(0.1, x - 0.5), x + 0.5, 0.1)
   }
 }
 
@@ -171,4 +161,26 @@ surfacePlot <- function(n, pars, plotPars, ...) {
   # p <- plot_ly(z = ~valueGrid) %>% add_surface()
   # chart_link = api_create(p, filename = paste("grid", plotPars[1], plotPars[2], sep = ""))
   # chart_link
+}
+
+report <- function(fit) {
+  report <- c(round(c(fit$fitted_pars, fit$objective, fit$time_elapsed) , 8), fit$message)
+  names(report)[c(6, 7, 8)] <- c("objective", "time", "message")
+  report
+}
+
+# has no documentation developed yet
+#' @export
+my_report <- function(data, solver, solver_control, plot = TRUE, dist = "ast") {
+  fitList <- lapply(data, astfit, solver = solver, solver_control = solver_control)
+
+  if (plot == TRUE) {
+    par(mfrow = c(4, 5))
+    invisible(lapply(fitList, plot, selection = 1))
+    par(mfrow = c(4, 5))
+    invisible(lapply(fitList, plot, selection = 2, dist = dist))
+    par(mfrow = c(1, 1))
+  }
+  res = t(sapply(fitList, report))
+  res
 }

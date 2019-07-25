@@ -46,14 +46,7 @@ lines(seq(-100, 10, 0.1), dgat(seq(-100, 10, 0.1), 1.5, 2, 2, 2, 2, 5), type = "
 
 x1 <- seq(-3, 3, 0.01)
 
-pars <- c(0.12, 0.6, 0.6, 3, 5)
-x <- seq(-5, 5, 0.01)
-y <- dast(x, pars = pars)
-data <- rast(10^3, pars = pars)
-hist(data, breaks = 50, prob = TRUE, main = "mu = 0.12, sigma = 0.6")
-lines(x, y)
-abline(v = 0.12, col = 2, lty = 2)
-
+ <-
 # mu
 pars11 <- c(-2, 2, 0.7, 5, 5)
 pars12 <- c(0, 2, 0.7, 5, 5)
@@ -234,4 +227,17 @@ legend(x = "topleft", legend = c("nu2 = 1", "nu2 = 2", "nu2 = 5", "nu2 = 9"), lt
 
 
 
-# "mu" "alpha"
+n <- 10^4
+pars <- c(mu = 0.12, sigma = 0.6, alpha = 0.6, nu1 = 3, nu2 = 3)
+par(mfrow = c(2, 3))
+ms <- surfacePlot(n, pars, c("mu", "sigma"), theta = 100, col = 3, shade = 0.75)
+ma <- surfacePlot(n, pars, c("mu", "alpha"), theta = 100, col = 3, shade = 0.75)
+mn1 <- surfacePlot(n, pars, c("mu", "nu1"), theta = 0, col = 3, shade = 0.75)
+mn2 <- surfacePlot(n, pars, c("mu", "nu2"), theta = 0, col = 3, shade = 0.75)
+sa <- surfacePlot(n, pars, c("sigma", "alpha"), theta = 40, col = 3, shade = 0.75)
+sn1 <- surfacePlot(n, pars, c("sigma", "nu1"), theta = 40, col = 3, shade = 0.75)
+par(mfrow = c(2, 2))
+sn2 <- surfacePlot(n, pars, c("sigma", "nu2"), theta = 40, col = 3, shade = 0.75)
+an1 <- surfacePlot(n, pars, c("alpha", "nu1"), theta = 140, col = 3, shade = 0.75)
+an2 <- surfacePlot(n, pars, c("alpha", "nu2"), theta = 40, col = 3, shade = 0.75)
+n1n2 <- surfacePlot(n, pars, c("nu1", "nu2"), theta = 70, col = 3, shade = 0.75)

@@ -11,7 +11,7 @@
 
 \method{moments}{astfit}(fit, method = c("analytical", "numerical"))
 
-plot.astfit(fit, selection = NULL, ...)
+\method{plot}{astfit}(fit, selection = NULL, dist = "ast", ...)
 }
 \arguments{
 \item{fit}{A AST fit object of class \code{\link{astfit}}}

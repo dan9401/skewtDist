@@ -17,10 +17,10 @@ density_ast <- function(fit, ...) {
     nu2 <- pars["nu2"]
   }
 
-  hist(data, breaks = 50, prob = TRUE)
+  hist(data, breaks = 50, prob = TRUE, ...)
   x <- seq(min(data), max(data), length.out = 1000)
   y <- dast(x, mu, sigma, alpha, nu1, nu2)
-  lines(x, y, xlab = "", ylab = "", col = 4, ...)
+  lines(x, y, xlab = "", ylab = "", col = 4)
   abline(v = mu, col = 2)
 }
 

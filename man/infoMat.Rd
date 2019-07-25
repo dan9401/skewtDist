@@ -24,7 +24,7 @@ the observed method for sst is not yet implemented
 }
 \examples{
 pars <- c(0.12, 0.6, 0.4, 3, 5)
-data <- rast(1000, 0.12, 0.6, 0.3, 3, 5)
+data <- rast(1000, 0.12, 0.6, 0.4, 3, 5)
 infoMat_ast(pars, data, "observed")
 infoMat_ast(pars, "expected")
 pars_s <- c(0.12, 0.6, 0.4, 4)

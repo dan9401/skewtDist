@@ -8,13 +8,13 @@
 \alias{rgat}
 \title{Generalized Asymmetric t-distribution}
 \usage{
-dgat(x, mu, phi, alpha, r, c, nu)
+dgat(x, mu, phi, alpha, r, c, nu, pars = NULL)
 
-pgat(x, mu, phi, alpha, r, c, nu)
+pgat(x, mu, phi, alpha, r, c, nu, pars = NULL)
 
-qgat(p, mu, phi, alpha, r, c, nu)
+qgat(p, mu, phi, alpha, r, c, nu, pars = NULL)
 
-rgat(n, mu, phi, alpha, r, c, nu)
+rgat(n, mu, phi, alpha, r, c, nu, pars = NULL)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
