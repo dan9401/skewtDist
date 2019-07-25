@@ -46,7 +46,7 @@ parVec <- function(x, xName) {
   if (xName == "mu") {
     parVal(x, -Inf, Inf)
   } else if (xName == "alpha") {
-    parVal(x, eps, 1)
+    parVal(x, eps, 1 - eps)
   } else {
     parVal(x, eps, Inf)
   }
@@ -92,10 +92,11 @@ check_bound <- function(pars) {
 }
 
 # used only for surfaceplot in plot-methods
-obj_surface <- function(pars, data, start_pars, fixed_pars, solver, solver_control, xName, yName) {
+obj_surface <- function(pars, data, start_pars, fixed_pars, solver, solver_control, xName, yName, symmetric = FALSE) {
   fixed_pars[xName] <- pars[1]
   fixed_pars[yName] <- pars[2]
-  return(astfit_local(data, start_pars, fixed_pars, solver, solver_control)$objective)
+  #astfit_local(data, start_pars, fixed_pars, solver, solver_control, symmetric)
+  return(astfit_local(data, start_pars, fixed_pars, solver, solver_control, symmetric)$objective)
 }
 
 safeIntegrate <- function(f, lower, upper, ..., subdivisions = 1000L,
@@ -158,7 +159,7 @@ surfacePlot <- function(n, pars, plotPars, ...) {
   yMat <- matrix(rep(yVec, xLen), xLen, yLen, byrow = TRUE)
   parGrid <- array(c(xMat, yMat), c(xLen, yLen, 2))
 
-  start_pars <- c(mu = 0, sigma = 1, alpha = 0.5, nu1 = 2, nu2 = 2)
+  start_pars <- c()
   fixed_pars <- c()
   solver <- "Rsolnp"
   solver_control <- list(trace = 0)

@@ -12,8 +12,8 @@
 #' @name astfit
 #'
 #' @examples
-#' pars <- c(0.12, 0.6, 0.4, 3, 5)
-#' data <- rast(1000, pars)
+#' pars <- c(0.12, 0.6, 0.6, 3, 5)
+#' data <- rast(1000, pars = pars)
 #' solver_control <- list(eval.max = 10^3, iter.max = 10^3)
 #' fit <- astfit(data, solver = 'nlminb', solver_control = solver_control)
 #' summary(fit)
@@ -63,12 +63,11 @@ astfit_local <- function(data, start_pars, fixed_pars, solver, solver_control, s
   if (solver == "nloptr") {
     res <- nloptr::nloptr(x0 = start_pars,
                           eval_f = llast,
-                          # eval_grad_f = llast_grad,
+                          eval_grad_f = llast_grad,
                           lb = lb,
                           ub = ub,
                           opts = solver_control,
                           arglist = arglist)
-
     # this is temporary, fitted should be a list with its own elements
     sol_res <- res  #list(res$pars, ...)
     fitted_pars <- res$solution
@@ -106,6 +105,11 @@ astfit_local <- function(data, start_pars, fixed_pars, solver, solver_control, s
   time_elapsed <- Sys.time() - start_time
 
   fitted_pars <- c(fitted_pars, fixed_pars[!is.na(fixed_pars)])
+  if (symmetric == TRUE) {
+    fitted_pars <- fitted_pars[c("mu", "sigma", "alpha", "nu")]
+  } else {
+    fitted_pars <- fitted_pars[c("mu", "sigma", "alpha", "nu1", "nu2")]
+  }
 
   list(data = data, sol_res = sol_res, solver = solver, solver_control = solver_control,
        start_pars = start_pars, fixed_pars = fixed_pars, fitted_pars = fitted_pars,
@@ -179,7 +183,7 @@ i_pars <- function(start_pars, fixed_pars, symmetric) {
                        upper_bound = c(Inf, Inf, 1, Inf),
                        order = 1:4)
     start_pars_default <- c(mu = 0, sigma = 1, alpha = 0.5, nu = 2)
-  } else {?as
+  } else {
     b_df <- data.frame(name = c("mu", "sigma", "alpha", "nu1", "nu2"),
                        lower_bound = c(-Inf, 0, 0, 0, 0),
                        upper_bound = c(Inf, Inf, 1, Inf, Inf),

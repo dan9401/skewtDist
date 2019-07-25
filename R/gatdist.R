@@ -30,9 +30,20 @@
 ####### all functions needs further checking. Quantile requires newton's method
 #' @rdname gatDist
 #' @export
-dgat <- function(x, mu, phi, alpha, r, c, nu) {
+dgat <- function(x, mu, phi, alpha, r, c, nu, pars = NULL) {
     if (!is.numeric(x))
         stop("x must be numeric")
+    if (!is.null(pars)) {
+      if (!missing(mu)) {
+        stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      }
+      mu <- pars[1]
+      phi <- pars[2]
+      alpha <- pars[3]
+      r <- pars[4]
+      c <- pars[5]
+      nu <- pars[6]
+    }
     g <- (x - mu)/phi + sqrt(1 + ((x - mu)/phi)^2)
     A <- alpha * (1 + r^2)/(r * phi)
     B <- ( (c * g)^(alpha * r) + (c * g)^(-alpha/r) )^(-nu/alpha) / beta(nu/alpha/(1 + r^2), r^2 * nu/alpha/(1 + r^2))
@@ -43,9 +54,20 @@ dgat <- function(x, mu, phi, alpha, r, c, nu) {
 
 #' @rdname gatDist
 #' @export
-pgat <- function(x, mu, phi, alpha, r, c, nu) {
+pgat <- function(x, mu, phi, alpha, r, c, nu, pars = NULL) {
     if (!is.numeric(x))
         stop("x must be numeric")
+    if (!is.null(pars)) {
+      if (!missing(mu)) {
+        stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      }
+      mu <- pars[1]
+      phi <- pars[2]
+      alpha <- pars[3]
+      r <- pars[4]
+      c <- pars[5]
+      nu <- pars[6]
+    }
     q <- 1/(1 + c^(-alpha * (1 + r^2)/r) * (((x - mu)/phi) + sqrt(1 + (x - mu)^2/phi^2))^(-alpha * (1 + r^2)/r))
     p <- pbeta(q, nu/alpha/(1 + r^2), r^2 * nu/alpha/(1 + r^2))
     p
@@ -53,22 +75,44 @@ pgat <- function(x, mu, phi, alpha, r, c, nu) {
 
 #' @rdname gatDist
 #' @export
-qgat <- function(p, mu, phi, alpha, r, c, nu) {
+qgat <- function(p, mu, phi, alpha, r, c, nu, pars = NULL) {
     # tbd, use newton-raphson
-  pfunc <- function(q) {
-    pgat(q, mu, phi, alpha, r, c, nu) - p
-  }
-  ps = numeric(21)
-  for(i in 1:21) {
-    ps[i] <- pfunc(i - 11)
-  }
-  x0 <- min(abs(ps))
-  newton_raphson(pfunc, x0 = x0)
+    if (!is.null(pars)) {
+      if (!missing(mu)) {
+        stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      }
+      mu <- pars[1]
+      phi <- pars[2]
+      alpha <- pars[3]
+      r <- pars[4]
+      c <- pars[5]
+      nu <- pars[6]
+    }
+    pfunc <- function(q) {
+      pgat(q, mu, phi, alpha, r, c, nu) - p
+    }
+    ps = numeric(21)
+    for(i in 1:21) {
+      ps[i] <- pfunc(i - 11)
+    }
+    x0 <- min(abs(ps))
+    newton_raphson(pfunc, x0 = x0)
 }
 
 #' @rdname gatDist
 #' @export
-rgat <- function(n, mu, phi, alpha, r, c, nu) {
+rgat <- function(n, mu, phi, alpha, r, c, nu, pars = NULL) {
+    if (!is.null(pars)) {
+      if (!missing(mu)) {
+        stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      }
+      mu <- pars[1]
+      phi <- pars[2]
+      alpha <- pars[3]
+      r <- pars[4]
+      c <- pars[5]
+      nu <- pars[6]
+    }
     if (n < 0)
         stop("x must be non-negative")
     a <- nu/alpha/(1 + r^2)

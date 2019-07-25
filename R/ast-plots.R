@@ -25,7 +25,7 @@ density_ast <- function(fit, ...) {
 }
 
 qqplot_ast <- function(fit, dist = "ast", ...) {
-  y <- fit$data
+  y <- as.numeric(fit$data)
   pars <- fit$fitted_pars
   mu <- pars["mu"]
   sigma <- pars["sigma"]
@@ -46,8 +46,11 @@ qqplot_ast <- function(fit, dist = "ast", ...) {
   } else if (dist == "ast") {
     x <- qast(p, mu, sigma, alpha, nu1, nu2)
     px <- qast(c(0.25, 0.75), mu, sigma, alpha, nu1, nu2)
+  } else {
+    stop("dist must be one of normal and ast")
   }
-  plot(x, y, ...)
+  plot(x, y, main = "QQPlot",
+       xlab = paste(dist, "distribution"), ylab = "empirical distribution", ...)
   py <- quantile(y, c(0.25, 0.75))
   slope <- diff(py)/diff(px)
   int <- py[1L] - slope * px[1L]

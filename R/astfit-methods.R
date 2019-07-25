@@ -39,7 +39,7 @@ moments.astfit <- function(fit, method = c("analytical", "numerical")) {
 
 #' @rdname astfit-methods
 #' @export
-plot.astfit <- function(fit, selection = NULL, ...) {
+plot.astfit <- function(fit, selection = NULL, dist = "ast", ...) {
   if (is.null(selection)) {
     selection <- 1
     while (selection) {
@@ -47,15 +47,14 @@ plot.astfit <- function(fit, selection = NULL, ...) {
       if (selection == 1) {
         density_ast(fit, ...)
       } else if(selection == 2) {
-        qqplot_ast(fit, dist = "ast", ...)
+        qqplot_ast(fit, dist, ...)
       }
     }
   } else {
     if (selection == 1) {
       density_ast(fit, ...)
     } else if(selection == 2) {
-      qqplot_ast(fit, dist = "ast", ...)
+      qqplot_ast(fit, dist, ...)
     }
   }
-
 }

@@ -13,7 +13,7 @@
 #'
 #' @examples
 #' pars <- c(0.12, 0.6, 0.4, 3, 5)
-#' data <- rast(1000, 0.12, 0.6, 0.3, 3, 5)
+#' data <- rast(1000, 0.12, 0.6, 0.4, 3, 5)
 #' infoMat_ast(pars, data, "observed")
 #' infoMat_ast(pars, "expected")
 #' pars_s <- c(0.12, 0.6, 0.4, 4)
@@ -23,11 +23,11 @@
 #' @export
 infoMat_ast <- function(pars, data = c(), method = c("expected", "observed")) {
   method <- match.arg(method, c("expected", "observed"))
-  mu <- pars["mu"]
-  sigma <- pars["sigma"]
-  alpha <- pars["alpha"]
-  nu1 <- pars["nu1"]
-  nu2 <- pars["nu2"]
+  mu <- pars[1]
+  sigma <- pars[2]
+  alpha <- pars[3]
+  nu1 <- pars[4]
+  nu2 <- pars[5]
 
   if (method == "expected") {
     S_mu2 <- 1/(4*sigma^2) * ( (nu1+1)/(alpha*(nu1+3))/K(nu1)^2 + (nu2+1)/((1-alpha)*(nu2+3))/K(nu2)^2 )
@@ -55,8 +55,8 @@ infoMat_ast <- function(pars, data = c(), method = c("expected", "observed")) {
     y1 <- y[y <= mu]
     y2 <- y[y > mu]
 
-    S_mu2 <- 1/nu1 * ((nu1+1)/(2*alpha*sigma*K(nu1)))^2 * mean(1/L(pars, y1) - 1/L(pars, y1)^2) +
-      1/nu2 * ((nu2+1)/(2*(1-alpha)*sigma*K(nu2)))^2 * mean(1/R(pars, y2) - 1/R(pars, y2)^2)
+    S_mu2 <- 1/nu1 * (nu1+1)/(2*alpha*sigma*K(nu1))^2 * mean(1/L(pars, y1) - 1/L(pars, y1)^2) +
+      1/nu2 * (nu2+1)/(2*(1-alpha)*sigma*K(nu2))^2 * mean(1/R(pars, y2) - 1/R(pars, y2)^2)
     S_sigma2 <- -1/sigma^2 + ((nu1+1)/sigma)^2 * mean((1 - 1/L(pars, y1))^2) +
       ((nu2+1)/sigma)^2 * mean((1 - 1/R(pars, y2))^2)
     S_alpha2 <- ((nu1+1)/alpha)^2 * mean((1 - 1/L(pars, y1))^2) +
@@ -105,10 +105,10 @@ infoMat_ast <- function(pars, data = c(), method = c("expected", "observed")) {
 #' @rdname infoMat
 #' @export
 infoMat_sst <- function(pars) {
-  mu <- pars["mu"]
-  sigma <- pars["sigma"]
-  alpha <- pars["alpha"]
-  nu <- pars["nu"]
+  mu <- pars[1]
+  sigma <- pars[2]
+  alpha <- pars[3]
+  nu <- pars[4]
 
   S_mu2 <- (nu + 1) / ((4*sigma^2) * alpha * (1 - alpha) * (nu + 3) * K(nu)^2 )
   S_sigma2 <- 2 * nu / (sigma^2 * (nu+3) )
