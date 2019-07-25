@@ -5,6 +5,7 @@
 \alias{summary.astfit}
 \alias{moments.astfit}
 \alias{plot.astfit}
+\alias{print.astfit}
 \title{Methods for astfit class}
 \usage{
 \method{summary}{astfit}(fit)
@@ -12,6 +13,8 @@
 \method{moments}{astfit}(fit, method = c("analytical", "numerical"))
 
 \method{plot}{astfit}(fit, selection = NULL, dist = "ast", ...)
+
+\method{print}{astfit}(fit)
 }
 \arguments{
 \item{fit}{A AST fit object of class \code{\link{astfit}}}
