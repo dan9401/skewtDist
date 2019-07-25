@@ -27,6 +27,9 @@
 #' @export
 summary.astfit <- function(fit) {
   fit$data <- NULL
+  fit$solver_control <- NULL
+  fit$solver <- NULL
+  fit$objective <- NULL
   fit
 }
 
@@ -56,5 +59,17 @@ plot.astfit <- function(fit, selection = NULL, dist = "ast", ...) {
     } else if(selection == 2) {
       qqplot_ast(fit, dist, ...)
     }
+  }
+}
+
+#' @rdname astfit-methods
+#' @export
+print.astfit <- function(fit) {
+  fit$data <- NULL
+  fit$sol_res <- NULL
+  fit$solver_control <- NULL
+  fit$solver <- NULL
+  for (i in 1:length(fit)) {
+    print(fit[i])
   }
 }
