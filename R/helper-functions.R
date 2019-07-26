@@ -174,18 +174,22 @@ report <- function(fit) {
 my_report <- function(data, solver, solver_control, plots = "none", dist = "ast") {
   fitList <- lapply(data, astfit, solver = solver, solver_control = solver_control)
 
+  for (i in 1:length(fitList)) {
+    fitList[[i]]$name <- names(fitList)[i]
+  }
+
   if (plots == "both") {
     par(mfrow = c(4, 5))
-    lapply(fitList, plot, type = "density")
+    lapply(fitList, function(fit) {plot(fit, type = "density", main = fit$name) })
     par(mfrow = c(4, 5))
-    lapply(fitList, plot, type = "qqplot", dist = dist)
+    lapply(fitList, function(fit) {plot(fit, type = "qqplot", main = fit$name, dist = dist) })
   #}
   } else if (plots == "density") {
     par(mfrow = c(4, 5))
-    lapply(fitList, plot, type = "density")
+    lapply(fitList, function(fit) {plot(fit, type = "density", main = fit$name) })
   } else if (plots == "qqplot") {
     par(mfrow = c(4, 5))
-    lapply(fitList, plot, type = "qqplot", dist = dist)
+    lapply(fitList, function(fit) {plot(fit, type = "qqplot", main = fit$name, dist = dist) })
   }
   par(mfrow = c(1, 1))
 

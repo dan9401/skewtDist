@@ -4,7 +4,7 @@
 # and plot method for ast & gat class without data, just for exploration uses
 # authorized domain, here or in the moment file
 
-density_ast <- function(fit, ...) {
+density_ast <- function(fit, main = "Histogram/Density plot", ...) {
   data <- fit$data
   pars <- fit$fitted_pars
   mu <- pars["mu"]
@@ -17,14 +17,14 @@ density_ast <- function(fit, ...) {
     nu2 <- pars["nu2"]
   }
 
-  hist(data, breaks = 50, prob = TRUE, ...)
+  hist(data, breaks = 50, prob = TRUE, main = main, ...)
   x <- seq(min(data), max(data), length.out = 1000)
   y <- dast(x, mu, sigma, alpha, nu1, nu2)
   lines(x, y, xlab = "", ylab = "", col = 4)
   abline(v = mu, col = 2)
 }
 
-qqplot_ast <- function(fit, dist = "ast", ...) {
+qqplot_ast <- function(fit, dist = "ast", main = "QQPlot", ...) {
   y <- as.numeric(fit$data)
   pars <- fit$fitted_pars
   mu <- pars["mu"]
@@ -49,7 +49,7 @@ qqplot_ast <- function(fit, dist = "ast", ...) {
   } else {
     stop("dist must be one of normal and ast")
   }
-  plot(x, y, main = "QQPlot",
+  plot(x, y, main = main,
        xlab = paste(dist, "distribution"), ylab = "empirical distribution", ...)
   py <- quantile(y, c(0.25, 0.75))
   slope <- diff(py)/diff(px)
