@@ -12,7 +12,7 @@
 
 \method{moments}{astfit}(fit, method = c("analytical", "numerical"))
 
-\method{plot}{astfit}(fit, selection = NULL, dist = "ast", ...)
+\method{plot}{astfit}(fit, type = NULL, dist = "ast", ...)
 
 \method{print}{astfit}(fit)
 }
@@ -21,7 +21,7 @@
 
 \item{method}{one of "numerical" and "analytical", calculating the moments using numerical integration / analytical formula}
 
-\item{selection}{one of 1 & 2, for plotting the density or QQPlot}
+\item{type}{one of "density" and "QQplot"}
 }
 \description{
 Methods for astfit class

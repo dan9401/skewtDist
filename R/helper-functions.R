@@ -171,16 +171,24 @@ report <- function(fit) {
 
 # has no documentation developed yet
 #' @export
-my_report <- function(data, solver, solver_control, plot = TRUE, dist = "ast") {
+my_report <- function(data, solver, solver_control, plots = "none", dist = "ast") {
   fitList <- lapply(data, astfit, solver = solver, solver_control = solver_control)
 
-  if (plot == TRUE) {
+  if (plots == "both") {
     par(mfrow = c(4, 5))
-    invisible(lapply(fitList, plot, selection = 1))
+    lapply(fitList, plot, type = "density")
     par(mfrow = c(4, 5))
-    invisible(lapply(fitList, plot, selection = 2, dist = dist))
-    par(mfrow = c(1, 1))
+    lapply(fitList, plot, type = "qqplot", dist = dist)
+  #}
+  } else if (plots == "density") {
+    par(mfrow = c(4, 5))
+    lapply(fitList, plot, type = "density")
+  } else if (plots == "qqplot") {
+    par(mfrow = c(4, 5))
+    lapply(fitList, plot, type = "qqplot", dist = dist)
   }
+  par(mfrow = c(1, 1))
+
   res = t(sapply(fitList, report))
   res
 }

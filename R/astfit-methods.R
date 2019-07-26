@@ -4,7 +4,7 @@
 #'
 #' @param fit A AST fit object of class \code{\link{astfit}}
 #' @param method one of "numerical" and "analytical", calculating the moments using numerical integration / analytical formula
-#' @param selection one of 1 & 2, for plotting the density or QQPlot
+#' @param type one of "density" and "QQplot"
 #'
 #' @details should also add the empirical moments
 #'
@@ -42,11 +42,11 @@ moments.astfit <- function(fit, method = c("analytical", "numerical")) {
 
 #' @rdname astfit-methods
 #' @export
-plot.astfit <- function(fit, selection = NULL, dist = "ast", ...) {
-  if (is.null(selection)) {
+plot.astfit <- function(fit, type = NULL, dist = "ast", ...) {
+  if (is.null(type)) {
     selection <- 1
     while (selection) {
-      selection <- menu(c("Density", "QQplot"), title = "Make a plot selection (or 0 to exit)")
+      selection <- menu(c("Density", "qqplot"), title = "Make a plot selection (or 0 to exit)")
       if (selection == 1) {
         density_ast(fit, ...)
       } else if(selection == 2) {
@@ -54,9 +54,9 @@ plot.astfit <- function(fit, selection = NULL, dist = "ast", ...) {
       }
     }
   } else {
-    if (selection == 1) {
+    if (type == "density") {
       density_ast(fit, ...)
-    } else if(selection == 2) {
+    } else if(type == "qqplot") {
       qqplot_ast(fit, dist, ...)
     }
   }

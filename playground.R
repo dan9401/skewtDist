@@ -241,3 +241,6 @@ sn2 <- surfacePlot(n, pars, c("sigma", "nu2"), theta = 40, col = 3, shade = 0.75
 an1 <- surfacePlot(n, pars, c("alpha", "nu1"), theta = 140, col = 3, shade = 0.75)
 an2 <- surfacePlot(n, pars, c("alpha", "nu2"), theta = 40, col = 3, shade = 0.75)
 n1n2 <- surfacePlot(n, pars, c("nu1", "nu2"), theta = 70, col = 3, shade = 0.75)
+
+infoMat_ast(pars = c(0.12, 0.6, 0.6, 3, 5))
+infoMat_sst(pars = c(0.12, 0.6, 0.6, 3))
