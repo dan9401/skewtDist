@@ -193,6 +193,9 @@ my_report <- function(data, solver, solver_control, plots = "none", dist = "ast"
   }
   par(mfrow = c(1, 1))
 
-  res = t(sapply(fitList, report))
+  res <- t(sapply(fitList, report))
+  res <- as.data.frame(res)
+  res[,-length(res)] <- lapply(res[,-length(res)], function(x) round(as.numeric(as.character(x)), 6))
+
   res
 }
