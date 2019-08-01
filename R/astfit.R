@@ -34,9 +34,9 @@ astfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb"
 
   fit <- astfit_local(data, start_pars, fixed_pars, solver, solver_control, symmetric)
   if (symmetric == TRUE) {
-    standard_errors <- sqrt(diag(solve(infoMat_sst(fit$fitted_pars))))
+    standard_errors <- sqrt(diag(solve(infoMat_sst(fit$fitted_pars)))/length(data))
   } else {
-    standard_errors <- sqrt(diag(solve(infoMat_ast(fit$fitted_pars))))
+    standard_errors <- sqrt(diag(solve(infoMat_ast(fit$fitted_pars)))/length(data))
   }
 
   fit$standard_errors <- standard_errors
