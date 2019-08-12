@@ -1,9 +1,3 @@
-# Plot methods for the AST and GAT distribuitons, the aesthetics would require further adjustment,
-# either adjust the graphic parameters, or a new graphics engine
-# we may also want to keep separate files for both distributions, doesn't seem necessary at the time
-# and plot method for ast & gat class without data, just for exploration uses
-# authorized domain, here or in the moment file
-
 density_ast <- function(fit, main = "Histogram/Density plot", ...) {
   data <- fit$data
   pars <- fit$fitted_pars

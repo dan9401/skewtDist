@@ -1,29 +1,59 @@
-#' @title AST fit
+#' @title Fitting function for Asymmetric Student-t distribution
 #'
-#' @description Method for fitting a AST distribution, returns an astfit object
+#' @name astFit
+#' @aliases astfit
 #'
-#' @param data A univariate data object, can be ... for the AST distribution to fit on.
-#' @param start_pars A named numeric vector of starting parameters for the optimization algorithm, not all parameters are needed
-#' @param fixed_pars A named numeric vector of parameters to be kept fixed during the optimization routine, not all parameters are needed
-#' @param solver Optimizer used for fitting, one of 'nlminb', 'nloptr', 'Rsolnp', default is nlminb
-#' @param solver_control Control arguments list passed to the optimizer.
-#' @param symmetric A Logical argument, when TRUE, the process become fitting an SST distribution(Symmetric Student t, nu1 = nu2), default to FALSE
+#' @description Method for fitting an AST distribution to a univariate data series by Maximum Likelihood Estimation,
+#' returns an \code{astFit} object.
 #'
-#' @name astfit
+#' @param data a univariate data object to be fitted
+#' @param start_pars a named numeric vector of starting parameters for the optimization algorithm, not all parameters are needed
+#' @param fixed_pars a named numeric vector of parameters to be kept fixed during the optimization routine, not all parameters are needed
+#' @param solver solver used for MLE, one of 'nlminb', 'nloptr', 'Rsolnp', default is 'nlminb'
+#' @param solver_control list of control arguments passed to the solver
+#' @param symmetric a logical argument, when TRUE, the function fits an SST distribution(Symmetric Student-t, nu1 = nu2) instead, default to FALSE
+#'
+#' @return
+#' A \code{astFit} object(S3), the components of the object are:
+#'     \item{data}{the univariate data object for the AST distribution to be fitted}
+#'     \item{solver}{the solver called}
+#'     \item{solver_control}{the list of control argumetns passed to the solver called}
+#'     \item{start_pars}{named numeric vector of starting parameters used}
+#'     \item{fixed_pars}{named numeric vector of fixed parameters used}
+#'     \item{symmetric}{logical argument controlling the symmetry of tail parameters in the MLE}
+#'     \item{solver_result}{output of the called solver}
+#'     \item{fitted_pars}{named vector of fitted arguemnts of the AST distribution}
+#'     \item{objective}{the optimal log-likelihood value obtained by the solver}
+#'     \item{time_elapsed}{the time elapesed for the MLE routine}
+#'     \item{message}{the message of convergence status produced by the called solver}
+#'     \item{standard_errors}{standard errors of the fitted parameters}
+#'
+#' @details
+#' The \code{astFit} function fits an AST distribution to a univariate data series by estimating the distribution parameters
+#' through Maximum Likelihood Estimation.
+#'
+#' For details of the list of control arguments, please refer to \code{nlminb}, \code{nloptr::nloptr}, \code{Rsolnp::solnp}
+#'
+#' @references
+#' Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}
+#' \url{https://econpapers.repec.org/paper/circirwor/2009s-13.htm}
 #'
 #' @examples
-#' pars <- c(0.12, 0.6, 0.6, 3, 5)
+#' pars <- c(0.12, 0.6, 0.6, 6, 5)
 #' data <- rast(1000, pars = pars)
 #' solver_control <- list(eval.max = 10^3, iter.max = 10^3)
-#' fit <- astfit(data, solver = 'nlminb', solver_control = solver_control)
+#' fit <- astFit(data, solver = 'nlminb', solver_control = solver_control)
 #' summary(fit)
 #' moments(fit)
+#' fitted(fit)
+#' se(fit)
+#' objective(fit)
 #' plot(fit)
 
-#' @rdname astfit
+#' @rdname astFit
 #' @export
 # fit function for ast distribution
-astfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control = list(), symmetric = FALSE) {
+astFit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control = list(), symmetric = FALSE) {
   if (!is.numeric(data) || length(data) == 0)
     stop("Data must be a numeric vector of non-zero length.")
 
@@ -32,20 +62,19 @@ astfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb"
   #check_bound(fixed_pars)
   solver = match.arg(solver)
 
-  fit <- astfit_local(data, start_pars, fixed_pars, solver, solver_control, symmetric)
+  fit <- astFit_local(data, start_pars, fixed_pars, solver, solver_control, symmetric)
   if (symmetric == TRUE) {
-    standard_errors <- sqrt(diag(solve(infoMat_sst(fit$fitted_pars)))/length(data))
+    standard_errors <- sqrt(diag(solve(sstInfoMat(fit$fitted_pars)))/length(data))
   } else {
-    standard_errors <- sqrt(diag(solve(infoMat_ast(fit$fitted_pars)))/length(data))
+    standard_errors <- sqrt(diag(solve(astInfoMat(fit$fitted_pars)))/length(data))
   }
 
   fit$standard_errors <- standard_errors
-  fit$symmetric <- symmetric
 
-  structure(fit, class = "astfit")
+  structure(fit, class = "astFit")
 }
 
-astfit_local <- function(data, start_pars, fixed_pars, solver, solver_control, symmetric) {
+astFit_local <- function(data, start_pars, fixed_pars, solver, solver_control, symmetric) {
   start_time <- Sys.time()
   ipars <- i_pars(start_pars, fixed_pars, symmetric)
 
@@ -111,8 +140,9 @@ astfit_local <- function(data, start_pars, fixed_pars, solver, solver_control, s
     fitted_pars <- fitted_pars[c("mu", "sigma", "alpha", "nu1", "nu2")]
   }
 
-  list(data = data, sol_res = sol_res, solver = solver, solver_control = solver_control,
-       start_pars = start_pars, fixed_pars = fixed_pars, fitted_pars = fitted_pars,
+  list(data = data, solver = solver, solver_control = solver_control,
+       start_pars = start_pars, fixed_pars = fixed_pars, symmetric = symmetric,
+       solver_result = sol_res, fitted_pars = fitted_pars,
        objective = objective, time_elapsed = time_elapsed, message = message)
 }
 

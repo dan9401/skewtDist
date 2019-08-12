@@ -1,21 +1,45 @@
-#' @title Asymmetric Student t-distribution
+#' @title Asymmetric Student-t Distribution
 #'
-#' @description Probablity density function (pdf), Cumulative distribution function (cdf), quantile function and random generation of AST distributions
-#' @param x,q vector of quantiles
-#' @param p vector of probablilities
-#' @param n number of observations for random generation
-#' @param mu location parameter, the mode, not necessarily the mean
-#' @param sigma scale parameter, not necessarily the standard deviation, greater than 0
-#' @param alpha skewness parameter, ranges from 0 to 1, when < 0.5, skew to the right, when > 0.5, skew to the left
-#' @param nu1 degrees of freedom / tail parameter for the left tail, greater than 0
-#' @param nu2 degrees of freedom / tail parameter for the right tail, greater than 0
-#' @param pars a vector that contains c(mu, sigma, alpha, nu1, nu2), one and only one of {mu, sigma, alpha, nu1, nu2} or pars should be specified
-#'
+#' @name ast-dist
+#' @aliases astdist
 #' @aliases dast
 #' @aliases past
 #' @aliases qast
 #' @aliases rast
-#' @name astDist
+#'
+#' @description Probablity density function(PDF), Cumulative distribution function(CDF), Quantile function and Random generation of the AST distribution
+#'
+#' @param x,q vector of quantiles
+#' @param p vector of probablilities
+#' @param n number of observations for random generation
+#' @param mu location parameter
+#' @param sigma scale parameter, \eqn{sigma > 0}
+#' @param alpha skewness parameter, \eqn{0 < alpha < 1}
+#' @param nu1 degrees of freedom / tail parameter for the left tail, \eqn{ nu1 > 0}
+#' @param nu2 degrees of freedom / tail parameter for the right tail, \eqn{ nu2 > 0}
+#' @param pars a vector that contains mu, sigma, alpha, nu1, nu2, if pars is specified, mu, sigma, alpha, nu1, nu2 should not be specified
+#'
+#' @return
+#' \code{dast} gives the density, \code{past} gives the distribution function, \code{qast} gives the quantile function, and \code{rast} generates random samples for AST distribution.
+#'
+#' @details
+#' The 'asymmetric' in AST distribution, not only suggests skewness in the distribution,
+#' but also the asymmetry in the two tail powers of the distribution.
+#' \itemize{
+#'     \item Location parameter \code{mu} is the mode, but not necessarily the mean of the distribution.
+#'     \item Scale parameter \code{sigma} is not necessarily the standard deviation.
+#'     \item The distribution skews to the right when the skewness parameter \eqn{alpha < 0.5},
+#'     skews to the left when \eqn{alpha > 0.5}.
+#'     \item The location paramter \code{mu} always locates at the \eqn{\alpha}-th percentile of the distribution.
+#'     The two degrees of freedom / tail parameters each controls one tail of the distribution,
+#'     separated at the location paramter \code{mu}.
+#'     The left tail parameter \code{nu1} only affects the left half(0th to \eqn{\alpha}-th percentile) of the distribution,
+#'     while the right tail paramter \code{nu2} only affects the right half(\eqn{\alpha}-th to 100-th percentile) of the distribution.
+#' }
+#'
+#' @references
+#' Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}
+#' \url{https://econpapers.repec.org/paper/circirwor/2009s-13.htm}
 #'
 #' @examples
 #' # The parameter values are specially set for a volatile portfolio.
@@ -28,7 +52,7 @@
 #' data <- rast(1000, 0.12, 0.6, 0.6, 3, 5)
 #' hist(data, breaks = 50, probability = TRUE)
 #'
-#' # now trying to use the pars argument
+#' # using the 'pars' argument
 #' pars <- c(0.12, 0.6, 0.6, 3, 5)
 #' x <- seq(-3, 3, 0.01)
 #' y <- dast(x, pars = pars)
@@ -37,16 +61,16 @@
 #' pars1 <- c(0, 2, 0.3, 5, 5)
 #' pars2 <- c(0, 2, 0.5, 5, 5)
 #' pars3 <- c(0, 2, 0.7, 5, 5)
-#' y1 <- dast(x1, pars = pars1)
-#' y2 <- dast(x1, pars = pars2)
-#' y3 <- dast(x1, pars = pars3)
+#' y1 <- dast(x, pars = pars1)
+#' y2 <- dast(x, pars = pars2)
+#' y3 <- dast(x, pars = pars3)
 #' plot(x, y1, type = "l", main = expression(alpha), xlab = "x", ylab = "density")
 #' lines(x, y2, lty = 2)
 #' lines(x, y3, lty = 3)
 #' abline(v = 0, col = 4, lty = 2)
 #' legend(x = "topleft", legend = c("alpha = 0.3", "alpha = 0.5", "alpha = 0.7"), lty = 1:3)
 
-#' @rdname astDist
+#' @rdname ast-dist
 #' @export
 dast <- function(x, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (!is.null(pars)) {
@@ -70,7 +94,7 @@ dast <- function(x, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
     d
 }
 
-#' @rdname astDist
+#' @rdname ast-dist
 #' @export
 past <- function(q, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (!is.numeric(q))
@@ -93,7 +117,7 @@ past <- function(q, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
     2 * alpha * pt(pmin(q, 0)/(2 * alpha_star), nu1) + 2 * (1 - alpha) * (pt(pmax(q, 0)/(2 * (1 - alpha_star)), nu2) - 0.5)
 }
 
-#' @rdname astDist
+#' @rdname ast-dist
 #' @export
 qast <- function(p, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (!is.numeric(p))
@@ -115,7 +139,7 @@ qast <- function(p, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
     mu + sigma * B * (2 * alpha_star * ( qt(pmin(p, alpha)/(2 * alpha), nu1)) + 2 * (1 - alpha_star) * ( qt((pmax(p, alpha) + 1 - 2 * alpha)/(2 * (1 - alpha)), nu2)))
 }
 
-#' @rdname astDist
+#' @rdname ast-dist
 #' @export
 rast <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (n < 0)

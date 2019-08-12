@@ -14,6 +14,7 @@
 #' @aliases dgat
 #' @aliases pgat
 #' @aliases rgat
+#' @aliases qgat
 #' @name gatDist
 #'
 #' @examples

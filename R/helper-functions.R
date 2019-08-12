@@ -129,6 +129,22 @@ moments <- function(x, ...) {
   UseMethod("moments", x)
 }
 
+#' @export
+se <- function(x, ...) {
+  UseMethod("se", x)
+}
+
+#' @export
+objective <- function(x, ...) {
+  UseMethod("objective", x)
+}
+
+#' @export
+fitted <- function(x, ...) {
+  UseMethod("fitted", x)
+}
+
+
 # has no documentation developed yet
 #' @export
 surfacePlot <- function(n, pars, plotPars, ...) {

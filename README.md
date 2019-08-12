@@ -25,6 +25,10 @@ devtools::install__github("dan9401/st")
 
 ## To do list
 - [ ] difference between "expected" and "observed" information matrix
-- [ ] moment function with mu & analytical for mean, sd, skewness and kurtosis
+- [ ] numerical correction of gamma for moment functions
+- [ ] gat fit
+- [ ] gat infoMat
+- [ ] test files
+- [ ] redistribute helper functions
 
 <a name="footnote1">1</a>: Asymmetric Student t-distribution (AST) and Generalized Asymmetric t-distribution (GAT)

@@ -1,43 +1,164 @@
-# Moment methods for AST & GAT distributions, while gat methods are not yet implemented
-# we may also want to keep separate files for both distributions, doesn't seem necessary at the time
-# and moment methods for ast & gat class without data, just for exploration uses
-# may also want separate functions for mean, variance, sd, skewness & kurtosis
-# authorized domain, here or in the plot file
-
-#' @title Asymmetric Student t-distribution
+#' @title Moment Functions of Asymmetric Student-t distribution
 #'
-#' @description Probablity density function (pdf), Cumulative distribution function (cdf), quantile function and random generation of AST distributions
-#' @param n order of moment to be calculated
-#' @param mu location parameter, the mode, not necessarily the mean
-#' @param sigma scale parameter, not necessarily the standard deviation, greater than 0
-#' @param alpha skewness parameter, ranges from 0 to 1, when < 0.5, skew to the right, when > 0.5, skew to the left
-#' @param nu1 degrees of freedom / tail parameter for the left tail, greater than 0
-#' @param nu2 degrees of freedom / tail parameter for the right tail, greater than 0
-#' @param pars a vector that contains c(mu, sigma, alpha, nu1, nu2), one and only one of {mu, sigma, alpha, nu1, nu2} or pars should be specified
+#' @name ast-moment
+#' @aliases astMean
+#' @aliases astVar
+#' @aliases astSkew
+#' @aliases astKurt
+#' @aliases astMoment
+#' @aliases astMoments
+#' @aliases astRawMoment
+#' @aliases astCentralMoment
 #'
-#' @details the moments for AST follow the general rule of student t distribution, mean is only defined for nu > 1, variance is finite when nu > 2, infinite when 1 < nu < 2, otherwise undefined; skewness is defined when nu > 3; kurtosis is finite when nu > 4, infinite when 2 < nu <= 4, otherwise undefined (This need more check, and also the analytical methods should be modified)
+#' @description The mean, standard deviation, skewness, kurtosis functions, as well as the raw and central moments of AST distribution
 #'
+#' @param moment the moment to be calculated, one of 'mean', 'sd', 'skew', 'kurt'
+#' @param n order of (raw/central) moment to be calculated
+#' @param mu location parameter
+#' @param sigma scale parameter, \eqn{sigma > 0}
+#' @param alpha skewness parameter, \eqn{0 < alpha < 1}
+#' @param nu1 degrees of freedom / tail parameter for the left tail, \eqn{ nu1 > 0}
+#' @param nu2 degrees of freedom / tail parameter for the right tail, \eqn{ nu2 > 0}
+#' @param pars a vector that contains mu, sigma, alpha, nu1, nu2, if pars is specified, mu, sigma, alpha, nu1, nu2 should not be specified
+#' @param method method used to calculate the moment(s), one of 'analytical' and 'numerical'
+#' @param type type of kurtosis calculated, one of 'excess' and 'regular'
 #'
-#' @aliases moment_ast
-#' @aliases mean_ast
-#' @aliases var_ast
-#' @aliases skew_ast
-#' @aliases kurt_ast
-#' @aliases moments_ast
-#' @name astMoments
+#' @details
+#' Function \code{astMoment} calculates one of mean, standard deviation, skewness and kurtosis of the distribution,
+#' while \code{astMoment} calculates all 4 of them. \cr
+#' Function \code{astRawMoment} returns \eqn{E[X^n]},
+#' while function \code{astCentralMoment} returns \eqn{E[(X-\mu)^n]}
+#'
+#' The moments for AST follow the general rule of student t distribution,
+#' \itemize{
+#'     \item mean is only defined for nu > 1,
+#'     \item variance/standard deviation is finite when nu > 2, infinite when 1 < nu < 2, otherwise undefined,
+#'     \item skewness is defined when nu > 3,
+#'     \item kurtosis is finite when nu > 4, infinite when 2 < nu <= 4, otherwise undefined.
+#' }
+#'
+#' @references
+#' Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}
+#' \url{https://econpapers.repec.org/paper/circirwor/2009s-13.htm}
 #'
 #' @examples
 #' # The parameter values are specially set for a volatile portfolio.
-#' pars <- c(0.12, 0.6, 0.4, 3, 5)
-#' moment_ast(1, pars = pars, method = "numerical")
-#' mean_ast(pars = pars)
-#' var_ast(pars = pars)
-#' skew_ast(pars = pars)
-#' kurt_ast(pars = pars)
-#' moments_ast(pars = pars)
+#' pars <- c(0.12, 0.6, 0.6, 6, 5)
+#' astMoment("sd", pars = pars, method = "numerical")
+#' astMoments(pars = pars)
+#' astMean(pars = pars)
+#' astVar(pars = pars)
+#' astSkew(pars = pars)
+#' astKurt(pars = pars)
 
+#' @rdname ast-moment
 #' @export
-moment_ast <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+astMean <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+  if (is.null(pars)) {
+    if (missing(mu)) {
+      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    pars = c(mu, sigma, alpha, nu1, nu2)
+  }
+  # return
+  astRawMoment(1, pars = pars, method = method)
+}
+
+#' @rdname ast-moment
+#' @export
+astVar <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+  if (is.null(pars)) {
+    if (missing(mu)) {
+      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    pars = c(mu, sigma, alpha, nu1, nu2)
+  }
+  # return
+  astCentralMoment(2, pars = pars, method = method)
+}
+
+#' @rdname ast-moment
+#' @export
+astSD <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+  if (is.null(pars)) {
+    if (missing(mu)) {
+      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    pars = c(mu, sigma, alpha, nu1, nu2)
+  }
+  var <- astCentralMoment(2, pars = pars, method = method)
+  # return
+  sqrt(var)
+}
+
+#' @rdname ast-moment
+#' @export
+astSkew <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+  if (is.null(pars)) {
+    if (missing(mu)) {
+      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    pars = c(mu, sigma, alpha, nu1, nu2)
+  }
+  sd <- astSD(pars = pars, method = method)
+  # return
+  astCentralMoment(3, pars = pars, method = method) / sd^3
+}
+
+#' @rdname ast-moment
+#' @export
+astKurt <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+  if (is.null(pars)) {
+    if (missing(mu)) {
+      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    pars = c(mu, sigma, alpha, nu1, nu2)
+  }
+  var <- astVar(pars = pars, method = method)
+  kurt <- astCentralMoment(4, pars = pars, method = method) / var^2
+  type <- match.arg(type)
+  # return
+  switch(type,
+         excess = kurt - 3,
+         regular = kurt)
+}
+
+#' @rdname ast-moment
+#' @export
+astMoment <- function(moment = c("mean", "sd", "skew", "kurt"), mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+  moment <- match.arg(moment)
+  method <- match.arg(method)
+  if (is.null(pars)) {
+    if (missing(mu)) {
+      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    pars = c(mu, sigma, alpha, nu1, nu2)
+  }
+  switch(moment,
+         mean = astMean(pars = pars, method = method),
+         sd = astSD(pars = pars, method = method),
+         skew = astSkew(pars = pars, method = method),
+         kurt = astKurt(pars = pars, method = method, type = type))
+}
+
+#' @rdname ast-moment
+#' @export
+astMoments <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+  if (is.null(pars)) {
+    if (missing(mu)) {
+      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    pars = c(mu, sigma, alpha, nu1, nu2)
+  }
+  c(mean = astMean(pars = pars, method = method),
+    sd = astSD(pars = pars, method = method),
+    skew = astSkew(pars = pars, method = method),
+    kurt = astKurt(pars = pars, method = method, type = type))
+}
+
+#' @rdname ast-moment
+#' @export
+astRawMoment <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
   method <- match.arg(method)
   if (!is.null(pars)) {
     if (!missing(mu)) {
@@ -51,142 +172,57 @@ moment_ast <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, 
   }
   if (method == "analytical") {
     # return
-    mo <- sum( choose(n, 0:n) * sapply(n:0, moment_ss, sigma, alpha, nu1, nu2) * mu^(0:n) )
+    moment <- sum( choose(n, 0:n) * sapply(n:0, scaledStdASTMoment, sigma, alpha, nu1, nu2) * mu^(0:n) )
   }
   if (method == "numerical") {
     integrand <- function(x) {
       x^n * dast(x, mu, sigma, alpha, nu1, nu2)
     }
     # return
-    mo <- safeIntegrate(integrand, -Inf, Inf)$value
+    moment <- safeIntegrate(integrand, -Inf, Inf)$value
   }
-  mo
+  moment
 }
 
+#' @rdname ast-moment
 #' @export
-moments_ast <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
-  if (is.null(pars)) {
-    if (!missing(mu)) {
-      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
-    }
-    pars = c(mu, sigma, alpha, nu1, nu2)
-  }
-  c(mean = mean_ast(pars = pars, method = method),
-    variance = var_ast(pars = pars, method = method),
-    skewness = skew_ast(pars = pars, method = method),
-    kurtosis = kurt_ast(pars = pars, method = method))
-}
-
-#' @export
-mean_ast <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
-  if (!is.null(pars)) {
-    if (!missing(mu)) {
-      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
-    }
-    mu <- pars[1]
-    sigma <- pars[2]
-    alpha <- pars[3]
-    nu1 <- pars[4]
-    nu2 <- pars[5]
-  }
-  # return
-  moment_ast(1, mu, sigma, alpha, nu1, nu2, method = method)
-}
-
-#' @export
-var_ast <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
-  if (!is.null(pars)) {
-    if (!missing(mu)) {
-      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
-    }
-    mu <- pars[1]
-    sigma <- pars[2]
-    alpha <- pars[3]
-    nu1 <- pars[4]
-    nu2 <- pars[5]
-  }
-  # return
-  moment_central_ast(2, mu, sigma, alpha, nu1, nu2, method = method)
-}
-
-#' @export
-sd_ast <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
-  if (!is.null(pars)) {
-    if (!missing(mu)) {
-      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
-    }
-    mu <- pars[1]
-    sigma <- pars[2]
-    alpha <- pars[3]
-    nu1 <- pars[4]
-    nu2 <- pars[5]
-  }
-  var <- moment_central_ast(2, mu, sigma, alpha, nu1, nu2, method = method)
-  # return
-  sqrt(var)
-}
-
-#' @export
-skew_ast <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
-  if (!is.null(pars)) {
-    if (!missing(mu)) {
-      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
-    }
-    mu <- pars[1]
-    sigma <- pars[2]
-    alpha <- pars[3]
-    nu1 <- pars[4]
-    nu2 <- pars[5]
-  }
-  sd <- sd_ast(mu, sigma, alpha, nu1, nu2, method = method)
-  # return
-  moment_central_ast(3, mu, sigma, alpha, nu1, nu2, method = method) / sd^3
-}
-
-#' @export
-kurt_ast <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
-  if (!is.null(pars)) {
-    if (!missing(mu)) {
-      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
-    }
-    mu <- pars[1]
-    sigma <- pars[2]
-    alpha <- pars[3]
-    nu1 <- pars[4]
-    nu2 <- pars[5]
-  }
-  var <- var_ast(mu, sigma, alpha, nu1, nu2, method = method)
-  # return
-  moment_central_ast(4, mu, sigma, alpha, nu1, nu2, method = method) / var^2
-}
-
-moment_central_ast <- function(n, mu, sigma, alpha, nu1, nu2, method = c("analytical", "numerical")) {
+astCentralMoment <- function(n, mu, sigma, alpha, nu1, nu2, pars = NULL, method = c("analytical", "numerical")) {
   method <- match.arg(method)
-  mean <- moment_ast(1, mu, sigma, alpha, nu1, nu2, method = method)
+  if (!is.null(pars)) {
+    if (!missing(mu)) {
+      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+    }
+    mu <- pars[1]
+    sigma <- pars[2]
+    alpha <- pars[3]
+    nu1 <- pars[4]
+    nu2 <- pars[5]
+  }
+  mean <- astRawMoment(1, mu, sigma, alpha, nu1, nu2, method = method)
   if (method == "analytical") {
     # return
-    mo <- sum( (-1)^(n - n:0) * choose(n, 0:n) * sapply(n:0, moment_ast, mu, sigma, alpha, nu1, nu2) * mean^(0:n) )
+    moment <- sum( (-1)^(n - n:0) * choose(n, 0:n) * sapply(n:0, astRawMoment, mu, sigma, alpha, nu1, nu2) * mean^(0:n) )
   }
   if (method == "numerical") {
     integrand <- function(x) {
       (x - mean)^n * dast(x, mu, sigma, alpha, nu1, nu2)
     }
     # return
-    mo <- safeIntegrate(integrand, -Inf, Inf)$value
+    moment <- safeIntegrate(integrand, -Inf, Inf)$value
   }
-  mo
+  moment
 }
 
-moment_ss <- function(n, sigma, alpha, nu1, nu2) {
+scaledStdASTMoment <- function(n, sigma, alpha, nu1, nu2) {
   # moment for sz, s is scale, z is a standardi ast r.v.
   B <- alpha * K(nu1) + (1 - alpha) * K(nu2)
   alpha_star <- alpha * K(nu1)/B
   # return
-  alpha * (-2 * alpha_star * sigma * B)^n * moment_abst(nu1, n) +
-    (1 - alpha) * (2 * (1 - alpha_star) * sigma * B)^n * moment_abst(nu2, n)
+  alpha * (-2 * alpha_star * sigma * B)^n * absTMoments(nu1, n) +
+    (1 - alpha) * (2 * (1 - alpha_star) * sigma * B)^n * absTMoments(nu2, n)
 }
 
-moment_abst <- function(nu, n) {
+absTMoments <- function(nu, n) {
   # absolute moemnt of standard student t
   # -1 < n < nu
   sqrt(nu^n / pi) * gamma( (n+1)/2 ) * gamma( (nu-n)/2 ) / gamma(nu/2)
