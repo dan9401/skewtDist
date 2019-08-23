@@ -1,7 +1,7 @@
-Package: st
+Package: skewtDist
 Type: Package
 Title: Asymmetric Student t-distributions
-Version: 0.2.3
+Version: 0.2.9
 Author: Zhiye Xia
 Maintainer: Zhiye Xia <dansummer94@gmail.com>
 Description: Methods and Applications for AST and GAT distributions
@@ -12,7 +12,10 @@ URL: https://github.com/dan9401/st
 BugReports: https://github.com/dan9401/st/issues
 RoxygenNote: 6.1.1
 Suggests: 
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    knitr,
+    rmarkdown
 Imports: 
     nloptr,
     Rsolnp
+VignetteBuilder: knitr

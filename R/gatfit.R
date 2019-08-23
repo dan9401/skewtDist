@@ -1,4 +1,58 @@
-gatfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control) {
+#' @title Fitting function for Asymmetric Student-t distribution
+#'
+#' @name gatMLE
+#' @aliases gatmle
+#'
+#' @description Method for fitting an gat distribution to a univariate data series by Maximum Likelihood Estimation,
+#' returns an \code{gat} object.
+#'
+#' @param data a univariate data object to be fitted
+#' @param start_pars a named numeric vector of starting parameters for the optimization algorithm, not all parameters are needed
+#' @param fixed_pars a named numeric vector of parameters to be kept fixed during the optimization routine, not all parameters are needed
+#' @param solver solver used for MLE, one of 'nlminb', 'nloptr', 'Rsolnp', default is 'nlminb'
+#' @param solver_control list of control arguments passed to the solver
+#' @param symmetric a logical argument, when TRUE, the function fits an SST distribution(Symmetric Student-t, nu1 = nu2) instead, default to FALSE
+#'
+#' @return
+#' A \code{gat} object(S3), the components of the object are:
+#'     \item{data}{the univariate data object for the gat distribution to be fitted}
+#'     \item{solver}{the solver called}
+#'     \item{solver_control}{the list of control argumetns passed to the solver called}
+#'     \item{start_pars}{named numeric vector of starting parameters used}
+#'     \item{fixed_pars}{named numeric vector of fixed parameters used}
+#'     \item{symmetric}{logical argument controlling the symmetry of tail parameters in the MLE}
+#'     \item{solver_result}{output of the called solver}
+#'     \item{fitted_pars}{named vector of fitted arguemnts of the gat distribution}
+#'     \item{objective}{the optimal log-likelihood value obtained by the solver}
+#'     \item{time_elapsed}{the time elapesed for the MLE routine}
+#'     \item{message}{the message of convergence status produced by the called solver}
+#'     \item{standard_errors}{standard errors of the fitted parameters}
+#'
+#' @details
+#' The \code{gatMLE} function fits an gat distribution to a univariate data series by estimating the distribution parameters
+#' through Maximum Likelihood Estimation.
+#'
+#' For details of the list of control arguments, please refer to \code{nlminb}, \code{nloptr::nloptr}, \code{Rsolnp::solnp}
+#'
+#' @references
+#' Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}
+#' \url{https://econpapers.repec.org/paper/circirwor/2009s-13.htm}
+#'
+#' @examples
+#' pars <- c(0, 1, 1.5, 1.2, 2, 4)
+#' data <- rgat(1000, pars = pars)
+#' solver_control <- list()
+#' fit <- gatMLE(data, solver = 'Rsolnp', solver_control = solver_control)
+#' summary(fit)
+#' moments(fit)
+#' fitted(fit)
+#' se(fit)
+#' objective(fit)
+#' plot(fit)
+
+#' @rdname gatMLE
+#' @export
+gatMLE <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control) {
   if (!is.numeric(data) || length(data) == 0)
     stop("Data must be a numeric vector of non-zero length.")
 
@@ -8,26 +62,26 @@ gatfit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb"
   solver = match.arg(solver)
 
   fit <- gatfit_local(data, start_pars, fixed_pars, solver, solver_control)
-  standard_errors <- sqrt(diag(solve(infoMat_gat(fit$fitted_pars))))
-  fit$standard_errors <- standard_errors
+  #standard_errors <- sqrt(diag(solve(infoMat_gat(fit$fitted_pars))))
+  #fit$standard_errors <- standard_errors
 
-  structure(fit, class = "gatfit")
+  structure(fit, class = "gat")
 }
 
 gatfit_local <- function(data, start_pars = c(), fixed_pars = c(), solver, solver_control) {
   start_time <- Sys.time()
-  par_names <- c("mu", "sigma", "alpha", "nu1", "nu2")
+  par_names <- c("mu", "phi", "alpha", "r", "c", "nu")
   # insert the initial guess problem
   # possible code for using mode as the initial guess for mu
   # hist <- hist(data, breaks = 1001), only work best when a large sample of data
   # mode <- hist$mids[which(hist$counts == max(hist$counts))]
-  start_pars_default <- c(mu = 0, sigma = 1, alpha = 0.5, nu1 = 2, nu2 = 2)
+  start_pars_default <- c(mu = 0, phi = 1, alpha = 1, r = 1, c = 1, nu = 2)
   start_pars <- c(start_pars, start_pars_default[!(par_names %in% names(start_pars))])
 
-  b_df <- data.frame(name = c("mu", "sigma", "alpha", "nu1", "nu2"),
-                     lower_bound = c(-Inf, 0, 0, 0, 0),
-                     upper_bound = c(Inf, Inf, 1, Inf, Inf),
-                     order = 1:5)
+  b_df <- data.frame(name = c("mu", "phi", "alpha", "r", "c", "nu"),
+                     lower_bound = c(-Inf, 0, 0, 0, 0, 0),
+                     upper_bound = c(Inf, Inf, Inf, Inf, Inf, Inf),
+                     order = 1:6)
   sp_df <- data.frame(start_pars = start_pars,
                       name = names(start_pars))
   fp_df <- data.frame(fixed_pars = fixed_pars,
@@ -122,8 +176,9 @@ llgat <- function(pars, arglist) {
   g <- z + sqrt(1 + z^2)
   p <- nu / (alpha * (1 + r^2))
   q <- p * r^2
+  A <- (c*g)^(alpha*r) + (c*g)^(-alpha/r)
 
-  logl <- T_ * log( alpha * (1 + r^2) / (r * phi) ) - sum( nu / alpha * log( (cg)^(alpha*r) + cg^(-alpha/r) ) ) - T_ * log(beta(p, q)) - sum( 1/2 * log(1 + z^2) )
+  logl <- T_ * log( alpha * (1 + r^2) / (r * phi) ) - sum( nu / alpha * log(A) ) - T_ * log(beta(p, q)) - sum( 1/2 * log(1 + z^2) )
   -logl
 }
 
@@ -149,14 +204,34 @@ llgat_grad <- function(pars, arglist) {
   g <- z + sqrt(1 + z^2)
   p <- nu / (alpha * (1 + r^2))
   q <- p * r^2
+  A <- (c*g)^(alpha*r) + (c*g)^(-alpha/r)
+  dAdg <- alpha*r*(c*g)^(alpha*r)/g - alpha/r*(c*g)^(-alpha/r)/g
+  dAdr <- (c*g)^(alpha*r)*alpha*log(c*g) + (c*g)^(-alpha/r)*alpha*log(c*g)/r^2
+  dgdz <- 1 + z/sqrt(1+z^2)
+  dzdmu <- -1/phi
+  dzdphi <- -(y-mu)/phi^2
+  dpdalpha <- -p/alpha
+  dpdnu <- p/nu
+  dpdr <- -2*r/(1+r^2)*p
+  dqdalpha <- -q/alpha
+  dqdnu <- q/nu
+  dqdr <- 2/(r*(1+r^2))*q
+  dbdp <- beta(p,q)*(digamma(p) - digamma(p+q))
+  dbdq <- beta(p,q)*(digamma(q) - digamma(p+q))
+  dbdnu <- dbdq * dqdnu + dbdp * dpdnu
+  dbdalpha <- dbdq * dqdalpha + dbdp * dpdalpha
+  dbdr <- dbdq * dqdr + dbdp * dpdr
 
-  g_mu <- sum((nu1 + 1) / L(all_pars, y1) / nu1 * (y1 - mu) / (2 * alpha * phi * K(nu1))^2) +
-    sum((nu2 + 1) / R(all_pars, y2) / nu2 * (y2 - mu) / (2 * (1 - alpha) * phi * K(nu2))^2)
-  g_phi<- -T_ / phi + (nu1 + 1) / phi * sum(1 - 1 / L(all_pars, y1)) + (nu2 + 1) / phi * sum(1 - 1 / R(all_pars, y2))
-  g_alpha <- (nu1 + 1) / alpha * sum(1 - 1 / L(all_pars, y1)) - (nu2 + 1) / (1 - alpha) * sum(1 - 1 / R(all_pars, y2))
-  g_r <- sum(- log(L(all_pars, y1)) / 2 + (nu1 + 1) / 2 * D(nu1) * (L(all_pars, y1) - 1) / L(all_pars, y1))
-  g_c <- sum(- log(R(all_pars, y2)) / 2 + (nu2 + 1) / 2 * D(nu2) * (R(all_pars, y2) - 1) / R(all_pars, y2))
-  g_nu <- sum(- log(R(all_pars, y2)) / 2 + (nu2 + 1) / 2 * D(nu2) * (R(all_pars, y2) - 1) / R(all_pars, y2))
+  g_mu <- sum( -nu/alpha/A*dAdg*dgdz*dzdmu - z/(1+z^2)*dzdmu )
+
+  g_phi<- -T_/phi + sum( -nu/alpha/A*dAdg*dgdz*dzdphi - z/(1+z^2)*dzdphi )
+
+  g_alpha <-  T_/alpha + sum(nu/alpha^2*log(A) - nu/alpha/A*( r*(c*g)^(alpha*r)*log(c*g) - 1/r*(c*g)^(-alpha/r)*log(c*g) ) ) - T_/beta(p, q) * dbdalpha
+
+  g_r <- T_*2*r/(1+r^2) - T_/r + sum( -nu/alpha/A*dAdr ) - T_/beta(p,q) * dbdr
+
+  g_c <- sum( -nu/alpha/A* (alpha*r*g^(alpha*r)*c^(alpha*r-1) - alpha/r*g^(-alpha/r)*c^(-alpha/r-1)) )
+  g_nu <- sum( -1/alpha*log(A) ) - T_/beta(p,q) * dbdnu
   gradient <- -c(mu = g_mu, phi = g_phi, alpha = g_alpha, g_r = g_r, g_c = g_c, nu = g_nu)
 
   return(gradient[est_idx])

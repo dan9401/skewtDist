@@ -66,6 +66,8 @@ Functions for Symmetric Student-t distribution
 }
 \details{
 The SST functions are wrappers of their AST equivalent.
+
 For most of the functions, they are implemented by simply setting nu1, nu2(AST) = nu(SST).
+
 For \code{sstFit}, it is implemented by setting symmetric = TRUE.
 }

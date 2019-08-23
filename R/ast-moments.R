@@ -46,12 +46,7 @@
 #' pars <- c(0.12, 0.6, 0.6, 6, 5)
 #' astMoment("sd", pars = pars, method = "numerical")
 #' astMoments(pars = pars)
-#' astMean(pars = pars)
-#' astVar(pars = pars)
-#' astSkew(pars = pars)
-#' astKurt(pars = pars)
 
-#' @rdname ast-moment
 #' @export
 astMean <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
@@ -64,7 +59,6 @@ astMean <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
   astRawMoment(1, pars = pars, method = method)
 }
 
-#' @rdname ast-moment
 #' @export
 astVar <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
@@ -77,7 +71,6 @@ astVar <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = 
   astCentralMoment(2, pars = pars, method = method)
 }
 
-#' @rdname ast-moment
 #' @export
 astSD <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
@@ -91,7 +84,6 @@ astSD <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = N
   sqrt(var)
 }
 
-#' @rdname ast-moment
 #' @export
 astSkew <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
@@ -105,7 +97,6 @@ astSkew <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
   astCentralMoment(3, pars = pars, method = method) / sd^3
 }
 
-#' @rdname ast-moment
 #' @export
 astKurt <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   if (is.null(pars)) {
@@ -125,7 +116,7 @@ astKurt <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
 
 #' @rdname ast-moment
 #' @export
-astMoment <- function(moment = c("mean", "sd", "skew", "kurt"), mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+astMoment <- function(moment = c("mean", "sd", "var", "skew", "kurt"), mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   moment <- match.arg(moment)
   method <- match.arg(method)
   if (is.null(pars)) {
@@ -137,6 +128,7 @@ astMoment <- function(moment = c("mean", "sd", "skew", "kurt"), mu = 0, sigma = 
   switch(moment,
          mean = astMean(pars = pars, method = method),
          sd = astSD(pars = pars, method = method),
+         var = astVar(pars = pars, method = method),
          skew = astSkew(pars = pars, method = method),
          kurt = astKurt(pars = pars, method = method, type = type))
 }

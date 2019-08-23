@@ -18,7 +18,7 @@ density_ast <- function(fit, main = "Histogram/Density plot", ...) {
   abline(v = mu, col = 2)
 }
 
-qqplot_ast <- function(fit, dist = "ast", main = "QQPlot", ...) {
+qqplot_ast <- function(fit, dist = "ast", main = "QQPlot", envelope = 0.95, ...) {
   y <- as.numeric(fit$data)
   pars <- fit$fitted_pars
   mu <- pars["mu"]
@@ -43,6 +43,7 @@ qqplot_ast <- function(fit, dist = "ast", main = "QQPlot", ...) {
   } else {
     stop("dist must be one of normal and ast")
   }
+
   plot(x, y, main = main,
        xlab = paste(dist, "distribution"), ylab = "empirical distribution", ...)
   py <- quantile(y, c(0.25, 0.75))
@@ -50,4 +51,18 @@ qqplot_ast <- function(fit, dist = "ast", main = "QQPlot", ...) {
   int <- py[1L] - slope * px[1L]
   abline(int, slope, col = 4)
   points(px, py, col = 2)
+
+  if ( envelope != FALSE) {
+    zz <- qnorm(1 - (1 - envelope)/2)
+    #eval(parse(text=paste("	SE <- (b/d.function(z,", distributionParameter,",...))* sqrt(P * (1 - P)/n)")))
+
+    SE <- (slope/dast(x, pars = pars)) * sqrt(p * (1 - p)/length(y))
+    print(head(SE))
+    #		SE <- (b/d.function(z, ...)) * sqrt(P * (1 - P)/n)
+    fit.value <- int + slope * x
+    upper <- fit.value + zz * SE
+    lower <- fit.value - zz * SE
+    lines(x, upper, lty = 2, col = 4)
+    lines(x, lower, lty = 2, col = 4)
+  }
 }

@@ -1,10 +1,10 @@
 #' @title Fitting function for Asymmetric Student-t distribution
 #'
-#' @name astFit
-#' @aliases astfit
+#' @name astMLE
+#' @aliases astmle
 #'
 #' @description Method for fitting an AST distribution to a univariate data series by Maximum Likelihood Estimation,
-#' returns an \code{astFit} object.
+#' returns an \code{ast} object.
 #'
 #' @param data a univariate data object to be fitted
 #' @param start_pars a named numeric vector of starting parameters for the optimization algorithm, not all parameters are needed
@@ -14,7 +14,7 @@
 #' @param symmetric a logical argument, when TRUE, the function fits an SST distribution(Symmetric Student-t, nu1 = nu2) instead, default to FALSE
 #'
 #' @return
-#' A \code{astFit} object(S3), the components of the object are:
+#' A \code{ast} object(S3), the components of the object are:
 #'     \item{data}{the univariate data object for the AST distribution to be fitted}
 #'     \item{solver}{the solver called}
 #'     \item{solver_control}{the list of control argumetns passed to the solver called}
@@ -29,7 +29,7 @@
 #'     \item{standard_errors}{standard errors of the fitted parameters}
 #'
 #' @details
-#' The \code{astFit} function fits an AST distribution to a univariate data series by estimating the distribution parameters
+#' The \code{astMLE} function fits an AST distribution to a univariate data series by estimating the distribution parameters
 #' through Maximum Likelihood Estimation.
 #'
 #' For details of the list of control arguments, please refer to \code{nlminb}, \code{nloptr::nloptr}, \code{Rsolnp::solnp}
@@ -42,7 +42,7 @@
 #' pars <- c(0.12, 0.6, 0.6, 6, 5)
 #' data <- rast(1000, pars = pars)
 #' solver_control <- list(eval.max = 10^3, iter.max = 10^3)
-#' fit <- astFit(data, solver = 'nlminb', solver_control = solver_control)
+#' fit <- astMLE(data, solver = 'nlminb', solver_control = solver_control)
 #' summary(fit)
 #' moments(fit)
 #' fitted(fit)
@@ -50,10 +50,10 @@
 #' objective(fit)
 #' plot(fit)
 
-#' @rdname astFit
+#' @rdname astMLE
 #' @export
 # fit function for ast distribution
-astFit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control = list(), symmetric = FALSE) {
+astMLE <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control = list(), symmetric = FALSE) {
   if (!is.numeric(data) || length(data) == 0)
     stop("Data must be a numeric vector of non-zero length.")
 
@@ -71,7 +71,7 @@ astFit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb"
 
   fit$standard_errors <- standard_errors
 
-  structure(fit, class = "astFit")
+  structure(fit, class = "ast")
 }
 
 astFit_local <- function(data, start_pars, fixed_pars, solver, solver_control, symmetric) {

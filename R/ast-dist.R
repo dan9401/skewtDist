@@ -1,7 +1,7 @@
 #' @title Asymmetric Student-t Distribution
 #'
-#' @name ast-dist
-#' @aliases astdist
+#' @name AST
+#' @aliases ast
 #' @aliases dast
 #' @aliases past
 #' @aliases qast
@@ -70,7 +70,7 @@
 #' abline(v = 0, col = 4, lty = 2)
 #' legend(x = "topleft", legend = c("alpha = 0.3", "alpha = 0.5", "alpha = 0.7"), lty = 1:3)
 
-#' @rdname ast-dist
+#' @rdname AST
 #' @export
 dast <- function(x, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (!is.null(pars)) {
@@ -94,7 +94,7 @@ dast <- function(x, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
     d
 }
 
-#' @rdname ast-dist
+#' @rdname AST
 #' @export
 past <- function(q, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (!is.numeric(q))
@@ -117,7 +117,7 @@ past <- function(q, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
     2 * alpha * pt(pmin(q, 0)/(2 * alpha_star), nu1) + 2 * (1 - alpha) * (pt(pmax(q, 0)/(2 * (1 - alpha_star)), nu2) - 0.5)
 }
 
-#' @rdname ast-dist
+#' @rdname AST
 #' @export
 qast <- function(p, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (!is.numeric(p))
@@ -139,7 +139,7 @@ qast <- function(p, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
     mu + sigma * B * (2 * alpha_star * ( qt(pmin(p, alpha)/(2 * alpha), nu1)) + 2 * (1 - alpha_star) * ( qt((pmax(p, alpha) + 1 - 2 * alpha)/(2 * (1 - alpha)), nu2)))
 }
 
-#' @rdname ast-dist
+#' @rdname AST
 #' @export
 rast <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (n < 0)

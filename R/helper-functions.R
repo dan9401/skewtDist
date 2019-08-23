@@ -108,6 +108,7 @@ newton_raphson <- function(f, x0 = 0.5, maxiter = 1e2, tol = 1e-8) {
   h <- 1e-8
   i <- 1
   x1 <- x0
+  x <- x0
   # p <- numeric(maxiter)
   while(i <= maxiter) {
     fprime <- (f(x0 + h) - f(x0)) / h
@@ -174,9 +175,6 @@ surfacePlot <- function(n, pars, plotPars, ...) {
   colnames(valGrid) <- yVec
   persp(xVec, yVec, valGrid, xlab = xName, ylab = yName, ...)
   return(list(xVec, yVec, valGrid))
-  # p <- plot_ly(z = ~valueGrid) %>% add_surface()
-  # chart_link = api_create(p, filename = paste("grid", plotPars[1], plotPars[2], sep = ""))
-  # chart_link
 }
 
 report <- function(fit) {
