@@ -1,6 +1,6 @@
-# st
+# SkewtDist
 
-The goal of **st** is to provide applications for two families of skew-t distributions<sup>[1](#footnote1)</sup>. Thus providing the ability to model and analyze asymmetric tail behaviors in skewed and leptokurtic data.
+The goal of **SkewtDist** is to provide applications for two families of skew-t distributions<sup>[1](#footnote1)</sup>. Thus providing the ability to model and analyze asymmetric tail behaviors in skewed and leptokurtic data.
 
 ## Installation
 
@@ -12,7 +12,7 @@ install.packages("st")
 ```--->
 
 ``` r
-devtools::install__github("dan9401/st")
+devtools::install__github("dan9401/SkewtDist")
 ```
 
 ## Example
@@ -26,7 +26,6 @@ devtools::install__github("dan9401/st")
 ## To do list
 - [ ] difference between "expected" and "observed" information matrix
 - [ ] numerical correction of gamma for moment functions
-- [ ] gat fit
 - [ ] gat infoMat
 - [ ] test files
 - [ ] redistribute helper functions
