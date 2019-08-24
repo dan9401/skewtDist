@@ -1,6 +1,6 @@
-# SkewtDist
+# skewtDist
 
-The goal of **SkewtDist** is to provide applications for two families of skew-t distributions<sup>[1](#footnote1)</sup>. Thus providing the ability to model and analyze asymmetric tail behaviors in skewed and leptokurtic data.
+The goal of **skewtDist** is to provide applications for two families of skew-t distributions<sup>[1](#footnote1)</sup>. Thus providing the ability to model and analyze asymmetric tail behaviors in skewed and leptokurtic data.
 
 ## Installation
 

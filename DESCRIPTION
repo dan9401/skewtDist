@@ -1,4 +1,4 @@
-Package: SkewtDist
+Package: skewtDist
 Type: Package
 Title: Asymmetric Student t-distributions
 Version: 0.3.0

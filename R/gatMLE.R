@@ -52,7 +52,7 @@
 
 #' @rdname gatMLE
 #' @export
-gatMLE <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control) {
+gatMLE <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control = list()) {
   if (!is.numeric(data) || length(data) == 0)
     stop("Data must be a numeric vector of non-zero length.")
 

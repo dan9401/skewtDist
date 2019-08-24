@@ -57,7 +57,6 @@ qqplot_ast <- function(fit, dist = "ast", main = "QQPlot", envelope = 0.95, ...)
     #eval(parse(text=paste("	SE <- (b/d.function(z,", distributionParameter,",...))* sqrt(P * (1 - P)/n)")))
 
     SE <- (slope/dast(x, pars = pars)) * sqrt(p * (1 - p)/length(y))
-    print(head(SE))
     #		SE <- (b/d.function(z, ...)) * sqrt(P * (1 - P)/n)
     fit.value <- int + slope * x
     upper <- fit.value + zz * SE

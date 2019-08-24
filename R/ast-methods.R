@@ -12,9 +12,6 @@
 #' @aliases summary.ast
 #' @aliases moments.ast
 #' @aliases plots.ast
-#' @aliases fitted.ast
-#' @aliases se.ast
-#' @aliases objective.ast
 #'
 #' @examples
 #' pars <- c(0.12, 0.6, 0.6, 6, 5)
@@ -23,9 +20,6 @@
 #' fit <- astMLE(data, solver = 'nlminb', solver_control = solver_control)
 #' summary(fit)
 #' moments(fit)
-#' fitted(fit)
-#' se(fit)
-#' objective(fit)
 #' plot(fit)
 
 #' @rdname ast-methods
@@ -59,25 +53,7 @@ print.ast <- function(fit) {
 
 #' @rdname ast-methods
 #' @export
-fitted.ast <- function(fit) {
-  fit$fitted_pars
-}
-
-#' @rdname ast-methods
-#' @export
-se.ast <- function(fit) {
-  fit$standard_errors
-}
-
-#' @rdname ast-methods
-#' @export
-objective.ast <- function(fit) {
-  fit$objective
-}
-
-#' @rdname ast-methods
-#' @export
-plot.ast <- function(fit, type = NULL, dist = "ast", envelope, ...) {
+plot.ast <- function(fit, type = NULL, dist = "ast", envelope = 0.95, ...) {
   if (is.null(type)) {
     selection <- 1
     while (selection) {
@@ -92,7 +68,7 @@ plot.ast <- function(fit, type = NULL, dist = "ast", envelope, ...) {
     if (type == "density") {
       density_ast(fit, ...)
     } else if(type == "qqplot") {
-      qqplot_ast(fit, dist, envelope, ...)
+      qqplot_ast(fit, dist = dist, envelope = envelope, ...)
     }
   }
 }

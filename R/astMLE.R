@@ -81,7 +81,7 @@ astFit_local <- function(data, start_pars, fixed_pars, solver, solver_control, s
   fixed_pars <- ipars$fixed_pars
   names(fixed_pars) <- ipars$name
   est_idx <- which(is.na(fixed_pars))
-  start_pars <- ipars$start_pars[est_idx]
+  x0 <- ipars$start_pars[est_idx]
   lb <- ipars$lower_bound[est_idx]
   ub <- ipars$upper_bound[est_idx]
   # arglist is an argument for llast and llast_grad

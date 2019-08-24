@@ -51,12 +51,6 @@ rsst <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL) {
 
 #' @rdname sst-functions
 #' @export
-sstMoment <- function(moment, mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
-  astMoment(moment, mu, sigma, alpha, nu, nu, pars, method, type)
-}
-
-#' @rdname sst-functions
-#' @export
 sstMoments <- function(mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   astMoments(mu, sigma, alpha, nu, nu, pars, method, type)
 }
@@ -71,36 +65,6 @@ sstRawMoment <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NUL
 #' @export
 sstCentralMoment <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
   astCentralMoment(n, mu, sigma, alpha, nu, nu, pars, method)
-}
-
-#' @rdname sst-functions
-#' @export
-sstMean <- function(mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
-  astMean(mu, sigma, alpha, nu, nu, pars, method)
-}
-
-#' @rdname sst-functions
-#' @export
-sstSD <- function(mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
-  astSD(mu, sigma, alpha, nu, nu, pars, method)
-}
-
-#' @rdname sst-functions
-#' @export
-sstVar <- function(mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
-  astVar(mu, sigma, alpha, nu, nu, pars, method)
-}
-
-#' @rdname sst-functions
-#' @export
-sstSkew <- function(mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
-  astKurt(mu, sigma, alpha, nu, nu, pars, method)
-}
-
-#' @rdname sst-functions
-#' @export
-sstKurt <- function(mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
-  astKurt(mu, sigma, alpha, nu, nu, pars, method)
 }
 
 #' @rdname sst-functions
@@ -135,8 +99,8 @@ sstInfoMat <- function(pars) {
 
 #' @rdname sst-functions
 #' @export
-sstFit <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control = list()) {
-  astFit(data, start_pars, fixed_pars, solver, solver_control, symmetric = TRUE)
+sstMLE <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb", "nloptr", "Rsolnp"), solver_control = list()) {
+  astMLE(data, start_pars, fixed_pars, solver, solver_control, symmetric = TRUE)
 }
 
 

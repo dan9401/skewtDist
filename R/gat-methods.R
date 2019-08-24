@@ -77,7 +77,7 @@ objective.gat <- function(fit) {
 
 #' @rdname gat-methods
 #' @export
-plot.gat <- function(fit, type = NULL, dist = "gat", envelope, ...) {
+plot.gat <- function(fit, type = NULL, dist = "gat", envelope = 0.95, ...) {
   if (is.null(type)) {
     selection <- 1
     while (selection) {
@@ -92,7 +92,7 @@ plot.gat <- function(fit, type = NULL, dist = "gat", envelope, ...) {
     if (type == "density") {
       density_gat(fit, ...)
     } else if(type == "qqplot") {
-      qqplot_gat(fit, dist, envelope, ...)
+      qqplot_gat(fit, dist = dist, envelope = envelope, ...)
     }
   }
 }
