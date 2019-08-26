@@ -5,9 +5,6 @@
 \alias{summary.gat}
 \alias{moments.gat}
 \alias{print.gat}
-\alias{fitted.gat}
-\alias{se.gat}
-\alias{objective.gat}
 \alias{plot.gat}
 \title{Methods for gat class}
 \usage{
@@ -17,13 +14,7 @@
 
 \method{print}{gat}(fit)
 
-\method{fitted}{gat}(fit)
-
-\method{se}{gat}(fit)
-
-\method{objective}{gat}(fit)
-
-plot.gat(fit, type = NULL, dist = "gat", envelope, ...)
+plot.gat(fit, type = NULL, dist = "gat", envelope = 0.95, ...)
 }
 \arguments{
 \item{fit}{A GAT fit object of class \code{\link{gat}}}

@@ -14,7 +14,7 @@
 
 \method{print}{ast}(fit)
 
-plot.ast(fit, type = NULL, dist = "ast", envelope, ...)
+plot.ast(fit, type = NULL, dist = "ast", envelope = 0.95, ...)
 }
 \arguments{
 \item{fit}{A AST fit object of class \code{\link{ast}}}

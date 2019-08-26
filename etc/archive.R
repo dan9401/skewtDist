@@ -245,3 +245,160 @@ sg <- function(mu, phi, alpha, r, c, nu) {
   }
   safeIntegrate(integrand, -Inf, Inf)$value
 }
+
+#' @rdname gat-methods
+#' @export
+fitted.gat <- function(fit) {
+  fit$fitted_pars
+}
+
+#' @rdname gat-methods
+#' @export
+se.gat <- function(fit) {
+  fit$standard_errors
+}
+
+#' @rdname gat-methods
+#' @export
+objective.gat <- function(fit) {
+  fit$objective
+}
+
+
+#' @export
+se <- function(x, ...) {
+  UseMethod("se", x)
+}
+
+#' @export
+objective <- function(x, ...) {
+  UseMethod("objective", x)
+}
+
+#' @export
+fitted <- function(x, ...) {
+  UseMethod("fitted", x)
+}
+
+
+# has no documentation developed yet
+#' @export
+surfacePlot <- function(n, pars, plotPars, ...) {
+  mu <- pars[1]
+  sigma <- pars[2]
+  alpha <- pars[3]
+  nu1 <- pars[4]
+  nu2 <- pars[5]
+  data <- rast(n, mu, sigma, alpha, nu1, nu2)
+
+  xName <- plotPars[1]
+  yName <- plotPars[2]
+  xVec <- parVec(pars[xName], xName)
+  yVec <- parVec(pars[yName], yName)
+  xLen <- length(xVec)
+  yLen <- length(yVec)
+  xMat <- matrix(rep(xVec, yLen), xLen, yLen)
+  yMat <- matrix(rep(yVec, xLen), xLen, yLen, byrow = TRUE)
+  parGrid <- array(c(xMat, yMat), c(xLen, yLen, 2))
+
+  start_pars <- c()
+  fixed_pars <- c()
+  solver <- "Rsolnp"
+  solver_control <- list(trace = 0)
+  valGrid <- apply(parGrid, 1:2, obj_surface, data, start_pars, fixed_pars, solver, solver_control, xName, yName)
+  rownames(valGrid) <- xVec
+  colnames(valGrid) <- yVec
+  persp(xVec, yVec, valGrid, xlab = xName, ylab = yName, ...)
+  return(list(xVec, yVec, valGrid))
+}
+
+report <- function(fit) {
+  report <- c(round(c(fit$fitted_pars, fit$objective, fit$time_elapsed) , 8), fit$message)
+  names(report)[c(6, 7, 8)] <- c("objective", "time", "message")
+  report
+}
+
+# has no documentation developed yet
+#' @export
+my_report <- function(data, solver, solver_control, plots = "none", dist = "ast") {
+  fitList <- lapply(data, astfit, solver = solver, solver_control = solver_control)
+
+  for (i in 1:length(fitList)) {
+    fitList[[i]]$name <- names(fitList)[i]
+  }
+
+  if (plots == "both") {
+    par(mfrow = c(4, 5))
+    lapply(fitList, function(fit) {plot(fit, type = "density", main = fit$name) })
+    par(mfrow = c(4, 5))
+    lapply(fitList, function(fit) {plot(fit, type = "qqplot", main = fit$name, dist = dist) })
+    #}
+  } else if (plots == "density") {
+    par(mfrow = c(4, 5))
+    lapply(fitList, function(fit) {plot(fit, type = "density", main = fit$name) })
+  } else if (plots == "qqplot") {
+    par(mfrow = c(4, 5))
+    lapply(fitList, function(fit) {plot(fit, type = "qqplot", main = fit$name, dist = dist) })
+  }
+  par(mfrow = c(1, 1))
+
+  res <- t(sapply(fitList, report))
+  res <- as.data.frame(res)
+  res[,-length(res)] <- lapply(res[,-length(res)], function(x) round(as.numeric(as.character(x)), 6))
+
+  res
+}
+
+newton_raphson <- function(f, x0 = 0.5, maxiter = 1e2, tol = 1e-8) {
+  h <- 1e-8
+  i <- 1
+  x1 <- x0
+  x <- x0
+  # p <- numeric(maxiter)
+  while(i <= maxiter) {
+    fprime <- (f(x0 + h) - f(x0)) / h
+    x1 <- (x0 - (f(x0) / fprime))
+    # p = x1
+    i <- i + 1
+    if (abs(x1 - x0) < tol) {
+      break
+    }
+    x0 <- x1
+  }
+  x1
+}
+
+# used only for surfaceplot in plot-methods
+obj_surface <- function(pars, data, start_pars, fixed_pars, solver, solver_control, xName, yName, symmetric = FALSE) {
+  fixed_pars[xName] <- pars[1]
+  fixed_pars[yName] <- pars[2]
+  #astfit_local(data, start_pars, fixed_pars, solver, solver_control, symmetric)
+  return(astfit_local(data, start_pars, fixed_pars, solver, solver_control, symmetric)$objective)
+}
+
+safeIntegrate <- function(f, lower, upper, ..., subdivisions = 1000L,
+                          rel.tol = .Machine$double.eps^0.25, abs.tol = rel.tol,
+                          stop.on.error = TRUE, keep.xy = FALSE, aux = NULL) {
+  res <- integrate(f, lower, upper, ..., subdivisions = subdivisions,
+                   rel.tol = rel.tol, abs.tol = abs.tol,
+                   stop.on.error = stop.on.error, keep.xy = keep.xy, aux = aux)
+  # the safeIntegrate in HyperbolicDist has different rules
+  # don't seem to be necessary
+  if (lower == upper) {
+    res$value <- 0
+    res$abs.error <- 0
+  }
+  res
+}
+
+# the following 2 are required for surface plot, for exploraton reason
+parVec <- function(x, xName) {
+  eps <- 1.0e-8
+  if (xName == "mu") {
+    seq(x - 0.5, x + 0.5, 0.1)
+  } else if (xName == "alpha") {
+    seq(0.1, 0.9, 0.1)
+  } else {
+    seq(max(0.1, x - 0.5), x + 0.5, 0.1)
+  }
+}

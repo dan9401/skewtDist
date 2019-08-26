@@ -41,8 +41,7 @@
 #' @examples
 #' pars <- c(0.12, 0.6, 0.6, 6, 5)
 #' data <- rast(1000, pars = pars)
-#' solver_control <- list(eval.max = 10^3, iter.max = 10^3)
-#' fit <- astMLE(data, solver = 'nlminb', solver_control = solver_control)
+#' fit <- astMLE(data)
 #' summary(fit)
 #' moments(fit)
 #' fitted(fit)
@@ -61,7 +60,6 @@ astMLE <- function(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb"
   #check_bound(start_pars)
   #check_bound(fixed_pars)
   solver = match.arg(solver)
-
   fit <- astFit_local(data, start_pars, fixed_pars, solver, solver_control, symmetric)
   if (symmetric == TRUE) {
     standard_errors <- sqrt(diag(solve(sstInfoMat(fit$fitted_pars)))/length(data))
@@ -79,7 +77,12 @@ astFit_local <- function(data, start_pars, fixed_pars, solver, solver_control, s
   ipars <- i_pars(start_pars, fixed_pars, symmetric)
 
   fixed_pars <- ipars$fixed_pars
-  names(fixed_pars) <- ipars$name
+  if (is.null(start_pars)) {
+    start_pars <- rep(NA, 5)
+  } else {
+    start_pars <- start_pars[ipars$name]
+  }
+  names(fixed_pars) <- names(start_pars) <- ipars$name
   est_idx <- which(is.na(fixed_pars))
   x0 <- ipars$start_pars[est_idx]
   lb <- ipars$lower_bound[est_idx]
@@ -90,7 +93,7 @@ astFit_local <- function(data, start_pars, fixed_pars, solver, solver_control, s
 
   # will be expanded by number of solvers developed should also implement a fixed parameter version for this
   if (solver == "nloptr") {
-    res <- nloptr::nloptr(x0 = start_pars,
+    res <- nloptr::nloptr(x0 = x0,
                           eval_f = llast,
                           eval_grad_f = llast_grad,
                           lb = lb,
@@ -104,7 +107,7 @@ astFit_local <- function(data, start_pars, fixed_pars, solver, solver_control, s
     objective <- sol_res$objective
     message <- sol_res$message
   } else if (solver == "Rsolnp") {
-    res <- Rsolnp::solnp(pars = start_pars,
+    res <- Rsolnp::solnp(pars = x0,
                          fun = llast,
                          LB= lb,
                          UB = ub,
@@ -116,7 +119,7 @@ astFit_local <- function(data, start_pars, fixed_pars, solver, solver_control, s
     objective <- sol_res$values[length(sol_res$values)]
     message <- sol_res$convergence
   } else if (solver == "nlminb") {
-    res <- nlminb(start = start_pars,
+    res <- nlminb(start = x0,
                   objective = llast,
                   gradient = llast_grad,
                   arglist = arglist,

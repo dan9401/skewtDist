@@ -49,8 +49,7 @@ For details of the list of control arguments, please refer to \code{nlminb}, \co
 \examples{
 pars <- c(0.12, 0.6, 0.6, 6, 5)
 data <- rast(1000, pars = pars)
-solver_control <- list(eval.max = 10^3, iter.max = 10^3)
-fit <- astMLE(data, solver = 'nlminb', solver_control = solver_control)
+fit <- astMLE(data)
 summary(fit)
 moments(fit)
 fitted(fit)

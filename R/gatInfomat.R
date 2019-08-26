@@ -1,4 +1,5 @@
-gatInfoMat <- function(pars, data) {
+#' @export
+gatInfoMat <- function(pars, data, method = "observed") {
   y <- data
 
   mu <- pars[1]
@@ -32,7 +33,7 @@ gatInfoMat <- function(pars, data) {
   dbdr <- dbdq * dqdr + dbdp * dpdr
 
   s_mu <- -nu/alpha/A*dAdg*dgdz*dzdmu - z/(1+z^2)*dzdmu
-  s_phi<- -1/phi + -nu/alpha/A*dAdg*dgdz*dzdphi - z/(1+z^2)*dzdphi
+  s_phi<- -1/phi -nu/alpha/A*dAdg*dgdz*dzdphi - z/(1+z^2)*dzdphi
   s_alpha <-  1/alpha + nu/alpha^2*log(A) - nu/alpha/A*( r*(c*g)^(alpha*r)*log(c*g) - 1/r*(c*g)^(-alpha/r)*log(c*g) ) - 1/beta(p, q) * dbdalpha
   s_r <- 2*r/(1+r^2) - 1/r - nu/alpha/A*dAdr - 1/beta(p,q) * dbdr
   s_c <- -nu/alpha/A* (alpha*r*g^(alpha*r)*c^(alpha*r-1) - alpha/r*g^(-alpha/r)*c^(-alpha/r-1))
@@ -73,4 +74,14 @@ gatInfoMat <- function(pars, data) {
                     nrow = 6, ncol = 6)
 
   infoMat
+}
+
+#' @export
+gatCov <- function(pars, data) {
+  solve(gatInfoMat(pars, data))
+}
+
+#' @export
+gatCor <- function(pars, data) {
+  cov2cor(gatCov(pars, data))
 }

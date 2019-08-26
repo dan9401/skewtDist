@@ -25,11 +25,23 @@
 #' @rdname ast-methods
 #' @export
 summary.ast <- function(fit) {
-  fit$data <- NULL
-  fit$solver_control <- NULL
-  fit$solver <- NULL
-  fit$objective <- NULL
-  fit
+  dist <- ifelse(fit$symmetric == TRUE, "SST", "AST")
+  pars <- rbind(fit$start_pars, fit$fixed_pars)
+  res <- rbind(fit$fitted_pars, fit$standard_errors)
+  colnames(pars) <- colnames(res) <- names(fit$fitted_pars)
+  rownames(pars) <- c("start_pars", "fixed_pars")
+  rownames(res) <- c("fitted_pars", "standard_errors")
+
+  cat("Distribution: ", dist, "\n")
+  cat("Observations: ", length(fit$data), "\n")
+  cat("\nCalls:\n")
+  print(pars)
+  cat("\nResult:\n")
+  print(res)
+  cat("\n\nLog-likelihood", fit$objective)
+  cat("\n\nSolver: ", fit$solver)
+  cat("\nTime elapsed: ", fit$time_elapsed)
+  cat("\nConvergence Message: ", fit$message)
 }
 
 #' @rdname ast-methods
@@ -42,13 +54,19 @@ moments.ast <- function(fit, method = c("analytical", "numerical")) {
 #' @rdname ast-methods
 #' @export
 print.ast <- function(fit) {
-  fit$data <- NULL
-  fit$sol_res <- NULL
-  fit$solver_control <- NULL
-  fit$solver <- NULL
-  for (i in 1:length(fit)) {
-    print(fit[i])
-  }
+  dist <- ifelse(fit$symmetric == TRUE, "SST", "AST")
+  pars <- rbind(fit$start_pars, fit$fixed_pars)
+  res <- rbind(fit$fitted_pars, fit$standard_errors)
+  colnames(pars) <- colnames(res) <- names(fit$fitted_pars)
+  rownames(pars) <- c("start_pars", "fixed_pars")
+  rownames(res) <- c("fitted_pars", "standard_errors")
+
+  cat("Distribution: ", dist, "\n")
+  cat("Observations: ", length(fit$data), "\n")
+  cat("\nCalls:\n")
+  print(pars)
+  cat("\nResult:\n")
+  print(res)
 }
 
 #' @rdname ast-methods

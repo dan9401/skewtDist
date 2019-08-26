@@ -49,8 +49,7 @@ For details of the list of control arguments, please refer to \code{nlminb}, \co
 \examples{
 pars <- c(0, 1, 1.5, 1.2, 2, 4)
 data <- rgat(1000, pars = pars)
-solver_control <- list()
-fit <- gatMLE(data, solver = 'Rsolnp', solver_control = solver_control)
+fit <- gatMLE(data)
 summary(fit)
 moments(fit)
 fitted(fit)
