@@ -1,0 +1,2153 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+%%%%%%%%%%%%%%%%%%%% book.tex %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% sample root file for the chapters of your "monograph"
+%
+% Use this file as a template for your own input.
+%
+%%%%%%%%%%%%%%%% Springer-Verlag %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% RECOMMENDED %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% choose options for [] as required from the list
+% in the Reference Guide
+
+
+\usepackage[bottom]{footmisc}% places footnotes at page bottom
+
+% see the list of further useful packages
+% in the Reference Guide
+
+
+%\usepackage[style=authoryear,natbib=true,firstinits=true,backend=biber]{biblatex}
+%\addbibresource{C:/Rprojects/bookportopt/msybook.bib}
+
+%\renewcommand*{\nameyeardelim}{\addspace}
+%\renewbibmacro{in:}{}
+
+\usepackage{txfonts}
+\usepackage{upgreek}
+\end_preamble
+\options hyperfootnotes=false
+\use_default_options true
+\begin_modules
+knitr
+theorems-ams
+\end_modules
+\maintain_unincluded_children false
+\begin_local_layout
+Provides natbib 1
+\end_local_layout
+\language english
+\language_package none
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command biber
+\index_command default
+\float_placement H
+\paperfontsize 12
+\spacing onehalf
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered true
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 2
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Introduction to the skewtDist package (Version 0.3.0)
+\end_layout
+
+\begin_layout Author
+Daniel Zhiye Xia
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+skewtDist
+\series default
+ is an R package for two families of skew-t distributions that have different
+ tail behavior for left and right tails, namely the family of the Asymmetric
+ Student t-distributions (AST) distributions introduced by Zhu and Galbraith
+ (2010) (ZG), and the the family of generalized asymmetric t-distributions
+ (GAT) introduced by Baker (2018) (BAK).
+ The importance of these two families is that they go beyond the symmetric
+ tail behaviors of the skew-t distributions derived from skew-normal distributio
+ns, as described in Azzalini and Capitanio (2014), and hence can provide
+ better fits for certain data arising in applications, especially for asset
+ returns.
+\end_layout
+
+\begin_layout Standard
+The 
+\series bold
+skewtDist
+\series default
+ package aims to provide a set of tools for modelling non-normally distributed
+ data with skew-t distributions.
+ The package includes, for both AST and GAT families, the following functionalit
+y: (a) computation of probability density functions, cumulative distribution
+ functions, quantiles, moments (mean, variance, skewness and excess kurtosis)
+ (b) generation of random variables (c) information matrix computation,
+ and (d) maximum likelihood estimation skew-t distribution parameters.
+ The package may be installed and loaded with the following code.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<install, eval=F>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+devtools::install_github(
+\begin_inset Quotes eld
+\end_inset
+
+dan9401/skewtDist
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(skewtDist)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<package, echo = FALSE, message = FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+library(skewtDist)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Asymmetric Student t-distribution
+\end_layout
+
+\begin_layout Subsection
+AST Distribution
+\end_layout
+
+\begin_layout Standard
+The AST distribution introduced by Zhu and Galbraith (2010) is generalized
+ from the SST distribution by Hansen (1994) and Fernández & Steel (1998).
+ It is a 5 parameter distribution denoted by 
+\begin_inset Formula $AST(\mu,s,\alpha,\nu_{1},\nu_{2})$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Location parameter 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is the mode, which is generally not the mean of the distribution.
+\end_layout
+
+\begin_layout Itemize
+Scale parameter 
+\begin_inset Formula $s>0$
+\end_inset
+
+,which is not the standard deviation.
+\end_layout
+
+\begin_layout Itemize
+The distribution skews to the right when the skewness parameter 
+\begin_inset Formula $\alpha<0.5$
+\end_inset
+
+, skews to the left when 
+\begin_inset Formula $\alpha>0.5$
+\end_inset
+
+, 
+\begin_inset Formula $\alpha\in(0,1)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+The location parameter 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is equal to the 
+\begin_inset Formula $\alpha$
+\end_inset
+
+-th quantile of the distribution.
+\end_layout
+
+\begin_layout Itemize
+The two degrees of freedom / tail parameters each control the left and rights
+ tails of the distribution, separated at the location parameter 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+ The left tail parameter 
+\begin_inset Formula $\nu_{1}>0$
+\end_inset
+
+ controls the left half (below the 
+\begin_inset Formula $\alpha$
+\end_inset
+
+-th quantile) of the distribution, while the right tail parameter 
+\begin_inset Formula $\nu_{2}>0$
+\end_inset
+
+ controls the right half (above the 
+\begin_inset Formula $\alpha$
+\end_inset
+
+-th quantile) of the distribution.
+\end_layout
+
+\begin_layout Standard
+The word 
+\begin_inset Quotes eld
+\end_inset
+
+asymmetric
+\begin_inset Quotes erd
+\end_inset
+
+ in AST indicates not only skewness in the distribution, but also the asymmetry
+ in the two tail powers of the distribution.
+ Its density function has the form
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Note that two parameterization of the density function has been introduced
+ in the Zhu and Galbraith (2010) paper, utilizing different scales.
+ Here we present the density function we used to develop the package, see
+ equation (3) in the Appendix for the other parameterization.
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+f_{AST}(y;\theta)=\begin{cases}
+\frac{1}{\sigma}\bigg[1+\frac{1}{\nu_{1}}\Big(\frac{y-\mu}{2\alpha\sigma K(\nu_{1})}\Big)^{2}\bigg]^{-(\nu_{1}+1)/2} & y\le\mu\\
+\frac{1}{\sigma}\bigg[1+\frac{1}{\nu_{2}}\Big(\frac{y-\mu}{2(1-\alpha)\sigma K(\nu_{2})}\Big)^{2}\bigg]^{-(\nu_{2}+1)/2} & y>\mu
+\end{cases}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $K(\nu)=\frac{\Gamma(\frac{\nu+1}{2})}{\sqrt{\pi\nu}\ \Gamma(\frac{\nu}{2})}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+An AST distribution can be described by specifying the 5 parameters either
+ separately or as a vector, the 
+\family typewriter
+dast
+\family default
+, 
+\family typewriter
+past
+\family default
+, 
+\family typewriter
+qast
+\family default
+ and 
+\family typewriter
+rast
+\family default
+ functions takes in the component parameters or the vectors to calculate
+ the function value or generate random variables.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<astDist>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+mu <- 0.12; scale <- 0.6; alpha <- 0.6; nu1 <- 5; nu2 <- 6
+\end_layout
+
+\begin_layout Plain Layout
+
+pars <- c(mu, scale, alpha, nu1, nu2)
+\end_layout
+
+\begin_layout Plain Layout
+
+# using component parameters
+\end_layout
+
+\begin_layout Plain Layout
+
+dast(0.12, mu, scale, alpha, nu1, nu2)
+\end_layout
+
+\begin_layout Plain Layout
+
+# using parameter vector
+\end_layout
+
+\begin_layout Plain Layout
+
+dast(0.12, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+past(0.12, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+qast(0.12, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Fig.1 shows the density plot of the above AST distribution.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<astDensity, fig.cap = "AST Density Plot", out.width="75%", fig.align="center",
+ fig.pos = "h", out.extra = ''>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# random generation
+\end_layout
+
+\begin_layout Plain Layout
+
+set.seed(123)
+\end_layout
+
+\begin_layout Plain Layout
+
+data <- rast(1000, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+x <- seq(-3, 3, 0.01)
+\end_layout
+
+\begin_layout Plain Layout
+
+y <- dast(x, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+hist(data, prob = T, breaks = 50)
+\end_layout
+
+\begin_layout Plain Layout
+
+lines(x, y, col = 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+AST Moments
+\end_layout
+
+\begin_layout Standard
+Moments of an AST distribution can be calculated by 
+\family typewriter
+astMoments
+\family default
+ function.
+ The function returns a vector of mean, standard deviation, skewness and
+ excess kurtosis of an AST distribution.
+ The 
+\family typewriter
+method
+\family default
+ argument of the function can be used to choose between analytical calculation
+ or numerical integration.
+ See equations (4)-(7) in the Appendix for details of the analytical formula
+ of AST moments.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<astMoments1>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+astMoments(pars = pars, 
+\begin_inset Quotes eld
+\end_inset
+
+analytical
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+astMoments(pars = pars, 
+\begin_inset Quotes eld
+\end_inset
+
+numerical
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+astRawMoment
+\family default
+ calculates the raw moments and 
+\family typewriter
+astCentralMoment
+\family default
+ calculates the Central Moments of an AST distribution.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<astMoments2>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+astRawMoment(1, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+astMoments(pars = pars)[
+\begin_inset Quotes eld
+\end_inset
+
+mean
+\begin_inset Quotes erd
+\end_inset
+
+] == astRawMoment(1, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+astCentralMoment(2, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+astMoments(pars = pars)[
+\begin_inset Quotes eld
+\end_inset
+
+sd
+\begin_inset Quotes erd
+\end_inset
+
+] == sqrt(astCentralMoment(2, pars = pars))
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+AST Information Matrix
+\end_layout
+
+\begin_layout Standard
+The function 
+\family typewriter
+astInfoMat
+\family default
+ calculates either the expected information matrix, or the observed information
+ matrix of an AST distribution, and the 
+\family typewriter
+method
+\family default
+ argument of 
+\family typewriter
+astInfoMat
+\family default
+ can be used to calculate the expected information matrix (by an asymptotic
+ formula provided in ZG) or observed information matrix (based on derivatives
+ of the log-likelihood evaluated at an observed data set).
+ See Appendix C in the ZG (2009) paper for formulas of expected and observed
+ information matrix.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<astInfoMat>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+round(astInfoMat(pars = pars, method = 
+\begin_inset Quotes eld
+\end_inset
+
+expected
+\begin_inset Quotes erd
+\end_inset
+
+), 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+astCov
+\family default
+ computes the asymptotic covariance matrix of the parameter MLEs by evaluating
+ the inverse of the information matrix, 
+\family typewriter
+astCor
+\family default
+ calculates the corresponding asymptotic correlation matrix.
+ The latter provides useful insight on the extent to which pairs of the
+ 5 AST parameter MLEs are correlated with one another.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+round(astCov(pars = pars), 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+round(astCor(pars = pars), 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+astMLE
+\end_layout
+
+\begin_layout Standard
+The function 
+\family typewriter
+astMLE
+\family default
+ computes the MLE of an AST distribution and returns an 
+\family typewriter
+ast
+\family default
+ object.
+ The 
+\family typewriter
+astMLE
+\family default
+ function has the following arguments.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<astMLEargs>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+args(astMLE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+start_pars
+\family default
+ argument can be specified to define the initial condition of the optimization
+ process, 
+\family typewriter
+fixed_pars
+\family default
+ can be specified to control the parameters to be kept fixed in the optimization
+, 
+\family typewriter
+symmetry
+\family default
+ is a logical argument that tells the function to fit an SST distribution
+ when 
+\family typewriter
+TRUE
+\family default
+ (see more discussion on this in Section 2.5).
+ In the current version of 
+\family typewriter
+astMLE
+\family default
+, the user has the choice of three solvers: 
+\family typewriter
+nlminb
+\family default
+, 
+\family typewriter
+nloptr
+\family default
+ and 
+\family typewriter
+Rsolnp.
+
+\family default
+ The solvers 
+\family typewriter
+nlminb
+\family default
+ and 
+\family typewriter
+Rsolnp
+\family default
+ are suggested as they are both very stable and yield good solutions.
+ When using 
+\family typewriter
+nloptr
+\family default
+ as the solver, the algorithms to be used should be specified in the 
+\family typewriter
+solver_control
+\family default
+ argument.
+ The user should refer to the documentation of the solvers
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Packages of the solvers: (a) 
+\family typewriter
+nlminb
+\family default
+: 
+\family typewriter
+stats
+\family default
+ (b) 
+\family typewriter
+Rsolnp
+\family default
+: 
+\family typewriter
+Rsolnp
+\family default
+ (c) 
+\family typewriter
+nloptr
+\family default
+: 
+\family typewriter
+Nloptr
+\end_layout
+
+\end_inset
+
+ for details of 
+\family typewriter
+solver_control
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<warning=F>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+data(retSW)
+\end_layout
+
+\begin_layout Plain Layout
+
+ccc <- retSW[,
+\begin_inset Quotes eld
+\end_inset
+
+CCC
+\begin_inset Quotes erd
+\end_inset
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+
+fit <- astMLE(ccc)
+\end_layout
+
+\begin_layout Plain Layout
+
+names(fit)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As shown above, the 
+\family typewriter
+ast
+\family default
+ object contains the input arguments of the 
+\family typewriter
+astMLE
+\family default
+ function, the fitted parameters, standard errors and other information
+ of the optimization process.
+\end_layout
+
+\begin_layout Standard
+Four S3 method are provided for the 
+\family typewriter
+ast
+\family default
+ object: 
+\family typewriter
+print
+\family default
+ which prints the input arguments and solution of the MLE, 
+\family typewriter
+summary
+\family default
+ adds additional information of the optimization on top of 
+\family typewriter
+print
+\family default
+, 
+\family typewriter
+moments
+\family default
+ which calculates the moments based on the fitted parameters, 
+\family typewriter
+plot
+\family default
+ which gives the option to plot a density plot or QQPlot based on the fitted
+ parameters.
+ Fig.2 shows the QQPlot of the empirical distribution of CCC versus the AST
+ distribution using the fitted parameters.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<MLE, warning = F, fig.cap = "CCC QQPlot-AST", out.width="75%", fig.align="center"
+, fig.pos = "h", out.extra = ''>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+print(fit)
+\end_layout
+
+\begin_layout Plain Layout
+
+summary(fit)
+\end_layout
+
+\begin_layout Plain Layout
+
+moments(fit)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(fit, type = 
+\begin_inset Quotes eld
+\end_inset
+
+qqplot
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Symmetric Student t-distribution
+\end_layout
+
+\begin_layout Standard
+As mentioned in Section 2.1, AST distribution is generalized from the SST
+ distribution, such that SST distribution is a special case of the AST distribut
+ion.
+ For convenience sake, the package also provides the SST version of the
+ above functions, a typical case would be
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+mu <- 0.12; scale <- 0.6; alpha <- 0.6; nu <- 5
+\end_layout
+
+\begin_layout Plain Layout
+
+pars <- c(mu, scale, alpha, nu)
+\end_layout
+
+\begin_layout Plain Layout
+
+dsst(0.12, mu, scale, alpha, nu)
+\end_layout
+
+\begin_layout Plain Layout
+
+dast(0.12, mu, scale, alpha, nu1 = nu, nu2 = nu)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the case of the MLE functions, 
+\family typewriter
+sstMLE
+\family default
+ is equivalent to 
+\family typewriter
+astMLE
+\family default
+ with 
+\family typewriter
+symmetric = TRUE.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<warning=F>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+sstMLE(ccc)$fitted_pars
+\end_layout
+
+\begin_layout Plain Layout
+
+astMLE(ccc, symmetric = T)$fitted_pars
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Generalized Asymmetric t-distribution
+\end_layout
+
+\begin_layout Subsection
+GAT Distribution
+\end_layout
+
+\begin_layout Standard
+The GAT distribution introduced by Baker (2018) is a 6 parameter distribution
+ with the notation 
+\begin_inset Formula $GAT(\mu,s,\alpha,r,c,\nu)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Location parameter 
+\begin_inset Formula $\mu$
+\end_inset
+
+ is the center of location, generally not the mean
+\end_layout
+
+\begin_layout Itemize
+Scale parameter 
+\begin_inset Formula $s>0$
+\end_inset
+
+, is generally not the standard deviation
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\alpha>0$
+\end_inset
+
+ controls how early tail behavior is apparent
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $r>0$
+\end_inset
+
+ controls tail power asymmetry
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $c>0$
+\end_inset
+
+ controls the scale asymmetry
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\nu>0$
+\end_inset
+
+ is the tail power / degree of freedom parameter
+\end_layout
+
+\begin_layout Standard
+Density function of GAT distributions has the form
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Formula $B(\cdot)$
+\end_inset
+
+ is the beta function.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+f(x)=\frac{\alpha(1+r^{2})}{r\phi}\frac{\bigg\{\Big[cg\big((x-\mu)/\phi\big)\Big]^{\alpha r}+\Big[cg\big((x-\mu)/\phi\big)\Big]^{\alpha/r})^{-\nu/\alpha}}{B(\frac{\nu}{\alpha(1+r^{2})},\frac{r^{2}\nu}{\alpha(1+r^{2})})}(1+\big((x-\mu)/\phi\big)^{2})^{-1/2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+An GAT distribution can be described by specifying the 6 parameters either
+ separately or as a vector, the 
+\family typewriter
+dgat
+\family default
+, 
+\family typewriter
+pgat
+\family default
+, 
+\family typewriter
+qgat
+\family default
+ and 
+\family typewriter
+rgat
+\family default
+ functions takes in the component parameters or the vectors to calculate
+ the function value or generate random variables.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<gatDist>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+mu <- 0.12; scale <- 0.6; alpha <- 1.5; r <- 1.2; c <- 2; nu <- 5
+\end_layout
+
+\begin_layout Plain Layout
+
+pars <- c(mu, scale, alpha, r, c, nu)
+\end_layout
+
+\begin_layout Plain Layout
+
+# using component parameters
+\end_layout
+
+\begin_layout Plain Layout
+
+dgat(0.12, mu, scale, alpha, r, c, nu)
+\end_layout
+
+\begin_layout Plain Layout
+
+# using parameter vector
+\end_layout
+
+\begin_layout Plain Layout
+
+dgat(0.12, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+pgat(0.12, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+qgat(0.12, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Fig.3 shows the density plot of the above GAT distribution.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<gaDensity, fig.cap = "GAT Density Plot", out.width="75%", fig.align="center",
+ fig.pos = "h", out.extra = ''>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+# random generation
+\end_layout
+
+\begin_layout Plain Layout
+
+set.seed(123)
+\end_layout
+
+\begin_layout Plain Layout
+
+data <- rgat(1000, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+x <- seq(-3, 3, 0.01)
+\end_layout
+
+\begin_layout Plain Layout
+
+y <- dgat(x, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+hist(data, prob = T, breaks = 50)
+\end_layout
+
+\begin_layout Plain Layout
+
+lines(x, y, col = 4)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+GAT Moments
+\end_layout
+
+\begin_layout Standard
+Moments of an GAT distribution can be calculated by 
+\family typewriter
+gatMoments
+\family default
+ function.
+ The function returns a vector of mean, standard deviation, skewness and
+ excess kurtosis of an GAT distribution.
+ The 
+\family typewriter
+method
+\family default
+ argument of the function can be used to choose between analytical calculation
+ or numerical integration.
+ See equations (8)-(9) in the Appendix for details of the analytical formula
+ of GAT moments.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<gatMoments>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+gatMoments(pars = pars, 
+\begin_inset Quotes eld
+\end_inset
+
+analytical
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+gatMoments(pars = pars, 
+\begin_inset Quotes eld
+\end_inset
+
+numerical
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+gatRawMoment
+\family default
+ calculates the raw moments and 
+\family typewriter
+gatCentralMoment
+\family default
+ calculates the Central Moments of an GAT distribution.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+gatRawMoment(1, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+gatMoments(pars = pars)[
+\begin_inset Quotes eld
+\end_inset
+
+mean
+\begin_inset Quotes erd
+\end_inset
+
+] == gatRawMoment(1, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+gatCentralMoment(2, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+gatMoments(pars = pars)[
+\begin_inset Quotes eld
+\end_inset
+
+sd
+\begin_inset Quotes erd
+\end_inset
+
+] == sqrt(gatCentralMoment(2, pars = pars))
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+GAT Information Matrix
+\end_layout
+
+\begin_layout Standard
+The function 
+\family typewriter
+gatInfoMat
+\family default
+ calculates the observed information matrix of an GAT distribution, note
+ that in the current version of the package, the 
+\family typewriter
+expected
+\family default
+ method of 
+\family typewriter
+gatInfoMat
+\family default
+ is not yet provided.
+ This is due to the fact that the theoretical framework of the GAT distribution
+ is less complete than that of the AST distribution, it requires derivation
+ of the formulas for the information matrix, and this was not provided by
+ BAK.
+ Considering the complexity in the log-likelihood function and the density
+ function of GAT distribution, this is not provided in the current version,
+ but will be provided in a future update.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<gatInfoMat>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+data <- rgat(1000, pars = pars)
+\end_layout
+
+\begin_layout Plain Layout
+
+round(gatInfoMat(pars = pars, data = data, method = 
+\begin_inset Quotes eld
+\end_inset
+
+observed
+\begin_inset Quotes erd
+\end_inset
+
+), 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+astCov
+\family default
+ computes the asymptotic covariance matrix of the parameter MLEs by evaluating
+ the inverse of the information matrix, 
+\family typewriter
+astCor
+\family default
+ calculates the corresponding asymptotic correlation matrix.
+ The latter provides useful insight on the extent to which pairs of the
+ 5 AST parameter MLEs are correlated with one another.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+round(gatCov(pars = pars, data = data), 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+round(gatCor(pars = pars, data = data), 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that in the above functions, the covariance matrix of the GAT distribution
+ have abnormally large elements, this is likely that there is error in the
+ implementation of the score functions.
+ This will be looked into and fixed in the next update.
+\end_layout
+
+\begin_layout Subsection
+gatMLE
+\end_layout
+
+\begin_layout Standard
+The function 
+\family typewriter
+gatMLE
+\family default
+ computes the MLE of an GAT distribution and returns an 
+\family typewriter
+gat
+\family default
+ object.
+ The 
+\family typewriter
+gatMLE
+\family default
+ takes following parameters
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<gatMLEargs>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+args(gatMLE)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+start_pars
+\family default
+ argument can be specified to define the initial condition of the optimization
+ process, 
+\family typewriter
+fixed_pars
+\family default
+ can be specified to control the parameters to be kept fixed in the optimization.
+ In the current version of 
+\family typewriter
+gatMLE
+\family default
+, the user has the choice of three solvers: 
+\family typewriter
+nlminb
+\family default
+, 
+\family typewriter
+nloptr
+\family default
+ and 
+\family typewriter
+Rsolnp.
+
+\family default
+ The solvers 
+\family typewriter
+nlminb
+\family default
+ and 
+\family typewriter
+Rsolnp
+\family default
+ are suggested as they are both very stable and yield good solutions.
+ When using 
+\family typewriter
+nloptr
+\family default
+ as the solver, the algorithms to be used should be specified in the 
+\family typewriter
+solver_control
+\family default
+ argument.
+ The user should refer to the documentation of the solvers
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Packages of the solvers: (a) 
+\family typewriter
+nlminb
+\family default
+: 
+\family typewriter
+stats
+\family default
+ (b) 
+\family typewriter
+Rsolnp
+\family default
+: 
+\family typewriter
+Rsolnp
+\family default
+ (c) 
+\family typewriter
+nloptr
+\family default
+: 
+\family typewriter
+Nloptr
+\end_layout
+
+\end_inset
+
+ for details of 
+\family typewriter
+solver_control
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<warning=F>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+data(retSW)
+\end_layout
+
+\begin_layout Plain Layout
+
+ccc <- retSW[,
+\begin_inset Quotes eld
+\end_inset
+
+CCC
+\begin_inset Quotes erd
+\end_inset
+
+]
+\end_layout
+
+\begin_layout Plain Layout
+
+fit <- gatMLE(ccc)
+\end_layout
+
+\begin_layout Plain Layout
+
+names(fit)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As shown above, the 
+\family typewriter
+gat
+\family default
+ object contains the input arguments of the 
+\family typewriter
+gatMLE
+\family default
+ function, the fitted parameters, standard errors and other important informatio
+n of the optimization process.
+\end_layout
+
+\begin_layout Standard
+Four S3 method are provided for the 
+\family typewriter
+gat
+\family default
+ object: 
+\family typewriter
+print
+\family default
+ which prints the input arguments and solution of the MLE, 
+\family typewriter
+summary
+\family default
+ adds additional information of the optimization on top of 
+\family typewriter
+print
+\family default
+, 
+\family typewriter
+moments
+\family default
+ which calculates the moments based on the fitted parameters, 
+\family typewriter
+plot
+\family default
+ which gives the option to plot a density plot or QQPlot based on the fitted
+ parameters.
+ Fig.4 shows the QQPlot of the empirical distribution of CCC versus the GAT
+ distribution using the fitted parameters.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<gatMLE, warning=F, fig.cap = "CCC QQPlot-GAT", out.width="75%", fig.align="center
+", fig.pos = "h", out.extra = ''>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+print(fit)
+\end_layout
+
+\begin_layout Plain Layout
+
+summary(fit)
+\end_layout
+
+\begin_layout Plain Layout
+
+moments(fit)
+\end_layout
+
+\begin_layout Plain Layout
+
+plot(fit, type = 
+\begin_inset Quotes eld
+\end_inset
+
+qqplot
+\begin_inset Quotes erd
+\end_inset
+
+, main = 
+\begin_inset Quotes eld
+\end_inset
+
+CCC
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Future Developments
+\end_layout
+
+\begin_layout Subsection
+Initial condition
+\end_layout
+
+\begin_layout Standard
+In the current package implementation, a preset of parameters, regardless
+ of the data set, are provided as the initial conditions of the optimization
+ in the MLE process when 
+\family typewriter
+start_pars
+\family default
+ is not specified.
+ Having a method of selecting the initial parameters based on the data set
+ can help to achieve higher log-likelihood.
+ Azzalini and Salehi (2019) introduced a set of quantile methods to select
+ the initial parameters, a careful investigation of their strategy and how
+ it can be adopted to AST and GAT distribution will be another focus of
+ next update.
+\end_layout
+
+\begin_layout Subsection
+Hypothesis tests
+\end_layout
+
+\begin_layout Standard
+Both the AST and GAT distribution aims to model skewed fat-tailed data with
+ tail power asymmetry, it is of our interest to design a hypothesis test
+ to determine whether a data set follows a skew-t distribution.
+\end_layout
+
+\begin_layout Standard
+A related test would be determining the goodness of fit of the MLE solutions.
+ As of now, determining goodness of fit relies on visual detection of non-linear
+ity of QQplot.
+ Although the visual checks are useful, there is a need to have a significance
+ test to judge lack of good fit.
+\end_layout
+
+\begin_layout Subsection
+Information Matrices
+\end_layout
+
+\begin_layout Standard
+As of now, the expected and observed information matrices of AST distribution
+ still have different value, which should not be the case theoretically.
+ This is likely caused by an error in the formula or the code implementation,
+ but due to the complexity of the AST distribution, the error has not been
+ found.
+ In future developments, a careful study of the AST as well as GAT (for
+ the reason mentioned in Section 3.3) information matrices will be needed
+ to make sure the expected and information matrices have the same and accurate
+ result.
+\end_layout
+
+\begin_layout Section*
+References
+\end_layout
+
+\begin_layout Standard
+Azzalini, A.
+ (2013).
+ The skew-normal and related families (Vol.
+ 3).
+ Cambridge University Press.
+\end_layout
+
+\begin_layout Standard
+Azzalini, A., & Salehi, M.
+ (2019).
+ Some computational aspects of maximum likelihood estimation of the skew-t
+ distribution.
+ arXiv preprint arXiv:1907.10397.
+\end_layout
+
+\begin_layout Standard
+Baker, R.
+ D.
+ (2016).
+ A new asymmetric generalisation of the t-distribution.
+ arXiv preprint arXiv:1606.05203.
+\end_layout
+
+\begin_layout Standard
+Fernández, C., & Steel, M.
+ F.
+ (1998).
+ On Bayesian modeling of fat tails and skewness.
+ Journal of the American Statistical Association, 93(441), 359-371.
+\end_layout
+
+\begin_layout Standard
+Hansen, B.
+ E.
+ (1994).
+ Autoregressive conditional density estimation.
+ International Economic Review, 705-730.
+\end_layout
+
+\begin_layout Standard
+Zhu, D., & Galbraith, J.
+ (2009).
+ A Generalized Asymmetric Student-t Distribution with Application to Financial
+ Econometrics.
+ CIRANO.
+\end_layout
+
+\begin_layout Standard
+Zhu, D., & Galbraith, J.
+ W.
+ (2010).
+ A generalized asymmetric Student-t distribution with application to financial
+ econometrics.
+ Journal of Econometrics, 157(2), 297-305.
+\end_layout
+
+\begin_layout Standard
+Zhu, D., & Galbraith, J.
+ W.
+ (2011).
+ Modeling and forecasting expected shortfall with the generalized asymmetric
+ Student-t and asymmetric exponential power distributions.
+ Journal of Empirical Finance, 18(4), 765-778.
+\end_layout
+
+\begin_layout Section*
+Appendix
+\end_layout
+
+\begin_layout Standard
+The second parameterization of AST distribution:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+f_{AST}(y;\theta)=\begin{cases}
+\frac{\alpha}{\alpha^{*}}K(\nu_{1})\bigg[1+\frac{1}{\nu_{1}}\Big(\frac{y-\mu}{2\alpha^{*}\sigma}\Big)^{2}\bigg]^{-(\nu_{1}+1)/2} & y\le\mu\\
+\frac{1-\alpha}{1-\alpha^{*}}K(\nu_{2})\bigg[1+\frac{1}{\nu_{2}}\Big(\frac{y-\mu}{2(1-\alpha^{*})\sigma}\Big)^{2}\bigg]^{-(\nu_{2}+1)/2} & y>\mu
+\end{cases}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\alpha*=\frac{\alpha K(\nu_{1})}{\alpha K(\nu_{1})+(1-\alpha)K(\nu_{2})}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the ZG paper, only the formula of raw moments of standard AST distribution
+ is provided:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+E(Z^{n})=\alpha[-2\alpha^{*}]^{n}E|T(\nu_{1})|^{n}+(1-\alpha)[-2(1-\alpha^{*})]^{n}E|T(\nu_{2})|^{n},\quad n<\nu_{1}\wedge\nu_{2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $E|T(\nu_{1})|^{n}$
+\end_inset
+
+is the n-th absolute moment of standard student t-distribution:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+E|T(\nu)|^{n}=\sqrt{\frac{\nu^{n}}{\pi}}\ \Gamma(\frac{n+1}{2})\ \Gamma(\frac{\nu-n}{2})\ /\ \Gamma(\frac{\nu}{2}),\quad-1<n<\nu
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Then we derive the n-th raw moment of general AST:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+E(X^{n})=E((\mu+sZ)^{n})=\sum_{i=0}^{n}{\binom{n}{i}}\mu^{i}s^{n-i}E(Z^{n-i})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and thus the n-th central moment of general AST:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+E((X-E(X))^{n})=\sum_{i=0}^{n}(-1)^{i}{\binom{n}{i}}(E(X))^{i}E(X^{n-i})
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the BAK paper, centralized moment with respect to the location parameter
+ is provided:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+E(X-\mu)^{n}=(\frac{s}{2})^{n}\frac{\sum_{m=0}^{n}(-1)^{m}{n \choose m}c^{n-m}B\ \big(\frac{\nu}{\alpha(1+r^{2})}-(n-2m)\delta,\frac{\nu r^{2}}{\alpha(1+r^{2})}+(n-2m)\delta\big)}{B(\frac{\nu}{\alpha(1+r^{2})},\frac{\nu r^{2}}{\alpha(1+r^{2})})}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\delta=\frac{r}{\alpha(1+r^{2})}$
+\end_inset
+
+, and thus we have the n-th raw moment of standard GAT:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+E(Z^{n})=\frac{E(X-\mu)^{n}}{s^{n}}=(\frac{1}{2})^{n}\frac{\sum_{m=0}^{n}(-1)^{m}{n \choose m}c^{n-m}B\ \big(\frac{\nu}{\alpha(1+r^{2})}-(n-2m)\delta,\frac{\nu r^{2}}{\alpha(1+r^{2})}+(n-2m)\delta\big)}{B(\frac{\nu}{\alpha(1+r^{2})},\frac{\nu r^{2}}{\alpha(1+r^{2})})}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Then we can deliver the raw and central moment of general GAT by the form
+ of equations (6) and (7).
+\end_layout
+
+\end_body
+\end_document
