@@ -17,6 +17,10 @@ install.packages("st")
 devtools::install__github("dan9401/skewtDist")
 ```
 
+## Vignette
+
+[Vignette](vignettes/VignetteSkewtDist.pdf)
+
 ## Example
 
 <!---This is a basic example which shows you how to solve a common problem:
