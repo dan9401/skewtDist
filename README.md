@@ -30,10 +30,4 @@ devtools::install__github("dan9401/skewtDist")
 ```--->
 
 ## To do list
-- [ ] difference between "expected" and "observed" information matrix
-- [ ] numerical correction of gamma for moment functions
-- [ ] gat infoMat
-- [ ] test files
-- [ ] redistribute helper functions
-
-<a name="footnote1">1</a>: Asymmetric Student t-distribution (AST) and Generalized Asymmetric t-distribution (GAT)
+[To do list](etc/todolist.md)
