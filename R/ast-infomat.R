@@ -61,39 +61,43 @@ astInfoMat <- function(pars, data = c(), method = c("expected", "observed")) {
     y <- data
     y1 <- y[y <= mu]
     y2 <- y[y > mu]
+    r1 <- length(y1)/length(y)
+    r2 <- length(y2)/length(y)
 
-    S_mu2 <- - 1/nu1 * (nu1+1)/(2*alpha*sigma*K(nu1))^2 * mean(1/L(pars, y1) - 2/L(pars, y1)^2) -
-      1/nu2 * (nu2+1)/(2*(1-alpha)*sigma*K(nu2))^2 * mean(1/R(pars, y2) - 2/R(pars, y2)^2)
-    S_sigma2 <- -1/sigma^2 + (nu1+1)/sigma^2 * mean( (1 - 1/L(pars, y1))*(1 + 2/L(pars, y1)) ) +
-      (nu2+1)/sigma^2 * mean( (1 - 1/R(pars, y2))*(1 + 2/R(pars, y2)) )
-    S_alpha2 <- (nu1+1)/alpha^2 * mean(1 + 1/L(pars, y1) - 2/L(pars, y1)^2) +
-      (nu2+1)/(1-alpha)^2 * mean(1 + 1/R(pars, y2) - 2/R(pars, y2)^2)
-    S_nu12 <- - ( D(nu1) + (nu1 + 1)/2*Dprime(nu1) ) * mean( 1 - 1/L(pars, y1) ) +
-      (nu1+1)/2*D(nu1)^2 * mean( 1/L(pars, y1) - 1/L(pars, y1)^2 )
-    S_nu22 <- - ( D(nu2) + (nu2 + 1)/2*Dprime(nu2) ) * mean( 1 - 1/R(pars, y2) ) +
-      (nu2+1)/2*D(nu2)^2 * mean( 1/R(pars, y2) - 1/R(pars, y2)^2 )
+    # outer product of score
+    S_mu2 <- mean( c(1/nu1 * ((nu1+1)/(2*alpha*sigma*K(nu1)))^2 * (1/L(pars, y1) - 1/L(pars, y1)^2) ,
+      1/nu2 * ((nu2+1)/(2*(1-alpha)*sigma*K(nu2)))^2 * (1/R(pars, y2) - 1/R(pars, y2)^2)) )
+    S_sigma2 <- -1/sigma^2 + mean( c((nu1+1)/sigma^2 * (1 - 1/L(pars, y1))*(1 + 2/L(pars, y1)),
+      (nu2+1)/sigma^2 * (1 - 1/R(pars, y2))*(1 + 2/R(pars, y2))) )
+    S_alpha2 <- mean( c( (nu1+1)/alpha^2 * (1 + 1/L(pars, y1) - 2/L(pars, y1)^2),
+      (nu2+1)/(1-alpha)^2 * (1 + 1/R(pars, y2) - 2/R(pars, y2)^2) ) )
+    S_nu12 <- (- ( D(nu1) + (nu1 + 1)/2*Dprime(nu1) ) * mean( 1 - 1/L(pars, y1) ) +
+      (nu1+1)/2*D(nu1)^2 * mean( 1/L(pars, y1) - 1/L(pars, y1)^2 )) * r1
+    S_nu22 <- (- ( D(nu2) + (nu2 + 1)/2*Dprime(nu2) ) * mean( 1 - 1/R(pars, y2) ) +
+      (nu2+1)/2*D(nu2)^2 * mean( 1/R(pars, y2) - 1/R(pars, y2)^2 )) * r2
 
-    S_musigma <- (nu1+1)/sigma * mean( 1/L(pars, y1)^2 / nu1*2*(y1-mu)/(2*alpha*sigma*K(nu1))^2 ) +
-      (nu2+1)/sigma * mean( 1/R(pars, y2)^2 / nu2*2*(y2-mu)/(2*(1-alpha)*sigma*K(nu2))^2)
-    S_mualpha <- (nu1+1)/alpha * mean( 1/L(pars, y1)^2 / nu1*2*(y1-mu)/(2*alpha*sigma*K(nu1))^2) -
-      (nu2+1)/(1-alpha) * mean( 1/R(pars, y2)^2 / nu2*2*(y2-mu)/(2*(1-alpha)*sigma*K(nu2))^2)
+    S_musigma <- mean( c( (nu1+1)/sigma * 1/L(pars, y1)^2 / nu1*2*(y1-mu)/(2*alpha*sigma*K(nu1))^2,
+      (nu2+1)/sigma * 1/R(pars, y2)^2 / nu2*2*(y2-mu)/(2*(1-alpha)*sigma*K(nu2))^2 ) )
+    S_mualpha <- mean( c( (nu1+1)/alpha * 1/L(pars, y1)^2 / nu1*2*(y1-mu)/(2*alpha*sigma*K(nu1))^2,
+      -(nu2+1)/(1-alpha) * 1/R(pars, y2)^2 / nu2*2*(y2-mu)/(2*(1-alpha)*sigma*K(nu2))^2 ) )
     # mu nu1 may not be accurate
-    S_munu1 <- -1/2 * mean( 1/L(pars, y1)/nu1 * 2*(y1-mu)/(2*alpha*sigma*K(nu1))^2 ) +
-      (nu1+1)/2*D(nu1) * mean( 1/L(pars, y1)^2/nu1 * 2*(y1-mu)/(2*alpha*sigma*K(nu1))^2 )
-    S_munu2 <- -1/2 * mean( 1/R(pars, y2) / nu2 * 2*(y2-mu)/(2*(1-alpha)*sigma*K(nu2))^2 ) +
-      (nu2+1)/2*D(nu2) * mean( 1/R(pars, y2)^2 / nu2 * 2*(y2-mu)/(2*(1-alpha)*sigma*K(nu2))^2 )
+    S_munu1 <- (-1/2 * mean( 1/L(pars, y1)/nu1 * 2*(y1-mu)/(2*alpha*sigma*K(nu1))^2 ) +
+      (nu1+1)/2*D(nu1) * mean( 1/L(pars, y1)^2/nu1 * 2*(y1-mu)/(2*alpha*sigma*K(nu1))^2 )) * r1
+    S_munu2 <- (-1/2 * mean( 1/R(pars, y2) / nu2 * 2*(y2-mu)/(2*(1-alpha)*sigma*K(nu2))^2 ) +
+      (nu2+1)/2*D(nu2) * mean( 1/R(pars, y2)^2 / nu2 * 2*(y2-mu)/(2*(1-alpha)*sigma*K(nu2))^2 )) * r2
 
-    S_sigmaalpha <- 2*(nu1+1)/(sigma*alpha) * mean( 1/L(pars, y1) - 1/L(pars, y1)^2 ) -
-      2*(nu2+1)/(sigma*(1-alpha)) * mean( 1/R(pars, y2) - 1/R(pars, y2)^2 )
-    S_sigmanu1 <- -1/sigma * mean( 1 - 1/L(pars, y1) ) +
-      (nu1+1)/sigma * D(nu1) * mean( 1/L(pars, y1) - 1/L(pars, y1)^2 )
-    S_sigmanu2 <- -1/sigma * mean( 1 - 1/R(pars, y2) ) +
-      (nu2+1)/sigma * D(nu2) * mean( 1/R(pars, y2) - 1/R(pars, y2)^2 )
+    S_sigmaalpha <- mean( c( 2*(nu1+1)/(sigma*alpha) * ( 1/L(pars, y1) - 1/L(pars, y1)^2 ),
+      -2*(nu2+1)/(sigma*(1-alpha)) * ( 1/R(pars, y2) - 1/R(pars,y2)^2 ) ) )
+    S_sigmanu1 <- (-1/sigma * mean( 1 - 1/L(pars, y1) ) +
+      (nu1+1)/sigma * D(nu1) * mean( 1/L(pars, y1) - 1/L(pars, y1)^2 )) * r1
+    S_sigmanu2 <- (-1/sigma * mean( 1 - 1/R(pars, y2) ) +
+      (nu2+1)/sigma * D(nu2) * mean( 1/R(pars, y2) - 1/R(pars, y2)^2 )) * r2
 
-    S_alphanu1 <- -1/alpha * mean(1 - 1/L(pars, y1)) +
-      (nu1+1)/alpha * D(nu1) * mean(1/L(pars, y1) - 1/L(pars, y1)^2)
-    S_alphanu2 <- -1/(1-alpha) * mean(1 - 1/R(pars, y2)) +
-      (nu1+1)/alpha * D(nu1) * mean(1/L(pars, y1) - 1/L(pars, y1)^2)
+    S_alphanu1 <- (-1/alpha * mean(1 - 1/L(pars, y1)) +
+      (nu1+1)/alpha * D(nu1) * mean(1/L(pars, y1) - 1/L(pars, y1)^2)) * r1
+    # alpha nu2
+    S_alphanu2 <- (1/(1-alpha) * mean(1 - 1/R(pars, y2)) -
+      (nu2+1)/(1-alpha) * D(nu2) * mean(1/R(pars, y2) - 1/R(pars, y2)^2)) * r2
     S_nu1nu2 <- 0
 
 

@@ -19,7 +19,8 @@ D <-  function(nu) {
 }
 
 Dprime <- function(nu) {
-  Dp <- trigamma((nu+1)/2) - trigamma(nu/2)
+  Dp <- 1/2 * (trigamma((nu+1)/2) - trigamma(nu/2))
+  Dp
 }
 
 L <- function(pars, y) {

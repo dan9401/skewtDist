@@ -17,17 +17,33 @@ install.packages("st")
 devtools::install__github("dan9401/skewtDist")
 ```
 
-## Vignette
 
-[Vignette](vignettes/VignetteSkewtDist.pdf)
 
 ## Example
 
-<!---This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to solve a common problem:
 
 ``` r
-## basic example code
-```--->
+pars <- c(0.12, 0.6, 0.6, 3, 5)
+data <- rast(1000, pars = pars)
+hist(data, breaks = 50, probability = TRUE)
+x <- seq(-3, 3, 0.01)
+y <- dast(x, pars = pars)
+lines(x, y, col = 4)
+```
+
+An example of fitting the AST MLE:
+
+``` r
+data(retSW)
+plxs <- retSW['2006-01/', 1]
+fit <- astMLE(plxs)
+summary(fit)
+plot(fit, 2)
+```
+
+For more examples, please refer to the vignette.
+[Vignette](vignettes/VignetteSkewtDist.pdf)
 
 ## To do list
 [To do list](etc/todolist.md)

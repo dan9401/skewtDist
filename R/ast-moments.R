@@ -15,11 +15,11 @@
 #' @param moment the moment to be calculated, one of 'mean', 'sd', 'skew', 'kurt'
 #' @param n order of (raw/central) moment to be calculated
 #' @param mu location parameter
-#' @param sigma scale parameter, \eqn{sigma > 0}
+#' @param s scale parameter, \eqn{s > 0}
 #' @param alpha skewness parameter, \eqn{0 < alpha < 1}
 #' @param nu1 degrees of freedom / tail parameter for the left tail, \eqn{ nu1 > 0}
 #' @param nu2 degrees of freedom / tail parameter for the right tail, \eqn{ nu2 > 0}
-#' @param pars a vector that contains mu, sigma, alpha, nu1, nu2, if pars is specified, mu, sigma, alpha, nu1, nu2 should not be specified
+#' @param pars a vector that contains mu, s, alpha, nu1, nu2, if pars is specified, mu, s, alpha, nu1, nu2 should not be specified
 #' @param method method used to calculate the moment(s), one of 'analytical' and 'numerical'
 #' @param type type of kurtosis calculated, one of 'excess' and 'regular'
 #'
@@ -48,36 +48,36 @@
 #' astMoments(pars = pars)
 
 #' @export
-astMean <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+astMean <- function(mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
     if (missing(mu)) {
-      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      stop("One and only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
     }
-    pars = c(mu, sigma, alpha, nu1, nu2)
+    pars = c(mu, s, alpha, nu1, nu2)
   }
   # return
   astRawMoment(1, pars = pars, method = method)
 }
 
 #' @export
-astVar <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+astVar <- function(mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
     if (missing(mu)) {
-      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      stop("One and only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
     }
-    pars = c(mu, sigma, alpha, nu1, nu2)
+    pars = c(mu, s, alpha, nu1, nu2)
   }
   # return
   astCentralMoment(2, pars = pars, method = method)
 }
 
 #' @export
-astSD <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+astSD <- function(mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
     if (missing(mu)) {
-      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      stop("One and only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
     }
-    pars = c(mu, sigma, alpha, nu1, nu2)
+    pars = c(mu, s, alpha, nu1, nu2)
   }
   var <- astCentralMoment(2, pars = pars, method = method)
   # return
@@ -85,12 +85,12 @@ astSD <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = N
 }
 
 #' @export
-astSkew <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+astSkew <- function(mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
     if (missing(mu)) {
-      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      stop("One and only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
     }
-    pars = c(mu, sigma, alpha, nu1, nu2)
+    pars = c(mu, s, alpha, nu1, nu2)
   }
   sd <- astSD(pars = pars, method = method)
   # return
@@ -98,12 +98,12 @@ astSkew <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
 }
 
 #' @export
-astKurt <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+astKurt <- function(mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   if (is.null(pars)) {
     if (missing(mu)) {
-      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      stop("One and only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
     }
-    pars = c(mu, sigma, alpha, nu1, nu2)
+    pars = c(mu, s, alpha, nu1, nu2)
   }
   var <- astVar(pars = pars, method = method)
   kurt <- astCentralMoment(4, pars = pars, method = method) / var^2
@@ -116,14 +116,14 @@ astKurt <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
 
 #' @rdname ast-moment
 #' @export
-astMoment <- function(moment = c("mean", "sd", "var", "skew", "kurt"), mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+astMoment <- function(moment = c("mean", "sd", "var", "skew", "kurt"), mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   moment <- match.arg(moment)
   method <- match.arg(method)
   if (is.null(pars)) {
     if (missing(mu)) {
-      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      stop("One and only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
     }
-    pars = c(mu, sigma, alpha, nu1, nu2)
+    pars = c(mu, s, alpha, nu1, nu2)
   }
   switch(moment,
          mean = astMean(pars = pars, method = method),
@@ -135,12 +135,12 @@ astMoment <- function(moment = c("mean", "sd", "var", "skew", "kurt"), mu = 0, s
 
 #' @rdname ast-moment
 #' @export
-astMoments <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+astMoments <- function(mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   if (is.null(pars)) {
     if (missing(mu)) {
-      stop("One and only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      stop("One and only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
     }
-    pars = c(mu, sigma, alpha, nu1, nu2)
+    pars = c(mu, s, alpha, nu1, nu2)
   }
   c(mean = astMean(pars = pars, method = method),
     sd = astSD(pars = pars, method = method),
@@ -150,25 +150,25 @@ astMoments <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, par
 
 #' @rdname ast-moment
 #' @export
-astRawMoment <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+astRawMoment <- function(n, mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
   method <- match.arg(method)
   if (!is.null(pars)) {
     if (!missing(mu)) {
-      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      stop("Only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
     }
     mu <- pars[1]
-    sigma <- pars[2]
+    s <- pars[2]
     alpha <- pars[3]
     nu1 <- pars[4]
     nu2 <- pars[5]
   }
   if (method == "analytical") {
     # return
-    moment <- sum( choose(n, 0:n) * sapply(n:0, scaledStdASTMoment, sigma, alpha, nu1, nu2) * mu^(0:n) )
+    moment <- sum( choose(n, 0:n) * sapply(n:0, scaledStdASTMoment, s, alpha, nu1, nu2) * mu^(0:n) )
   }
   if (method == "numerical") {
     integrand <- function(x) {
-      x^n * dast(x, mu, sigma, alpha, nu1, nu2)
+      x^n * dast(x, mu, s, alpha, nu1, nu2)
     }
     # return
     moment <- safeIntegrate(integrand, -Inf, Inf)$value
@@ -178,26 +178,26 @@ astRawMoment <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf
 
 #' @rdname ast-moment
 #' @export
-astCentralMoment <- function(n, mu, sigma, alpha, nu1, nu2, pars = NULL, method = c("analytical", "numerical")) {
+astCentralMoment <- function(n, mu, s, alpha, nu1, nu2, pars = NULL, method = c("analytical", "numerical")) {
   method <- match.arg(method)
   if (!is.null(pars)) {
     if (!missing(mu)) {
-      stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+      stop("Only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
     }
     mu <- pars[1]
-    sigma <- pars[2]
+    s <- pars[2]
     alpha <- pars[3]
     nu1 <- pars[4]
     nu2 <- pars[5]
   }
-  mean <- astRawMoment(1, mu, sigma, alpha, nu1, nu2, method = method)
+  mean <- astRawMoment(1, mu, s, alpha, nu1, nu2, method = method)
   if (method == "analytical") {
     # return
-    moment <- sum( (-1)^(n - n:0) * choose(n, 0:n) * sapply(n:0, astRawMoment, mu, sigma, alpha, nu1, nu2) * mean^(0:n) )
+    moment <- sum( (-1)^(n - n:0) * choose(n, 0:n) * sapply(n:0, astRawMoment, mu, s, alpha, nu1, nu2) * mean^(0:n) )
   }
   if (method == "numerical") {
     integrand <- function(x) {
-      (x - mean)^n * dast(x, mu, sigma, alpha, nu1, nu2)
+      (x - mean)^n * dast(x, mu, s, alpha, nu1, nu2)
     }
     # return
     moment <- safeIntegrate(integrand, -Inf, Inf)$value
@@ -205,13 +205,13 @@ astCentralMoment <- function(n, mu, sigma, alpha, nu1, nu2, pars = NULL, method 
   moment
 }
 
-scaledStdASTMoment <- function(n, sigma, alpha, nu1, nu2) {
+scaledStdASTMoment <- function(n, s, alpha, nu1, nu2) {
   # moment for sz, s is scale, z is a standardi ast r.v.
   B <- alpha * K(nu1) + (1 - alpha) * K(nu2)
   alpha_star <- alpha * K(nu1)/B
   # return
-  alpha * (-2 * alpha_star * sigma * B)^n * absTMoments(nu1, n) +
-    (1 - alpha) * (2 * (1 - alpha_star) * sigma * B)^n * absTMoments(nu2, n)
+  alpha * (-2 * alpha_star * s * B)^n * absTMoments(nu1, n) +
+    (1 - alpha) * (2 * (1 - alpha_star) * s * B)^n * absTMoments(nu2, n)
 }
 
 absTMoments <- function(nu, n) {

@@ -13,11 +13,11 @@
 #' @param p vector of probablilities
 #' @param n number of observations for random generation
 #' @param mu location parameter
-#' @param sigma scale parameter, \eqn{sigma > 0}
+#' @param s scale parameter, \eqn{s > 0}
 #' @param alpha skewness parameter, \eqn{0 < alpha < 1}
 #' @param nu1 degrees of freedom / tail parameter for the left tail, \eqn{ nu1 > 0}
 #' @param nu2 degrees of freedom / tail parameter for the right tail, \eqn{ nu2 > 0}
-#' @param pars a vector that contains mu, sigma, alpha, nu1, nu2, if pars is specified, mu, sigma, alpha, nu1, nu2 should not be specified
+#' @param pars a vector that contains mu, s, alpha, nu1, nu2, if pars is specified, mu, s, alpha, nu1, nu2 should not be specified
 #'
 #' @return
 #' \code{dast} gives the density, \code{past} gives the distribution function, \code{qast} gives the quantile function, and \code{rast} generates random samples for AST distribution.
@@ -27,7 +27,7 @@
 #' but also the asymmetry in the two tail powers of the distribution.
 #' \itemize{
 #'     \item Location parameter \code{mu} is the mode, but not necessarily the mean of the distribution.
-#'     \item Scale parameter \code{sigma} is not necessarily the standard deviation.
+#'     \item Scale parameter \code{s} is not necessarily the standard deviation.
 #'     \item The distribution skews to the right when the skewness parameter \eqn{alpha < 0.5},
 #'     skews to the left when \eqn{alpha > 0.5}.
 #'     \item The location paramter \code{mu} always locates at the \eqn{\alpha}-th percentile of the distribution.
@@ -43,7 +43,7 @@
 #'
 #' @examples
 #' # The parameter values are specially set for a volatile portfolio.
-#' # density at the mu is always 1 / sigma
+#' # density at the mu is always 1 / s
 #' d <- dast(0.12, 0.12, 0.6, 0.6, 3, 5)
 #' # cumulative distribution at mu is alpha
 #' p <- past(0.12, 0.12, 0.6, 0.6, 3, 5)
@@ -72,13 +72,13 @@
 
 #' @rdname AST
 #' @export
-dast <- function(x, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
+dast <- function(x, mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (!is.null(pars)) {
       if (!missing(mu)) {
-        stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+        stop("Only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
       }
       mu <- pars[1]
-      sigma <- pars[2]
+      s <- pars[2]
       alpha <- pars[3]
       nu1 <- pars[4]
       nu2 <- pars[5]
@@ -89,28 +89,28 @@ dast <- function(x, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
     x2 <- x[x > mu]
     d <- numeric(length(x))
     # refer to helper_functions.R for K(.)
-    d[x <= mu] <- (1 + ((x1 - mu)/(2 * alpha * sigma * K(nu1)))^2/nu1)^(-0.5 * (nu1 + 1))/sigma
-    d[x > mu] <- (1 + ((x2 - mu)/(2 * (1 - alpha) * sigma * K(nu2)))^2/nu2)^(-0.5 * (nu2 + 1))/sigma
+    d[x <= mu] <- (1 + ((x1 - mu)/(2 * alpha * s * K(nu1)))^2/nu1)^(-0.5 * (nu1 + 1))/s
+    d[x > mu] <- (1 + ((x2 - mu)/(2 * (1 - alpha) * s * K(nu2)))^2/nu2)^(-0.5 * (nu2 + 1))/s
     d
 }
 
 #' @rdname AST
 #' @export
-past <- function(q, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
+past <- function(q, mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (!is.numeric(q))
         stop("q must be numeric")
     if (!is.null(pars)) {
       if (!missing(mu)) {
-        stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+        stop("Only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
       }
       mu <- pars[1]
-      sigma <- pars[2]
+      s <- pars[2]
       alpha <- pars[3]
       nu1 <- pars[4]
       nu2 <- pars[5]
     }
     B <- alpha * K(nu1) + (1 - alpha) * K(nu2)
-    q <- (q - mu) / (sigma * B)
+    q <- (q - mu) / (s * B)
     # refer to helper_functions.R for K(.)
     alpha_star <- alpha * K(nu1)/ B
     # return value
@@ -119,15 +119,15 @@ past <- function(q, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
 
 #' @rdname AST
 #' @export
-qast <- function(p, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
+qast <- function(p, mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (!is.numeric(p))
         stop("p must be numeric")
     if (!is.null(pars)) {
       if (!missing(mu)) {
-        stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+        stop("Only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
       }
       mu <- pars[1]
-      sigma <- pars[2]
+      s <- pars[2]
       alpha <- pars[3]
       nu1 <- pars[4]
       nu2 <- pars[5]
@@ -136,21 +136,21 @@ qast <- function(p, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
     B <- alpha * K(nu1) + (1 - alpha) * K(nu2)
     alpha_star <- alpha * K(nu1)/ B
     # return value
-    mu + sigma * B * (2 * alpha_star * ( qt(pmin(p, alpha)/(2 * alpha), nu1)) + 2 * (1 - alpha_star) * ( qt((pmax(p, alpha) + 1 - 2 * alpha)/(2 * (1 - alpha)), nu2)))
+    mu + s * B * (2 * alpha_star * ( qt(pmin(p, alpha)/(2 * alpha), nu1)) + 2 * (1 - alpha_star) * ( qt((pmax(p, alpha) + 1 - 2 * alpha)/(2 * (1 - alpha)), nu2)))
 }
 
 #' @rdname AST
 #' @export
-rast <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
+rast <- function(n, mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL) {
     if (n < 0)
         stop("n must be non-negative")
     # refer to helper_functions.R for K(.)
     if (!is.null(pars)) {
       if (!missing(mu)) {
-        stop("Only one of [mu, sigma, alpha, nu1, nu2] and pars needs to be specified")
+        stop("Only one of [mu, s, alpha, nu1, nu2] and pars needs to be specified")
       }
       mu <- pars[1]
-      sigma <- pars[2]
+      s <- pars[2]
       alpha <- pars[3]
       nu1 <- pars[4]
       nu2 <- pars[5]
@@ -161,6 +161,6 @@ rast <- function(n, mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
     t2 <- rt(n, nu2)
     x <- alpha_star * abs(t1) * (sign(u - alpha) - 1) + (1 - alpha_star) * abs(t2) * (sign(u - alpha) + 1)
     # return value
-    # important note here!  sigma has been transformed
-    mu + x * sigma * (alpha * K(nu1) + (1 - alpha) * K(nu2))
+    # important note here!  s has been transformed
+    mu + x * s * (alpha * K(nu1) + (1 - alpha) * K(nu2))
 }
