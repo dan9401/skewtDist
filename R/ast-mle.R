@@ -201,6 +201,8 @@ llast_grad <- function(pars, arglist) {
   g_nu2 <- sum(- log(R(all_pars, y2)) / 2 + (nu2 + 1) / 2 * D(nu2) * (R(all_pars, y2) - 1) / R(all_pars, y2))
   gradient <- -c(mu = g_mu, sigma = g_sigma, alpha = g_alpha, nu1 = g_nu1, nu2 = g_nu2)
 
+  # gradient <- pmax(gradient, -1e6)
+  # gradient <- pmin(gradient, 1e6)
   return(gradient[est_idx])
 }
 
@@ -212,8 +214,8 @@ i_pars <- function(start_pars, fixed_pars, symmetric) {
   # mode <- hist$mids[which(hist$counts == max(hist$counts))]
   if (symmetric == TRUE) {
     b_df <- data.frame(name = c("mu", "sigma", "alpha", "nu"),
-                       lower_bound = c(-Inf, 0, 0, 0),
-                       upper_bound = c(Inf, Inf, 1, Inf),
+                       lower_bound = c(-1000, 0, 0, 0),
+                       upper_bound = c(1000, 1000, 1, 1000),
                        order = 1:4)
     start_pars_default <- c(mu = 0, sigma = 1, alpha = 0.5, nu = 2)
   } else {

@@ -4,9 +4,8 @@ rm(list = ls())
 source("ast-mle.R") # llast, llast_grad
 source("helper-functions.R") # K, D, Dprime, L, R
 
-
-set.seed(22)
-n <- 1e7
+set.seed(123)
+n <- 1e4
 mu <- 0.12
 scale <- 0.6
 alpha <- 0.6
@@ -28,23 +27,9 @@ hessian(llast, x = pars, arglist = arglist) / n
 
 source("ast-infomat.R")
 astInfoMat(pars = pars, method = "expected")
-
-# Dprime is exclusively used for observed method
-# munu1, munu2
-# sigma2, sigmanu1, sigmanu2
-# alphanu1, alphanu2
-# nu12 nu22
 astInfoMat(pars = pars, data = data, method = "observed")
 
-y <- data
-y1 <- y[y <= mu]
-y2 <- y[y > mu]
 
-S_alpha2 <- length(y1)/length(y) * ((nu1 + 1) / alpha)^2 * mean( ( 1 - 1/L(pars, y1) )^2 ) +
-  length(y2)/length(y) * ((nu2 + 1) / (1 - alpha))^2 * mean((1 - 1/R(pars, y2))^2)
-
-S_alpha21 <- (nu1+1)/alpha^2 * mean(1 + 1/L(pars, y1) - 2/L(pars, y1)^2) +
-  (nu2+1)/(1-alpha)^2 * mean(1 + 1/R(pars, y2) - 2/R(pars, y2)^2)
 
 
 res <- astMLE(data = retSW[,1])

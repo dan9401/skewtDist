@@ -244,3 +244,58 @@ n1n2 <- surfacePlot(n, pars, c("nu1", "nu2"), theta = 70, col = 3, shade = 0.75)
 
 infoMat_ast(pars = c(0.12, 0.6, 0.6, 3, 5))
 infoMat_sst(pars = c(0.12, 0.6, 0.6, 3))
+
+
+#
+# microD <- sample_n(s_list[s_list$size == 'micro', ], 50)
+# midD <- sample_n(s_list[s_list$size == 'mid', ], 50)
+# paste(microD$tic, collapse = " ")
+# paste(midD$tic, collapse = " ")
+#
+# library(readxl)
+# retMD <- read_excel("~/Dropbox/DannoDougDan/micro.xlsx")
+# retMD$PERMNO <- NULL
+# colnames(retMD) <- c("date", "ticker", "price")
+# retMD <- retMD %>%
+#   filter(!is.na(ticker)) %>%
+#   spread(ticker, price) %>%
+#   select_if(~!any(is.na(.))) %>%
+#   mutate_all(abs) %>%
+#   mutate(date = as.Date(as.POSIXct(as.character(date), format = "%Y%m%d"))) %>%
+#   complete(date = seq.Date(min(date), max(date), by = "day")) %>%
+#   fill(-date) %>%
+#   filter(date %in% c(index(retLW), as.Date("1996-12-31")))
+# retMW <- retMD %>%
+#   mutate_if(is.numeric, function(x) {log(x / lag(x))})
+# retMW <- xts(retMW[-1, 2:21], order.by = retMW$date[-1])
+#
+#
+# retMidD <- read_excel("~/Dropbox/DannoDougDan/mid.xlsx")
+# retMidD$PERMNO <- NULL
+# colnames(retMidD) <- c("date", "ticker", "price")
+# retMidD <- retMidD %>%
+#   filter(!is.na(ticker)) %>%
+#   spread(ticker, price) %>%
+#   select_if(~!any(is.na(.))) %>%
+#   mutate_all(abs) %>%
+#   mutate(date = as.Date(as.POSIXct(as.character(date), format = "%Y%m%d"))) %>%
+#   complete(date = seq.Date(min(date), max(date), by = "day")) %>%
+#   fill(-date) %>%
+#   filter(date %in% c(index(retLW), as.Date("1996-12-31")))
+# retMidW <- retMidD %>%
+#   mutate_if(is.numeric, function(x) {log(x / lag(x))})
+# retMidW <- xts(retMidW[-1, 2:21], order.by = retMidW$date[-1])
+#
+#
+#
+#
+# ###########
+#
+#
+# ###########
+# retLW = read.zoo("Data/largecap_weekly.csv",sep=",",header = T,
+#                  format = "%m/%d/%Y")
+# retSW = read.zoo("Data/smallcap_weekly.csv",sep=",",header = T,
+#                  format = "%m/%d/%Y")
+# retLW = as.xts(retLW)[,1:20]
+# retSW = as.xts(retSW)[,1:20]

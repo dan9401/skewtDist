@@ -35,8 +35,8 @@ qqplot_ast <- function(fit, dist = "ast", main = "QQPlot", envelope = 0.95, ...)
   p <- ppoints(length(y))
   #p <- past(y, mu, sigma, alpha, nu1, nu2)
   if (dist == "normal") {
-    x <- qnorm(p, mean = mean(y), sd = sigma)
-    px <- qnorm(c(0.25, 0.75), mean = mu, sd = sigma)
+    x <- qnorm(p, mean = 0, sd = 1)
+    px <- qnorm(c(0.25, 0.75), mean = 0, sd = 1)
   } else if (dist == "ast") {
     x <- qast(p, mu, sigma, alpha, nu1, nu2)
     px <- qast(c(0.25, 0.75), mu, sigma, alpha, nu1, nu2)
@@ -45,7 +45,8 @@ qqplot_ast <- function(fit, dist = "ast", main = "QQPlot", envelope = 0.95, ...)
   }
 
   plot(x, y, main = main,
-       xlab = paste(dist, "distribution"), ylab = "empirical distribution", ...)
+       xlab = paste(dist, "distribution"), ylab = "empirical distribution",
+       pch = 20, ...)
   py <- quantile(y, c(0.25, 0.75))
   slope <- diff(py)/diff(px)
   int <- py[1L] - slope * px[1L]
@@ -54,6 +55,7 @@ qqplot_ast <- function(fit, dist = "ast", main = "QQPlot", envelope = 0.95, ...)
 
   if ( envelope != FALSE) {
     zz <- qnorm(1 - (1 - envelope)/2)
+
     #eval(parse(text=paste("	SE <- (b/d.function(z,", distributionParameter,",...))* sqrt(P * (1 - P)/n)")))
 
     SE <- (slope/dast(x, pars = pars)) * sqrt(p * (1 - p)/length(y))
