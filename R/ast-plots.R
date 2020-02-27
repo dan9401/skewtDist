@@ -45,7 +45,6 @@ qqplot_ast <- function(fit, dist = "ast", main = "QQPlot", envelope = 0.95, ...)
   }
 
   plot(x, y, main = main,
-       xlab = paste(dist, "distribution"), ylab = "empirical distribution",
        pch = 20, ...)
   py <- quantile(y, c(0.25, 0.75))
   slope <- diff(py)/diff(px)
