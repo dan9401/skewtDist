@@ -2,9 +2,9 @@
 
 1. [ ] difference between "expected" and "observed" information matrix
 2. [ ] numerical correction of gamma for moment functions
-- [ ] gat infoMat
-- [ ] test files
-- [ ] redistribute helper functions
+3. [ ] gat infoMat
+4. [ ] test files
+5. [ ] redistribute helper functions
 
 # Useful links for getting the pkg released on CRAN: 
 
