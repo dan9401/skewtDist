@@ -1,5 +1,0 @@
-- [ ] difference between "expected" and "observed" information matrix
-- [ ] numerical correction of gamma for moment functions
-- [ ] gat infoMat
-- [ ] test files
-- [ ] redistribute helper functions
