@@ -1,3 +1,11 @@
+# To do List
+
+1. [ ] difference between "expected" and "observed" information matrix
+2. [ ] numerical correction of gamma for moment functions
+- [ ] gat infoMat
+- [ ] test files
+- [ ] redistribute helper functions
+
 # Useful links for getting the pkg released on CRAN: 
 
 1. [CRAN Repository Policy](https://cran.r-project.org/web/packages/policies.html)
