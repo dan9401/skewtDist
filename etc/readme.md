@@ -1,5 +1,8 @@
 # To do List
 
+## High priority
+
+## Optional
 1. [ ] difference between "expected" and "observed" information matrix
 2. [ ] numerical correction of gamma for moment functions
 3. [ ] gat infoMat
