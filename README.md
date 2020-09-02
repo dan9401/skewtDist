@@ -46,4 +46,4 @@ For more examples, please refer to the vignette.
 [Vignette](vignettes/VignetteSkewtDist.pdf)
 
 ## To do list
-[To do list](etc/todolist.md)
+[To do list](etc/readme.md)
