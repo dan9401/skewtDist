@@ -1,7 +1,7 @@
 Package: skewtDist
 Type: Package
 Title: Asymmetric Student t-distributions
-Version: 0.3.0
+Version: 0.3.1
 Author: Zhiye Xia
 Maintainer: Zhiye Xia <dansummer94@gmail.com>
 Description: Methods and Applications for AST and GAT distributions
