@@ -1,6 +1,6 @@
 Package: skewtDist
 Type: Package
-Title: Asymmetric Student t-distributions
+Title: Asymmetric Student t-Distributions
 Version: 0.3.2
 Authors@R: c(person("Daniel", "Xia", email = "dxia94@gmail.com", role = c("aut", "cre")))
 Description: Methods and Applications for Asymmetric Student T-distributions (AST) and Generalized Asymmetric T-distributions (GAT).
