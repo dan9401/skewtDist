@@ -3,7 +3,7 @@ Type: Package
 Title: Asymmetric Student t-Distributions
 Version: 0.3.2
 Authors@R: c(person("Daniel", "Xia", email = "dxia94@gmail.com", role = c("aut", "cre")))
-Description: Methods and Applications for Asymmetric Student T-distributions (AST) and Generalized Asymmetric T-distributions (GAT).
+Description: The skewtDist package provides tools for modeling non-normally distributed data using Asymmetric Student-t (AST) and Generalized Asymmetric t-distributions (GAT), which are families of fat-tailed distributions that exhibit different tail behaviors on the left and right sides.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

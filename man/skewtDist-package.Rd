@@ -6,7 +6,7 @@
 \alias{skewtDist-package}
 \title{skewtDist: Asymmetric Student t-Distributions}
 \description{
-Methods and Applications for Asymmetric Student T-distributions (AST) and Generalized Asymmetric T-distributions (GAT).
+The skewtDist package provides tools for modeling non-normally distributed data using Asymmetric Student-t (AST) and Generalized Asymmetric t-distributions (GAT), which are families of fat-tailed distributions that exhibit different tail behaviors on the left and right sides.
 }
 \seealso{
 Useful links:
