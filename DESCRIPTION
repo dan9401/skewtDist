@@ -1,10 +1,9 @@
 Package: skewtDist
 Type: Package
 Title: Asymmetric Student t-distributions
-Version: 0.3.1
-Author: Daniel Xia
-Maintainer: Daniel Xia <dxia94@gmail.com>
-Description: Methods and Applications for AST and GAT distributions.
+Version: 0.3.2
+Authors@R: c(person("Daniel", "Xia", email = "dxia94@gmail.com", role = c("aut", "cre")))
+Description: Methods and Applications for Asymmetric Student T-distributions (AST) and Generalized Asymmetric T-distributions (GAT).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
