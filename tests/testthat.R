@@ -1,4 +1,4 @@
 library(testthat)
-library(st)
+library(skewtDist)
 
-test_check("st")
+test_check("skewtDist")
