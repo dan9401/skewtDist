@@ -20,5 +20,5 @@ Imports:
     Rsolnp,
     DistributionUtils
 Depends:
-    R (>= 4.4.0)
+    R (>= 4.3.0)
 VignetteBuilder: knitr
