@@ -13,6 +13,9 @@
 #' analytical formulas are provided in \emph{Zhu and Galbraith(2010)}.
 #' The observed information matrix is calculated by the expectation of negative Hessian Matrix of the log-likelihood function.
 #'
+#' @references
+#' Baker, R. D. (2016). A new asymmetric generalisation of the t-distribution. arXiv preprint arXiv:1606.05203.
+#' \url{https://doi.org/10.48550/arXiv.1606.05203}
 #' @examples
 #' pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
 #' data <- rgat(1000, pars = pars)
