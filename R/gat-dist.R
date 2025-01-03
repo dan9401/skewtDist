@@ -1,6 +1,7 @@
 #' @title Generalized Asymmetric t-distribution
 #'
 #' @name GAT
+#' @aliases gat
 #' @aliases dgat
 #' @aliases pgat
 #' @aliases qgat
