@@ -48,7 +48,7 @@
 #' gatMoments(pars = pars)
 
 #' @export
-gatMean <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+gatMean <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
     if (missing(mu)) {
       stop("One and only one of [mu, phi, alpha, r, c, nu] and pars needs to be specified")
@@ -60,7 +60,7 @@ gatMean <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
 }
 
 #' @export
-gatVar <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+gatVar <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
     if (missing(mu)) {
       stop("One and only one of [mu, phi, alpha, r, c, nu] and pars needs to be specified")
@@ -72,7 +72,7 @@ gatVar <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = 
 }
 
 #' @export
-gatSD <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+gatSD <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
     if (missing(mu)) {
       stop("One and only one of [mu, phi, alpha, r, c, nu] and pars needs to be specified")
@@ -85,7 +85,7 @@ gatSD <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = N
 }
 
 #' @export
-gatSkew <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+gatSkew <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
     if (missing(mu)) {
       stop("One and only one of [mu, phi, alpha, r, c, nu] and pars needs to be specified")
@@ -98,7 +98,7 @@ gatSkew <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
 }
 
 #' @export
-gatKurt <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+gatKurt <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   if (is.null(pars)) {
     if (missing(mu)) {
       stop("One and only one of [mu, phi, alpha, r, c, nu] and pars needs to be specified")
@@ -115,7 +115,7 @@ gatKurt <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
 }
 
 #' @export
-gatMoment <- function(moment = c("mean", "sd", "var", "skew", "kurt"), mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+gatMoment <- function(moment = c("mean", "sd", "var", "skew", "kurt"), mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   moment <- match.arg(moment)
   method <- match.arg(method)
   if (is.null(pars)) {
@@ -134,7 +134,7 @@ gatMoment <- function(moment = c("mean", "sd", "var", "skew", "kurt"), mu = 0, s
 
 #' @rdname gat-moment
 #' @export
-gatMoments <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+gatMoments <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   if (is.null(pars)) {
     if (missing(mu)) {
       stop("One and only one of [mu, phi, alpha, r, c, nu] and pars needs to be specified")
