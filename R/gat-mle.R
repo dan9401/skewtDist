@@ -42,12 +42,8 @@
 #' pars <- c(0, 1, 1.5, 1.2, 2, 4)
 #' data <- rgat(1000, pars = pars)
 #' fit <- gatMLE(data)
-#' summary(fit)
-#' moments(fit)
-#' fitted(fit)
-#' se(fit)
-#' objective(fit)
-#' plot(fit)
+#' fit
+#' 
 
 #' @rdname gatMLE
 #' @export
