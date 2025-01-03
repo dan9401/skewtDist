@@ -1,3 +1,5 @@
+#' @importFrom stats dnorm
+
 # may keep separate files for gat & ast distribuitons
 
 # these 4 are quality of life functions, to keep the formulas simple, the list may be extended

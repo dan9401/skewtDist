@@ -1,3 +1,5 @@
+#' @importFrom stats cov2cor
+
 #' @export
 gatInfoMat <- function(pars, data, method = "observed") {
   y <- data

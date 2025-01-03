@@ -43,6 +43,8 @@
 #' data <- rast(1000, pars = pars)
 #' fit <- astMLE(data)
 #' fit
+#' 
+#' @importFrom stats nlminb
 
 #' @rdname astMLE
 #' @export

@@ -44,6 +44,7 @@
 #' fit <- gatMLE(data)
 #' fit
 #' 
+#' @importFrom stats nlminb
 
 #' @rdname gatMLE
 #' @export

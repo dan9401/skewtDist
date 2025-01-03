@@ -30,6 +30,8 @@
 #' x <- seq(-3, 3, 0.01)
 #' y <- dgat(x, pars = pars)
 #' lines(x, y, col = 4)
+#' 
+#' @importFrom stats pbeta rbeta uniroot
 
 #' @rdname GAT
 #' @export

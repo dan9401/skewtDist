@@ -69,6 +69,8 @@
 #' lines(x, y3, lty = 3)
 #' abline(v = 0, col = 4, lty = 2)
 #' legend(x = "topleft", legend = c("alpha = 0.3", "alpha = 0.5", "alpha = 0.7"), lty = 1:3)
+#' 
+#' @importFrom stats pt qt rt runif
 
 #' @rdname AST
 #' @export

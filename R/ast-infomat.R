@@ -25,6 +25,8 @@
 #' round(astInfoMat(pars, "expected"), 4)
 #' round(astCov(pars), 4)
 #' round(astCor(pars), 4)
+#' 
+#' @importFrom stats cov2cor
 
 #' @rdname ast-infomat
 #' @export

@@ -1,3 +1,6 @@
+#' @importFrom graphics hist lines points
+#' @importFrom stats ppoints qnorm quantile
+
 density_gat <- function(fit, main = "Histogram/Density plot", ...) {
   data <- fit$data
   pars <- fit$fitted_pars
