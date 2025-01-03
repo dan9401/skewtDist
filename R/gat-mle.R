@@ -33,8 +33,9 @@
 #' For details of the list of control arguments, please refer to \code{nlminb}, \code{nloptr::nloptr}, \code{Rsolnp::solnp}
 #'
 #' @examples
-#' pars <- c(0, 1, 1.5, 1.2, 2, 4)
+#' pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
 #' data <- rgat(1000, pars = pars)
+#' 
 #' fit <- gatMLE(data)
 #' fit
 #' 

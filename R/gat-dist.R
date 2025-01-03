@@ -24,9 +24,14 @@
 #' \code{dgat} gives the density, \code{pgat} gives the distribution function, \code{qgat} gives the quantile function, and \code{rgat} generates random samples for GATdistribution.
 #'
 #' @examples
-#' dgat(0, 0, 1, 1.2, 1.2, 2, 5)
+#' dgat(0, 0.12, 0.6, 1.5, 1.2, 2, 5)
+#' pgat(0.12, 0.12, 0.6, 1.5, 1.2, 2, 5)
+#' qgat(0.4, 0.12, 0.6, 1.5, 1.2, 2, 5)
+#' data = rgat(1000, 0.12, 0.6, 1.5, 1.2, 2, 5)
+#' hist(data, breaks = 50, probability = TRUE)
+#' 
 #' # using the 'pars' argument
-#' pars <- c(0, 1, 1.2, 1.2, 2, 5)
+#' pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
 #' x <- seq(-3, 3, 0.01)
 #' y <- dgat(x, pars = pars)
 #' lines(x, y, col = 4)

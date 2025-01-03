@@ -41,7 +41,8 @@
 #'
 #' @examples
 #' # The parameter values are specially set for a volatile portfolio.
-#' pars <- c(0.12, 0.6, 0.6, 6, 5)
+#' pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
+#' 
 #' gatMoment("sd", pars = pars, method = "numerical")
 #' gatMoments(pars = pars)
 
@@ -112,6 +113,7 @@ gatKurt <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars =
          regular = kurt)
 }
 
+#' @rdname gat-moment
 #' @export
 gatMoment <- function(moment = c("mean", "sd", "var", "skew", "kurt"), mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   moment <- match.arg(moment)

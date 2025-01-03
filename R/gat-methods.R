@@ -20,16 +20,14 @@
 #' @aliases objective.gat
 #'
 #' @examples
-#' pars <- c(0.12, 0.6, 0.6, 6, 5)
+#' pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
 #' data <- rgat(1000, pars = pars)
-#' solver_control <- list(eval.max = 10^3, iter.max = 10^3)
-#' fit <- gatMLE(data, solver = 'nlminb', solver_control = solver_control)
+#' 
+#' fit <- gatMLE(data)
+#' 
 #' summary(fit)
 #' moments(fit)
-#' fitted(fit)
-#' se(fit)
-#' objective(fit)
-#' plot(fit)
+#' plot(fit, 1)
 #' 
 #' @importFrom utils menu
 
