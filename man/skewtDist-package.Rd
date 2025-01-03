@@ -4,7 +4,7 @@
 \name{skewtDist-package}
 \alias{skewtDist}
 \alias{skewtDist-package}
-\title{skewtDist: Asymmetric Student t-distributions}
+\title{skewtDist: Asymmetric Student t-Distributions}
 \description{
 Methods and Applications for Asymmetric Student T-distributions (AST) and Generalized Asymmetric T-distributions (GAT).
 }

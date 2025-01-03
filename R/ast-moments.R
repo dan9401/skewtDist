@@ -39,8 +39,8 @@
 #' }
 #'
 #' @references
-#' Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}
-#' \url{https://econpapers.repec.org/paper/circirwor/2009s-13.htm}
+#' Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.
+#' \doi{https://doi.org/10.1016/j.jeconom.2010.01.013}
 #'
 #' @examples
 #' # The parameter values are specially set for a volatile portfolio.

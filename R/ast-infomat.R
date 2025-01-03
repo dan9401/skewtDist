@@ -15,8 +15,8 @@
 #' The observed information matrix is calculated by the expectation of negative Hessian Matrix of the log-likelihood function.
 #'
 #' @references
-#' Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}
-#' \url{https://econpapers.repec.org/paper/circirwor/2009s-13.htm}
+#' Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.
+#' \doi{https://doi.org/10.1016/j.jeconom.2010.01.013}
 #'
 #' @examples
 #' pars <- c(0.12, 0.6, 0.6, 3, 5)
