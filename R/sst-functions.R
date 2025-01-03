@@ -17,6 +17,23 @@
 #' @aliases sstKurt
 #' @aliases sstInfoMat
 #' @aliases sstFit
+#' 
+#' @param x,q vector of quantiles
+#' @param p vector of probablilities
+#' @param n number of observations for random generation
+#' @param mu location parameter
+#' @param s scale parameter, \eqn{s > 0}
+#' @param alpha skewness parameter, \eqn{0 < alpha < 1}
+#' @param nu degrees of freedom / tail parameter for the both tails, \eqn{ nu > 0}
+#' @param pars a vector that contains mu, s, alpha, nu1, nu2, if pars is specified, mu, s, alpha, nu1, nu2 should not be specified
+#' @param method method used to calculate the moment(s), one of 'analytical' and 'numerical'
+#' @param type type of kurtosis calculated, one of 'excess' and 'regular'
+#' 
+#' @param data a univariate data object to be fitted
+#' @param start_pars a named numeric vector of starting parameters for the optimization algorithm, not all parameters are needed
+#' @param fixed_pars a named numeric vector of parameters to be kept fixed during the optimization routine, not all parameters are needed
+#' @param solver solver used for MLE, one of 'nlminb', 'nloptr', 'Rsolnp', default is 'nlminb'
+#' @param solver_control list of control arguments passed to the solver
 #'
 #' @details
 #' The SST functions are wrappers of their AST equivalent.
