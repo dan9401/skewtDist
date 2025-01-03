@@ -71,9 +71,3 @@ check_bound <- function(pars) {
   if (alpha <= 0 || alpha >= 1)
     stop("alpha must be between 0 and 1")
 }
-
-# putting it here temporarily
-#' @export
-moments <- function(x, ...) {
-  UseMethod("moments", x)
-}
