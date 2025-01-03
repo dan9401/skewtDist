@@ -1,5 +1,30 @@
+#' @title Information Matrix Function of Asymmetric Student-t distribution
+#'
+#' @name gat-infomat
+#' @aliases gatInfoMat
+#'
+#' @description Information matrix, asymptotic covariance and correlation matrix functions of Asymmetric Student-t distribution
+#'
+#' @param pars a vector of parameter values for an AST distribution
+#' @param data a vector of numeric data used to calculate observed information matrix
+#'
+#' @details
+#' The expected information matrix is calculated by the expectation of the outer product of score functions,
+#' analytical formulas are provided in \emph{Zhu and Galbraith(2010)}.
+#' The observed information matrix is calculated by the expectation of negative Hessian Matrix of the log-likelihood function.
+#'
+#' @examples
+#' pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
+#' data <- rgat(1000, pars = pars)
+#' 
+#' round(gatInfoMat(pars, data), 4)
+#' 
+#' round(gatCov(pars, data), 4)
+#' round(gatCor(pars, data), 4)
+#' 
 #' @importFrom stats cov2cor
 
+#' @rdname gat-infomat
 #' @export
 gatInfoMat <- function(pars, data) {
   y <- data
@@ -78,11 +103,13 @@ gatInfoMat <- function(pars, data) {
   infoMat
 }
 
+#' @rdname gat-infomat
 #' @export
 gatCov <- function(pars, data) {
   solve(gatInfoMat(pars, data))
 }
 
+#' @rdname gat-infomat
 #' @export
 gatCor <- function(pars, data) {
   cov2cor(gatCov(pars, data))
