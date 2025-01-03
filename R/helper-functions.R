@@ -1,3 +1,5 @@
+#' @importFrom stats dnorm
+
 # may keep separate files for gat & ast distribuitons
 
 # these 4 are quality of life functions, to keep the formulas simple, the list may be extended
@@ -68,10 +70,4 @@ check_bound <- function(pars) {
     stop("nu2 must be greater than 0")
   if (alpha <= 0 || alpha >= 1)
     stop("alpha must be between 0 and 1")
-}
-
-# putting it here temporarily
-#' @export
-moments <- function(x, ...) {
-  UseMethod("moments", x)
 }

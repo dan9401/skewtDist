@@ -3,6 +3,7 @@
 #' @name gat-moment
 #' @aliases gatMean
 #' @aliases gatVar
+#' @aliases gatSD
 #' @aliases gatSkew
 #' @aliases gatKurt
 #' @aliases gatMoment
@@ -15,10 +16,11 @@
 #' @param moment the moment to be calculated, one of 'mean', 'sd', 'skew', 'kurt'
 #' @param n order of (raw/central) moment to be calculated
 #' @param mu location parameter
-#' @param sigma scale parameter, \eqn{sigma > 0}
+#' @param phi scale parameter, \eqn{phi > 0}
 #' @param alpha skewness parameter, \eqn{0 < alpha < 1}
-#' @param nu1 degrees of freedom / tail parameter for the left tail, \eqn{ nu1 > 0}
-#' @param nu2 degrees of freedom / tail parameter for the right tail, \eqn{ nu2 > 0}
+#' @param r tail power asymmetry parameter \eqn{r > 0}
+#' @param c scale asymmetry parameter \eqn{r > 0}
+#' @param nu degrees of freedom / tail parameter
 #' @param pars a vector that contains mu, phi, alpha, r, c, nu, if pars is specified, mu, phi, alpha, r, c, nu should not be specified
 #' @param method method used to calculate the moment(s), one of 'analytical' and 'numerical'
 #' @param type type of kurtosis calculated, one of 'excess' and 'regular'
@@ -38,17 +40,18 @@
 #' }
 #'
 #' @references
-#' Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}
-#' \url{https://econpapers.repec.org/paper/circirwor/2009s-13.htm}
-#'
+#' Baker, R. D. (2016). A new asymmetric generalisation of the t-distribution. arXiv preprint arXiv:1606.05203.
+#' \url{https://doi.org/10.48550/arXiv.1606.05203}
+#' 
 #' @examples
 #' # The parameter values are specially set for a volatile portfolio.
-#' pars <- c(0.12, 0.6, 0.6, 6, 5)
+#' pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
+#' 
 #' gatMoment("sd", pars = pars, method = "numerical")
 #' gatMoments(pars = pars)
 
 #' @export
-gatMean <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+gatMean <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
     if (missing(mu)) {
       stop("One and only one of [mu, phi, alpha, r, c, nu] and pars needs to be specified")
@@ -60,7 +63,7 @@ gatMean <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
 }
 
 #' @export
-gatVar <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+gatVar <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
     if (missing(mu)) {
       stop("One and only one of [mu, phi, alpha, r, c, nu] and pars needs to be specified")
@@ -72,7 +75,7 @@ gatVar <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = 
 }
 
 #' @export
-gatSD <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+gatSD <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
     if (missing(mu)) {
       stop("One and only one of [mu, phi, alpha, r, c, nu] and pars needs to be specified")
@@ -85,7 +88,7 @@ gatSD <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = N
 }
 
 #' @export
-gatSkew <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
+gatSkew <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical")) {
   if (is.null(pars)) {
     if (missing(mu)) {
       stop("One and only one of [mu, phi, alpha, r, c, nu] and pars needs to be specified")
@@ -98,7 +101,7 @@ gatSkew <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
 }
 
 #' @export
-gatKurt <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+gatKurt <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   if (is.null(pars)) {
     if (missing(mu)) {
       stop("One and only one of [mu, phi, alpha, r, c, nu] and pars needs to be specified")
@@ -114,8 +117,9 @@ gatKurt <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars =
          regular = kurt)
 }
 
+#' @rdname gat-moment
 #' @export
-gatMoment <- function(moment = c("mean", "sd", "var", "skew", "kurt"), mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+gatMoment <- function(moment = c("mean", "sd", "var", "skew", "kurt"), mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   moment <- match.arg(moment)
   method <- match.arg(method)
   if (is.null(pars)) {
@@ -134,7 +138,7 @@ gatMoment <- function(moment = c("mean", "sd", "var", "skew", "kurt"), mu = 0, s
 
 #' @rdname gat-moment
 #' @export
-gatMoments <- function(mu = 0, sigma = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
+gatMoments <- function(mu = 0, phi = 1, alpha = 0.5, r = 2, c = 2, nu = Inf, pars = NULL, method = c("analytical", "numerical"), type = c("excess", "regular")) {
   if (is.null(pars)) {
     if (missing(mu)) {
       stop("One and only one of [mu, phi, alpha, r, c, nu] and pars needs to be specified")

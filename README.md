@@ -6,22 +6,18 @@ The **skewtDist** package aims to provide a set of tools for modelling non-norma
 
 ## Installation
 
-The package may be installed and loaded with the following code.
+The package is currently in the process of submitting to CRAN.
 <!---You can install the released version of st from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-install.packages("st")
+install.packages("skewtDist")
 ```--->
 
 ``` r
 devtools::install__github("dan9401/skewtDist")
 ```
 
-
-
 ## Example
-
-This is a basic example which shows you how to solve a common problem:
 
 ``` r
 pars <- c(0.12, 0.6, 0.6, 3, 5)
@@ -32,18 +28,14 @@ y <- dast(x, pars = pars)
 lines(x, y, col = 4)
 ```
 
-An example of fitting the AST MLE:
+An example fitting AST distribution using MLE:
 
 ``` r
 data(retSW)
-plxs <- retSW['2006-01/', 1]
+plxs <- retSW['2006-01/', 'PLXS']
 fit <- astMLE(plxs)
 summary(fit)
 plot(fit, 2)
 ```
 
-For more examples, please refer to the vignette.
-[Vignette](vignettes/VignetteSkewtDist.pdf)
-
-## To do list
-[To do list](etc/readme.md)
+For more examples, please refer to the [Vignette](vignettes/VignetteSkewtDist.pdf).

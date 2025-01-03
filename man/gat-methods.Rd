@@ -4,24 +4,34 @@
 \alias{gat-methods}
 \alias{summary.gat}
 \alias{moments.gat}
+\alias{plots.gat}
+\alias{objective.gat}
 \alias{print.gat}
 \alias{plot.gat}
 \title{Methods for gat class}
 \usage{
-\method{summary}{gat}(fit)
+\method{summary}{gat}(object, ...)
 
-\method{moments}{gat}(fit, method = c("analytical", "numerical"))
+\method{moments}{gat}(x, method = c("analytical", "numerical"), ...)
 
-\method{print}{gat}(fit)
+\method{print}{gat}(x, ...)
 
-plot.gat(fit, type = NULL, dist = "gat", envelope = 0.95, ...)
+\method{plot}{gat}(x, type = NULL, dist = "gat", envelope = 0.95, ...)
 }
 \arguments{
-\item{fit}{A GAT fit object of class \code{\link{gat}}}
+\item{object}{A GAT fit object of class \code{\link{gat}}}
+
+\item{...}{additional arguments for the \code{hist} or \code{plot} function from \code{graphics}}
+
+\item{x}{A GAT fit object of class \code{\link{gat}}}
 
 \item{method}{one of "numerical" and "analytical", calculating the moments using numerical integration / analytical formula}
 
-\item{type}{one of "density" and "QQplot"}
+\item{type}{one of "density" or "qqplot"}
+
+\item{dist}{one of "norm" or "ast", the theoretical distribution used in QQplots}
+
+\item{envelope}{the confidence level used to construct the envelope}
 }
 \description{
 Methods for gat S3 class
@@ -30,14 +40,13 @@ Methods for gat S3 class
 should also add the empirical moments
 }
 \examples{
-pars <- c(0.12, 0.6, 0.6, 6, 5)
+pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
 data <- rgat(1000, pars = pars)
-solver_control <- list(eval.max = 10^3, iter.max = 10^3)
-fit <- gatMLE(data, solver = 'nlminb', solver_control = solver_control)
+
+fit <- gatMLE(data)
+
 summary(fit)
 moments(fit)
-fitted(fit)
-se(fit)
-objective(fit)
-plot(fit)
+plot(fit, 1)
+
 }

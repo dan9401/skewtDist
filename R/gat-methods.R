@@ -2,9 +2,14 @@
 #'
 #' @description Methods for gat S3 class
 #'
-#' @param fit A GAT fit object of class \code{\link{gat}}
+#' @param object A GAT fit object of class \code{\link{gat}}
+#' @param x A GAT fit object of class \code{\link{gat}}
 #' @param method one of "numerical" and "analytical", calculating the moments using numerical integration / analytical formula
 #' @param type one of "density" and "QQplot"
+#' @param type one of "density" or "qqplot"
+#' @param dist one of "norm" or "ast", the theoretical distribution used in QQplots
+#' @param envelope the confidence level used to construct the envelope
+#' @param ... additional arguments for the \code{hist} or \code{plot} function from \code{graphics}
 #'
 #' @details should also add the empirical moments
 #'
@@ -12,25 +17,24 @@
 #' @aliases summary.gat
 #' @aliases moments.gat
 #' @aliases plots.gat
-#' @aliases fitted.gat
-#' @aliases se.gat
 #' @aliases objective.gat
 #'
 #' @examples
-#' pars <- c(0.12, 0.6, 0.6, 6, 5)
+#' pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
 #' data <- rgat(1000, pars = pars)
-#' solver_control <- list(eval.max = 10^3, iter.max = 10^3)
-#' fit <- gatMLE(data, solver = 'nlminb', solver_control = solver_control)
+#' 
+#' fit <- gatMLE(data)
+#' 
 #' summary(fit)
 #' moments(fit)
-#' fitted(fit)
-#' se(fit)
-#' objective(fit)
-#' plot(fit)
+#' plot(fit, 1)
+#' 
+#' @importFrom utils menu
 
 #' @rdname gat-methods
 #' @export
-summary.gat <- function(fit) {
+summary.gat <- function(object, ...) {
+  fit <- object
   dist <- "GAT"
   pars <- rbind(fit$start_pars, fit$fixed_pars)
   res <- rbind(fit$fitted_pars, fit$standard_errors)
@@ -48,18 +52,21 @@ summary.gat <- function(fit) {
   print(pars)
   cat("\nTime elapsed: ", fit$time_elapsed)
   cat("\nConvergence Message: ", fit$message)
+  cat("\n")
 }
 
 #' @rdname gat-methods
 #' @export
-moments.gat <- function(fit, method = c("analytical", "numerical")) {
+moments.gat <- function(x, method = c("analytical", "numerical"), ...) {
+  fit <- x
   pars <- fit$fitted_pars
   gatMoments(pars = pars, method)
 }
 
 #' @rdname gat-methods
 #' @export
-print.gat <- function(fit) {
+print.gat <- function(x, ...) {
+  fit <- x
   dist <- "GAT"
   res <- rbind(fit$fitted_pars, fit$standard_errors)
   colnames(res) <- names(fit$fitted_pars)
@@ -73,7 +80,8 @@ print.gat <- function(fit) {
 
 #' @rdname gat-methods
 #' @export
-plot.gat <- function(fit, type = NULL, dist = "gat", envelope = 0.95, ...) {
+plot.gat <- function(x, type = NULL, dist = "gat", envelope = 0.95, ...) {
+  fit <- x
   if (is.null(type)) {
     selection <- 1
     while (selection) {

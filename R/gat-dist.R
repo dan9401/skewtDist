@@ -1,6 +1,7 @@
 #' @title Generalized Asymmetric t-distribution
 #'
 #' @name GAT
+#' @aliases gat
 #' @aliases dgat
 #' @aliases pgat
 #' @aliases qgat
@@ -22,13 +23,24 @@
 #' @return
 #' \code{dgat} gives the density, \code{pgat} gives the distribution function, \code{qgat} gives the quantile function, and \code{rgat} generates random samples for GATdistribution.
 #'
+#' @references
+#' Baker, R. D. (2016). A new asymmetric generalisation of the t-distribution. arXiv preprint arXiv:1606.05203.
+#' \url{https://doi.org/10.48550/arXiv.1606.05203}
+#' 
 #' @examples
-#' dgat(0, 0, 1, 1.2, 1.2, 2, 5)
+#' dgat(0, 0.12, 0.6, 1.5, 1.2, 2, 5)
+#' pgat(0.12, 0.12, 0.6, 1.5, 1.2, 2, 5)
+#' qgat(0.4, 0.12, 0.6, 1.5, 1.2, 2, 5)
+#' data = rgat(1000, 0.12, 0.6, 1.5, 1.2, 2, 5)
+#' hist(data, breaks = 50, probability = TRUE)
+#' 
 #' # using the 'pars' argument
-#' pars <- c(0, 1, 1.2, 1.2, 2, 5)
+#' pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
 #' x <- seq(-3, 3, 0.01)
 #' y <- dgat(x, pars = pars)
 #' lines(x, y, col = 4)
+#' 
+#' @importFrom stats pbeta rbeta uniroot
 
 #' @rdname GAT
 #' @export
@@ -56,9 +68,9 @@ dgat <- function(x, mu, scale, alpha, r, c, nu, pars = NULL) {
 
 #' @rdname GAT
 #' @export
-pgat <- function(x, mu, scale, alpha, r, c, nu, pars = NULL) {
-    if (!is.numeric(x))
-        stop("x must be numeric")
+pgat <- function(q, mu, scale, alpha, r, c, nu, pars = NULL) {
+    if (!is.numeric(q))
+        stop("q must be numeric")
     if (!is.null(pars)) {
       if (!missing(mu)) {
         stop("Only one of [mu, scale, alpha, r, c, nu] and pars needs to be specified")
@@ -70,13 +82,13 @@ pgat <- function(x, mu, scale, alpha, r, c, nu, pars = NULL) {
       c <- pars[5]
       nu <- pars[6]
     }
-    if (x == -Inf) {
+    if (q == -Inf) {
       return(0)
     }
-    if (x == Inf) {
+    if (q == Inf) {
       return(1)
     }
-    q <- 1/(1 + c^(-alpha * (1 + r^2)/r) * (((x - mu)/scale) + sqrt(1 + (x - mu)^2/scale^2))^(-alpha * (1 + r^2)/r))
+    q <- 1/(1 + c^(-alpha * (1 + r^2)/r) * (((q - mu)/scale) + sqrt(1 + (q - mu)^2/scale^2))^(-alpha * (1 + r^2)/r))
     p <- pbeta(q, nu/alpha/(1 + r^2), r^2 * nu/alpha/(1 + r^2))
     p
 }
