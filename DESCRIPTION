@@ -17,5 +17,6 @@ Suggests:
     rmarkdown
 Imports: 
     nloptr,
-    Rsolnp
+    Rsolnp,
+    DistributionUtils
 VignetteBuilder: knitr

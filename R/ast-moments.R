@@ -46,6 +46,8 @@
 #' pars <- c(0.12, 0.6, 0.6, 6, 5)
 #' astMoment("sd", pars = pars, method = "numerical")
 #' astMoments(pars = pars)
+#' 
+#' @importFrom DistributionUtils safeIntegrate
 
 #' @export
 astMean <- function(mu = 0, s = 1, alpha = 0.5, nu1 = Inf, nu2 = Inf, pars = NULL, method = c("analytical", "numerical")) {
