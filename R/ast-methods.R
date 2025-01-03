@@ -8,6 +8,7 @@
 #' @param type one of "density" or "qqplot"
 #' @param dist one of "norm" or "ast", the theoretical distribution used in QQplots
 #' @param envelope the confidence level used to construct the envelope
+#' @param ... additional arguments for the \code{hist} or \code{plot} function from \code{graphics}
 #'
 #' @details should also add the empirical moments
 #'

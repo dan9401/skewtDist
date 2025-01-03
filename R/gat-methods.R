@@ -2,9 +2,14 @@
 #'
 #' @description Methods for gat S3 class
 #'
-#' @param fit A GAT fit object of class \code{\link{gat}}
+#' @param object A GAT fit object of class \code{\link{gat}}
+#' @param x A GAT fit object of class \code{\link{gat}}
 #' @param method one of "numerical" and "analytical", calculating the moments using numerical integration / analytical formula
 #' @param type one of "density" and "QQplot"
+#' @param type one of "density" or "qqplot"
+#' @param dist one of "norm" or "ast", the theoretical distribution used in QQplots
+#' @param envelope the confidence level used to construct the envelope
+#' @param ... additional arguments for the \code{hist} or \code{plot} function from \code{graphics}
 #'
 #' @details should also add the empirical moments
 #'
