@@ -58,3 +58,7 @@ y <- dgat(x, pars = pars)
 lines(x, y, col = 4)
 
 }
+\references{
+Baker, R. D. (2016). A new asymmetric generalisation of the t-distribution. arXiv preprint arXiv:1606.05203.
+\url{https://doi.org/10.48550/arXiv.1606.05203}
+}

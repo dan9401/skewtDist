@@ -120,3 +120,7 @@ pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
 gatMoment("sd", pars = pars, method = "numerical")
 gatMoments(pars = pars)
 }
+\references{
+Baker, R. D. (2016). A new asymmetric generalisation of the t-distribution. arXiv preprint arXiv:1606.05203.
+\url{https://doi.org/10.48550/arXiv.1606.05203}
+}
