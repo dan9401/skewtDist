@@ -2,9 +2,12 @@
 #'
 #' @description Methods for ast S3 class
 #'
-#' @param fit A AST fit object of class \code{\link{ast}}
+#' @param object A AST fit object of class \code{\link{ast}}
+#' @param x A AST fit object of class \code{\link{ast}}
 #' @param method one of "numerical" and "analytical", calculating the moments using numerical integration / analytical formula
-#' @param type one of "density" and "QQplot"
+#' @param type one of "density" or "qqplot"
+#' @param dist one of "norm" or "ast", the theoretical distribution used in QQplots
+#' @param envelope the confidence level used to construct the envelope
 #'
 #' @details should also add the empirical moments
 #'
@@ -78,7 +81,7 @@ plot.ast <- function(x, type = NULL, dist = "ast", envelope = 0.95, ...) {
   if (is.null(type)) {
     selection <- 1
     while (selection) {
-      selection <- menu(c("Density", "qqplot"), title = "Make a plot selection (or 0 to exit)")
+      selection <- menu(c("Density", "QQplot"), title = "Make a plot selection (or 0 to exit)")
       if (selection == 1) {
         density_ast(fit, ...)
       } else if(selection == 2) {
