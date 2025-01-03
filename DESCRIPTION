@@ -4,7 +4,7 @@ Title: Asymmetric Student t-distributions
 Version: 0.3.1
 Author: Daniel Xia
 Maintainer: Daniel Xia <dxia94@gmail.com>
-Description: Methods and Applications for AST and GAT distributions
+Description: Methods and Applications for AST and GAT distributions.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
