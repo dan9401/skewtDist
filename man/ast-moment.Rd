@@ -4,6 +4,7 @@
 \alias{ast-moment}
 \alias{astMean}
 \alias{astVar}
+\alias{astSD}
 \alias{astSkew}
 \alias{astKurt}
 \alias{astMoment}
@@ -82,7 +83,7 @@ astCentralMoment(
 
 \item{method}{method used to calculate the moment(s), one of 'analytical' and 'numerical'}
 
-\item{moment}{the moment to be calculated, one of 'mean', 'sd', 'skew', 'kurt'}
+\item{moment}{the moment to be calculated, one of 'mean', 'sd', 'var', 'skew', 'kurt'}
 
 \item{type}{type of kurtosis calculated, one of 'excess' and 'regular'}
 
@@ -107,7 +108,8 @@ The moments for AST follow the general rule of student t distribution,
 }
 \examples{
 # The parameter values are specially set for a volatile portfolio.
-pars <- c(0.12, 0.6, 0.6, 6, 5)
+pars <- c(0.12, 0.6, 0.6, 3, 5)
+
 astMoment("sd", pars = pars, method = "numerical")
 astMoments(pars = pars)
 

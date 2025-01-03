@@ -58,33 +58,17 @@ but also the asymmetry in the two tail powers of the distribution.
 }
 }
 \examples{
-# The parameter values are specially set for a volatile portfolio.
-# density at the mu is always 1 / s
 d <- dast(0.12, 0.12, 0.6, 0.6, 3, 5)
-# cumulative distribution at mu is alpha
 p <- past(0.12, 0.12, 0.6, 0.6, 3, 5)
-# quantile at alpha is mu
 q <- qast(0.4, 0.12, 0.6, 0.6, 3, 5)
 data <- rast(1000, 0.12, 0.6, 0.6, 3, 5)
 hist(data, breaks = 50, probability = TRUE)
 
-# using the 'pars' argument
 pars <- c(0.12, 0.6, 0.6, 3, 5)
 x <- seq(-3, 3, 0.01)
 y <- dast(x, pars = pars)
 lines(x, y, col = 4)
 
-pars1 <- c(0, 2, 0.3, 5, 5)
-pars2 <- c(0, 2, 0.5, 5, 5)
-pars3 <- c(0, 2, 0.7, 5, 5)
-y1 <- dast(x, pars = pars1)
-y2 <- dast(x, pars = pars2)
-y3 <- dast(x, pars = pars3)
-plot(x, y1, type = "l", main = expression(alpha), xlab = "x", ylab = "density")
-lines(x, y2, lty = 2)
-lines(x, y3, lty = 3)
-abline(v = 0, col = 4, lty = 2)
-legend(x = "topleft", legend = c("alpha = 0.3", "alpha = 0.5", "alpha = 0.7"), lty = 1:3)
 }
 \references{
 Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}

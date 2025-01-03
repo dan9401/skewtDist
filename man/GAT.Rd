@@ -3,6 +3,7 @@
 \name{GAT}
 \alias{GAT}
 \alias{dgat}
+\alias{gat}
 \alias{pgat}
 \alias{qgat}
 \alias{rgat}
@@ -10,7 +11,7 @@
 \usage{
 dgat(x, mu, scale, alpha, r, c, nu, pars = NULL)
 
-pgat(x, mu, scale, alpha, r, c, nu, pars = NULL)
+pgat(q, mu, scale, alpha, r, c, nu, pars = NULL)
 
 qgat(p, mu, scale, alpha, r, c, nu, pars = NULL)
 
@@ -44,10 +45,16 @@ rgat(n, mu, scale, alpha, r, c, nu, pars = NULL)
 Probablity density function(PDF), Cumulative distribution function(CDF), Quantile function and Random generation of the GAT distribution
 }
 \examples{
-dgat(0, 0, 1, 1.2, 1.2, 2, 5)
+dgat(0, 0.12, 0.6, 1.5, 1.2, 2, 5)
+pgat(0.12, 0.12, 0.6, 1.5, 1.2, 2, 5)
+qgat(0.4, 0.12, 0.6, 1.5, 1.2, 2, 5)
+data = rgat(1000, 0.12, 0.6, 1.5, 1.2, 2, 5)
+hist(data, breaks = 50, probability = TRUE)
+
 # using the 'pars' argument
-pars <- c(0, 1, 1.2, 1.2, 2, 5)
+pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
 x <- seq(-3, 3, 0.01)
 y <- dgat(x, pars = pars)
 lines(x, y, col = 4)
+
 }

@@ -16,6 +16,7 @@ Suggests:
     knitr,
     rmarkdown
 Imports: 
+    xts,
     nloptr,
     Rsolnp,
     DistributionUtils

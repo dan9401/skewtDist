@@ -23,17 +23,17 @@
 \alias{sstMLE}
 \title{Functions for Symmetric Student-t distribution}
 \usage{
-dsst(x, mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL)
+dsst(x, mu = 0, s = 1, alpha = 0.5, nu = Inf, pars = NULL)
 
-psst(q, mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL)
+psst(q, mu = 0, s = 1, alpha = 0.5, nu = Inf, pars = NULL)
 
-qsst(p, mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL)
+qsst(p, mu = 0, s = 1, alpha = 0.5, nu = Inf, pars = NULL)
 
-rsst(n, mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL)
+rsst(n, mu = 0, s = 1, alpha = 0.5, nu = Inf, pars = NULL)
 
 sstMoments(
   mu = 0,
-  sigma = 1,
+  s = 1,
   alpha = 0.5,
   nu = Inf,
   pars = NULL,
@@ -44,7 +44,7 @@ sstMoments(
 sstRawMoment(
   n,
   mu = 0,
-  sigma = 1,
+  s = 1,
   alpha = 0.5,
   nu = Inf,
   pars = NULL,
@@ -54,7 +54,7 @@ sstRawMoment(
 sstCentralMoment(
   n,
   mu = 0,
-  sigma = 1,
+  s = 1,
   alpha = 0.5,
   nu = Inf,
   pars = NULL,
@@ -70,6 +70,37 @@ sstMLE(
   solver = c("nlminb", "nloptr", "Rsolnp"),
   solver_control = list()
 )
+}
+\arguments{
+\item{x, q}{vector of quantiles}
+
+\item{mu}{location parameter}
+
+\item{s}{scale parameter, \eqn{s > 0}}
+
+\item{alpha}{skewness parameter, \eqn{0 < alpha < 1}}
+
+\item{nu}{degrees of freedom / tail parameter for the both tails, \eqn{ nu > 0}}
+
+\item{pars}{a vector that contains mu, s, alpha, nu1, nu2, if pars is specified, mu, s, alpha, nu1, nu2 should not be specified}
+
+\item{p}{vector of probablilities}
+
+\item{n}{number of observations for random generation}
+
+\item{method}{method used to calculate the moment(s), one of 'analytical' and 'numerical'}
+
+\item{type}{type of kurtosis calculated, one of 'excess' and 'regular'}
+
+\item{data}{a univariate data object to be fitted}
+
+\item{start_pars}{a named numeric vector of starting parameters for the optimization algorithm, not all parameters are needed}
+
+\item{fixed_pars}{a named numeric vector of parameters to be kept fixed during the optimization routine, not all parameters are needed}
+
+\item{solver}{solver used for MLE, one of 'nlminb', 'nloptr', 'Rsolnp', default is 'nlminb'}
+
+\item{solver_control}{list of control arguments passed to the solver}
 }
 \description{
 Functions for Symmetric Student-t distribution

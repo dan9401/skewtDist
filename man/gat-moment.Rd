@@ -4,6 +4,7 @@
 \alias{gat-moment}
 \alias{gatMean}
 \alias{gatVar}
+\alias{gatSD}
 \alias{gatSkew}
 \alias{gatKurt}
 \alias{gatMoment}
@@ -14,20 +15,35 @@
 \usage{
 gatMean(
   mu = 0,
-  sigma = 1,
+  phi = 1,
   alpha = 0.5,
-  nu1 = Inf,
-  nu2 = Inf,
+  r = 2,
+  c = 2,
+  nu = Inf,
   pars = NULL,
   method = c("analytical", "numerical")
 )
 
+gatMoment(
+  moment = c("mean", "sd", "var", "skew", "kurt"),
+  mu = 0,
+  phi = 1,
+  alpha = 0.5,
+  r = 2,
+  c = 2,
+  nu = Inf,
+  pars = NULL,
+  method = c("analytical", "numerical"),
+  type = c("excess", "regular")
+)
+
 gatMoments(
   mu = 0,
-  sigma = 1,
+  phi = 1,
   alpha = 0.5,
-  nu1 = Inf,
-  nu2 = Inf,
+  r = 2,
+  c = 2,
+  nu = Inf,
   pars = NULL,
   method = c("analytical", "numerical"),
   type = c("excess", "regular")
@@ -60,23 +76,25 @@ gatCentralMoment(
 \arguments{
 \item{mu}{location parameter}
 
-\item{sigma}{scale parameter, \eqn{sigma > 0}}
+\item{phi}{scale parameter, \eqn{phi > 0}}
 
 \item{alpha}{skewness parameter, \eqn{0 < alpha < 1}}
 
-\item{nu1}{degrees of freedom / tail parameter for the left tail, \eqn{ nu1 > 0}}
+\item{r}{tail power asymmetry parameter \eqn{r > 0}}
 
-\item{nu2}{degrees of freedom / tail parameter for the right tail, \eqn{ nu2 > 0}}
+\item{c}{scale asymmetry parameter \eqn{r > 0}}
+
+\item{nu}{degrees of freedom / tail parameter}
 
 \item{pars}{a vector that contains mu, phi, alpha, r, c, nu, if pars is specified, mu, phi, alpha, r, c, nu should not be specified}
 
 \item{method}{method used to calculate the moment(s), one of 'analytical' and 'numerical'}
 
+\item{moment}{the moment to be calculated, one of 'mean', 'sd', 'skew', 'kurt'}
+
 \item{type}{type of kurtosis calculated, one of 'excess' and 'regular'}
 
 \item{n}{order of (raw/central) moment to be calculated}
-
-\item{moment}{the moment to be calculated, one of 'mean', 'sd', 'skew', 'kurt'}
 }
 \description{
 The mean, standard deviation, skewness, kurtosis functions, as well as the raw and central moments of GAT distribution
@@ -97,11 +115,8 @@ The moments for GAT follow the general rule of student t distribution,
 }
 \examples{
 # The parameter values are specially set for a volatile portfolio.
-pars <- c(0.12, 0.6, 0.6, 6, 5)
+pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
+
 gatMoment("sd", pars = pars, method = "numerical")
 gatMoments(pars = pars)
-}
-\references{
-Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}
-\url{https://econpapers.repec.org/paper/circirwor/2009s-13.htm}
 }

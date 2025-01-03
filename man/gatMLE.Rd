@@ -23,8 +23,6 @@ gatMLE(
 \item{solver}{solver used for MLE, one of 'nlminb', 'nloptr', 'Rsolnp', default is 'nlminb'}
 
 \item{solver_control}{list of control arguments passed to the solver}
-
-\item{symmetric}{a logical argument, when TRUE, the function fits an SST distribution(Symmetric Student-t, nu1 = nu2) instead, default to FALSE}
 }
 \value{
 A \code{gat} object(S3), the components of the object are:
@@ -33,7 +31,6 @@ A \code{gat} object(S3), the components of the object are:
     \item{solver_control}{the list of control argumetns passed to the solver called}
     \item{start_pars}{named numeric vector of starting parameters used}
     \item{fixed_pars}{named numeric vector of fixed parameters used}
-    \item{symmetric}{logical argument controlling the symmetry of tail parameters in the MLE}
     \item{solver_result}{output of the called solver}
     \item{fitted_pars}{named vector of fitted arguemnts of the gat distribution}
     \item{objective}{the optimal log-likelihood value obtained by the solver}
@@ -52,17 +49,10 @@ through Maximum Likelihood Estimation.
 For details of the list of control arguments, please refer to \code{nlminb}, \code{nloptr::nloptr}, \code{Rsolnp::solnp}
 }
 \examples{
-pars <- c(0, 1, 1.5, 1.2, 2, 4)
+pars <- c(0.12, 0.6, 1.5, 1.2, 2, 5)
 data <- rgat(1000, pars = pars)
+
 fit <- gatMLE(data)
-summary(fit)
-moments(fit)
-fitted(fit)
-se(fit)
-objective(fit)
-plot(fit)
-}
-\references{
-Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}
-\url{https://econpapers.repec.org/paper/circirwor/2009s-13.htm}
+fit
+
 }

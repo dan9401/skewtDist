@@ -15,14 +15,22 @@
 
 \method{print}{ast}(x, ...)
 
-\method{plot}{ast}(fit, type = NULL, dist = "ast", envelope = 0.95, ...)
+\method{plot}{ast}(x, type = NULL, dist = "ast", envelope = 0.95, ...)
 }
 \arguments{
+\item{object}{A AST fit object of class \code{\link{ast}}}
+
+\item{...}{additional arguments for the \code{hist} or \code{plot} function from \code{graphics}}
+
+\item{x}{A AST fit object of class \code{\link{ast}}}
+
 \item{method}{one of "numerical" and "analytical", calculating the moments using numerical integration / analytical formula}
 
-\item{fit}{A AST fit object of class \code{\link{ast}}}
+\item{type}{one of "density" or "qqplot"}
 
-\item{type}{one of "density" and "QQplot"}
+\item{dist}{one of "norm" or "ast", the theoretical distribution used in QQplots}
+
+\item{envelope}{the confidence level used to construct the envelope}
 }
 \description{
 Methods for ast S3 class
@@ -31,11 +39,14 @@ Methods for ast S3 class
 should also add the empirical moments
 }
 \examples{
-pars <- c(0.12, 0.6, 0.6, 6, 5)
+pars <- c(0.12, 0.6, 0.6, 3, 5)
 data <- rast(1000, pars = pars)
+
 solver_control <- list(eval.max = 10^3, iter.max = 10^3)
 fit <- astMLE(data, solver = 'nlminb', solver_control = solver_control)
+
 summary(fit)
 moments(fit)
 plot(fit, 1)
+
 }
