@@ -59,9 +59,9 @@ dgat <- function(x, mu, scale, alpha, r, c, nu, pars = NULL) {
 
 #' @rdname GAT
 #' @export
-pgat <- function(x, mu, scale, alpha, r, c, nu, pars = NULL) {
-    if (!is.numeric(x))
-        stop("x must be numeric")
+pgat <- function(q, mu, scale, alpha, r, c, nu, pars = NULL) {
+    if (!is.numeric(q))
+        stop("q must be numeric")
     if (!is.null(pars)) {
       if (!missing(mu)) {
         stop("Only one of [mu, scale, alpha, r, c, nu] and pars needs to be specified")
@@ -73,13 +73,13 @@ pgat <- function(x, mu, scale, alpha, r, c, nu, pars = NULL) {
       c <- pars[5]
       nu <- pars[6]
     }
-    if (x == -Inf) {
+    if (q == -Inf) {
       return(0)
     }
-    if (x == Inf) {
+    if (q == Inf) {
       return(1)
     }
-    q <- 1/(1 + c^(-alpha * (1 + r^2)/r) * (((x - mu)/scale) + sqrt(1 + (x - mu)^2/scale^2))^(-alpha * (1 + r^2)/r))
+    q <- 1/(1 + c^(-alpha * (1 + r^2)/r) * (((q - mu)/scale) + sqrt(1 + (q - mu)^2/scale^2))^(-alpha * (1 + r^2)/r))
     p <- pbeta(q, nu/alpha/(1 + r^2), r^2 * nu/alpha/(1 + r^2))
     p
 }
