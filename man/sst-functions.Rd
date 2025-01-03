@@ -7,10 +7,19 @@
 \alias{psst}
 \alias{qsst}
 \alias{rsst}
+\alias{sstMoment}
 \alias{sstMoments}
+\alias{sstRawMoments}
+\alias{sstCentralMoments}
+\alias{sstMean}
+\alias{sstVar}
+\alias{sstSD}
+\alias{sstSkew}
+\alias{sstKurt}
+\alias{sstInfoMat}
+\alias{sstFit}
 \alias{sstRawMoment}
 \alias{sstCentralMoment}
-\alias{sstInfoMat}
 \alias{sstMLE}
 \title{Functions for Symmetric Student-t distribution}
 \usage{
@@ -22,19 +31,45 @@ qsst(p, mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL)
 
 rsst(n, mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL)
 
-sstMoments(mu = 0, sigma = 1, alpha = 0.5, nu = Inf, pars = NULL,
-  method = c("analytical", "numerical"), type = c("excess", "regular"))
+sstMoments(
+  mu = 0,
+  sigma = 1,
+  alpha = 0.5,
+  nu = Inf,
+  pars = NULL,
+  method = c("analytical", "numerical"),
+  type = c("excess", "regular")
+)
 
-sstRawMoment(n, mu = 0, sigma = 1, alpha = 0.5, nu = Inf,
-  pars = NULL, method = c("analytical", "numerical"))
+sstRawMoment(
+  n,
+  mu = 0,
+  sigma = 1,
+  alpha = 0.5,
+  nu = Inf,
+  pars = NULL,
+  method = c("analytical", "numerical")
+)
 
-sstCentralMoment(n, mu = 0, sigma = 1, alpha = 0.5, nu = Inf,
-  pars = NULL, method = c("analytical", "numerical"))
+sstCentralMoment(
+  n,
+  mu = 0,
+  sigma = 1,
+  alpha = 0.5,
+  nu = Inf,
+  pars = NULL,
+  method = c("analytical", "numerical")
+)
 
 sstInfoMat(pars)
 
-sstMLE(data, start_pars = c(), fixed_pars = c(), solver = c("nlminb",
-  "nloptr", "Rsolnp"), solver_control = list())
+sstMLE(
+  data,
+  start_pars = c(),
+  fixed_pars = c(),
+  solver = c("nlminb", "nloptr", "Rsolnp"),
+  solver_control = list()
+)
 }
 \description{
 Functions for Symmetric Student-t distribution

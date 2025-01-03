@@ -4,6 +4,7 @@
 \alias{ast-methods}
 \alias{summary.ast}
 \alias{moments.ast}
+\alias{plots.ast}
 \alias{print.ast}
 \alias{plot.ast}
 \title{Methods for ast class}
@@ -14,7 +15,7 @@
 
 \method{print}{ast}(fit)
 
-plot.ast(fit, type = NULL, dist = "ast", envelope = 0.95, ...)
+\method{plot}{ast}(fit, type = NULL, dist = "ast", envelope = 0.95, ...)
 }
 \arguments{
 \item{fit}{A AST fit object of class \code{\link{ast}}}
