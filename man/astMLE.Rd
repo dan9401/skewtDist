@@ -56,12 +56,7 @@ For details of the list of control arguments, please refer to \code{nlminb}, \co
 pars <- c(0.12, 0.6, 0.6, 6, 5)
 data <- rast(1000, pars = pars)
 fit <- astMLE(data)
-summary(fit)
-moments(fit)
-fitted(fit)
-se(fit)
-objective(fit)
-plot(fit)
+fit
 }
 \references{
 Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}

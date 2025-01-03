@@ -11,8 +11,8 @@ Methods and Applications for AST and GAT distributions
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/dan9401/st}
-  \item Report bugs at \url{https://github.com/dan9401/st/issues}
+  \item \url{https://github.com/dan9401/skewtDist}
+  \item Report bugs at \url{https://github.com/dan9401/skewtDist/issues}
 }
 
 }

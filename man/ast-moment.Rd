@@ -110,6 +110,7 @@ The moments for AST follow the general rule of student t distribution,
 pars <- c(0.12, 0.6, 0.6, 6, 5)
 astMoment("sd", pars = pars, method = "numerical")
 astMoments(pars = pars)
+
 }
 \references{
 Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}

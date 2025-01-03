@@ -42,12 +42,7 @@
 #' pars <- c(0.12, 0.6, 0.6, 6, 5)
 #' data <- rast(1000, pars = pars)
 #' fit <- astMLE(data)
-#' summary(fit)
-#' moments(fit)
-#' fitted(fit)
-#' se(fit)
-#' objective(fit)
-#' plot(fit)
+#' fit
 
 #' @rdname astMLE
 #' @export

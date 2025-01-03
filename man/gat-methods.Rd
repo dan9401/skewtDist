@@ -12,20 +12,20 @@
 \alias{plot.gat}
 \title{Methods for gat class}
 \usage{
-\method{summary}{gat}(fit)
+\method{summary}{gat}(object, ...)
 
-\method{moments}{gat}(fit, method = c("analytical", "numerical"))
+\method{moments}{gat}(x, method = c("analytical", "numerical"), ...)
 
-\method{print}{gat}(fit)
+\method{print}{gat}(x, ...)
 
-\method{plot}{gat}(fit, type = NULL, dist = "gat", envelope = 0.95, ...)
+\method{plot}{gat}(x, type = NULL, dist = "gat", envelope = 0.95, ...)
 }
 \arguments{
-\item{fit}{A GAT fit object of class \code{\link{gat}}}
-
 \item{method}{one of "numerical" and "analytical", calculating the moments using numerical integration / analytical formula}
 
 \item{type}{one of "density" and "QQplot"}
+
+\item{fit}{A GAT fit object of class \code{\link{gat}}}
 }
 \description{
 Methods for gat S3 class

@@ -9,18 +9,18 @@
 \alias{plot.ast}
 \title{Methods for ast class}
 \usage{
-\method{summary}{ast}(fit)
+\method{summary}{ast}(object, ...)
 
-\method{moments}{ast}(fit, method = c("analytical", "numerical"))
+\method{moments}{ast}(x, method = c("analytical", "numerical"), ...)
 
-\method{print}{ast}(fit)
+\method{print}{ast}(x, ...)
 
 \method{plot}{ast}(fit, type = NULL, dist = "ast", envelope = 0.95, ...)
 }
 \arguments{
-\item{fit}{A AST fit object of class \code{\link{ast}}}
-
 \item{method}{one of "numerical" and "analytical", calculating the moments using numerical integration / analytical formula}
+
+\item{fit}{A AST fit object of class \code{\link{ast}}}
 
 \item{type}{one of "density" and "QQplot"}
 }
@@ -37,5 +37,5 @@ solver_control <- list(eval.max = 10^3, iter.max = 10^3)
 fit <- astMLE(data, solver = 'nlminb', solver_control = solver_control)
 summary(fit)
 moments(fit)
-plot(fit)
+plot(fit, 1)
 }
