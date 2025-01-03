@@ -27,6 +27,8 @@
 #' se(fit)
 #' objective(fit)
 #' plot(fit)
+#' 
+#' @importFrom utils menu
 
 #' @rdname gat-methods
 #' @export

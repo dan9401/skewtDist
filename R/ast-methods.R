@@ -21,6 +21,8 @@
 #' summary(fit)
 #' moments(fit)
 #' plot(fit, 1)
+#' 
+#' @importFrom utils menu
 
 #' @rdname ast-methods
 #' @export
