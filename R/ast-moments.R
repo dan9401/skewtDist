@@ -3,6 +3,7 @@
 #' @name ast-moment
 #' @aliases astMean
 #' @aliases astVar
+#' @aliases astSD
 #' @aliases astSkew
 #' @aliases astKurt
 #' @aliases astMoment
@@ -12,7 +13,7 @@
 #'
 #' @description The mean, standard deviation, skewness, kurtosis functions, as well as the raw and central moments of AST distribution
 #'
-#' @param moment the moment to be calculated, one of 'mean', 'sd', 'skew', 'kurt'
+#' @param moment the moment to be calculated, one of 'mean', 'sd', 'var', 'skew', 'kurt'
 #' @param n order of (raw/central) moment to be calculated
 #' @param mu location parameter
 #' @param s scale parameter, \eqn{s > 0}
@@ -43,7 +44,8 @@
 #'
 #' @examples
 #' # The parameter values are specially set for a volatile portfolio.
-#' pars <- c(0.12, 0.6, 0.6, 6, 5)
+#' pars <- c(0.12, 0.6, 0.6, 3, 5)
+#' 
 #' astMoment("sd", pars = pars, method = "numerical")
 #' astMoments(pars = pars)
 #' 
