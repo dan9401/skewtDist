@@ -5,7 +5,7 @@ Version: 0.3.1
 Author: Zhiye Xia
 Maintainer: Zhiye Xia <dansummer94@gmail.com>
 Description: Methods and Applications for AST and GAT distributions
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/dan9401/st
