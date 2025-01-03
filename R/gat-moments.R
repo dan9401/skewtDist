@@ -3,6 +3,7 @@
 #' @name gat-moment
 #' @aliases gatMean
 #' @aliases gatVar
+#' @aliases gatSD
 #' @aliases gatSkew
 #' @aliases gatKurt
 #' @aliases gatMoment
@@ -15,10 +16,11 @@
 #' @param moment the moment to be calculated, one of 'mean', 'sd', 'skew', 'kurt'
 #' @param n order of (raw/central) moment to be calculated
 #' @param mu location parameter
-#' @param sigma scale parameter, \eqn{sigma > 0}
+#' @param phi scale parameter, \eqn{phi > 0}
 #' @param alpha skewness parameter, \eqn{0 < alpha < 1}
-#' @param nu1 degrees of freedom / tail parameter for the left tail, \eqn{ nu1 > 0}
-#' @param nu2 degrees of freedom / tail parameter for the right tail, \eqn{ nu2 > 0}
+#' @param r tail power asymmetry parameter \eqn{r > 0}
+#' @param c scale asymmetry parameter \eqn{r > 0}
+#' @param nu degrees of freedom / tail parameter
 #' @param pars a vector that contains mu, phi, alpha, r, c, nu, if pars is specified, mu, phi, alpha, r, c, nu should not be specified
 #' @param method method used to calculate the moment(s), one of 'analytical' and 'numerical'
 #' @param type type of kurtosis calculated, one of 'excess' and 'regular'
@@ -36,10 +38,6 @@
 #'     \item skewness is defined when nu > 3,
 #'     \item kurtosis is finite when nu > 4, infinite when 2 < nu <= 4, otherwise undefined.
 #' }
-#'
-#' @references
-#' Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.\url{https://www.sciencedirect.com/science/article/pii/S0304407610000266}
-#' \url{https://econpapers.repec.org/paper/circirwor/2009s-13.htm}
 #'
 #' @examples
 #' # The parameter values are specially set for a volatile portfolio.

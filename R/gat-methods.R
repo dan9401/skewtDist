@@ -17,8 +17,6 @@
 #' @aliases summary.gat
 #' @aliases moments.gat
 #' @aliases plots.gat
-#' @aliases fitted.gat
-#' @aliases se.gat
 #' @aliases objective.gat
 #'
 #' @examples
