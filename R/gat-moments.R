@@ -41,7 +41,7 @@
 #'
 #' @references
 #' Baker, R. D. (2016). A new asymmetric generalisation of the t-distribution. arXiv preprint arXiv:1606.05203.
-#' \url{https://doi.org/10.48550/arXiv.1606.05203}
+#' \doi{https://doi.org/10.48550/arXiv.1606.05203}
 #' 
 #' @examples
 #' # The parameter values are specially set for a volatile portfolio.

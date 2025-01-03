@@ -72,5 +72,5 @@ lines(x, y, col = 4)
 }
 \references{
 Zhu, D., & Galbraith, J. W. (2010). A generalized asymmetric Student-t distribution with application to financial econometrics. Journal of Econometrics, 157(2), 297-305.
-\url{https://doi.org/10.1016/j.jeconom.2010.01.013}
+\doi{https://doi.org/10.1016/j.jeconom.2010.01.013}
 }
