@@ -21,8 +21,10 @@
 #' @examples
 #' pars <- c(0.12, 0.6, 0.6, 3, 5)
 #' data <- rast(1000, pars = pars)
+#' 
 #' round(astInfoMat(pars, data, "observed"), 4)
 #' round(astInfoMat(pars, "expected"), 4)
+#' 
 #' round(astCov(pars), 4)
 #' round(astCor(pars), 4)
 #' 

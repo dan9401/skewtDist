@@ -39,9 +39,11 @@
 #' \url{https://econpapers.repec.org/paper/circirwor/2009s-13.htm}
 #'
 #' @examples
-#' pars <- c(0.12, 0.6, 0.6, 6, 5)
+#' pars <- c(0.12, 0.6, 0.6, 3, 5)
 #' data <- rast(1000, pars = pars)
-#' fit <- astMLE(data)
+#' 
+#' solver_control <- list(eval.max = 10^3, iter.max = 10^3)
+#' fit <- astMLE(data, solver_control = solver_control)
 #' fit
 #' 
 #' @importFrom stats nlminb
