@@ -20,11 +20,12 @@
 #' fit <- astMLE(data, solver = 'nlminb', solver_control = solver_control)
 #' summary(fit)
 #' moments(fit)
-#' plot(fit)
+#' plot(fit, 1)
 
 #' @rdname ast-methods
 #' @export
-summary.ast <- function(fit) {
+summary.ast <- function(object, ...) {
+  fit <- object
   dist <- ifelse(fit$symmetric == TRUE, "SST", "AST")
   pars <- rbind(fit$start_pars, fit$fixed_pars)
   res <- rbind(fit$fitted_pars, fit$standard_errors)
@@ -46,14 +47,16 @@ summary.ast <- function(fit) {
 
 #' @rdname ast-methods
 #' @export
-moments.ast <- function(fit, method = c("analytical", "numerical")) {
+moments.ast <- function(x, method = c("analytical", "numerical"), ...) {
+  fit <- x
   pars <- fit$fitted_pars
   astMoments(pars = pars, method)
 }
 
 #' @rdname ast-methods
 #' @export
-print.ast <- function(fit) {
+print.ast <- function(x, ...) {
+  fit <- x
   dist <- ifelse(fit$symmetric == TRUE, "SST", "AST")
   res <- rbind(fit$fitted_pars, fit$standard_errors)
   colnames(res) <- names(fit$fitted_pars)

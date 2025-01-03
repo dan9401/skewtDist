@@ -30,7 +30,8 @@
 
 #' @rdname gat-methods
 #' @export
-summary.gat <- function(fit) {
+summary.gat <- function(object, ...) {
+  fit <- object
   dist <- "GAT"
   pars <- rbind(fit$start_pars, fit$fixed_pars)
   res <- rbind(fit$fitted_pars, fit$standard_errors)
@@ -52,14 +53,16 @@ summary.gat <- function(fit) {
 
 #' @rdname gat-methods
 #' @export
-moments.gat <- function(fit, method = c("analytical", "numerical")) {
+moments.gat <- function(x, method = c("analytical", "numerical"), ...) {
+  fit <- x
   pars <- fit$fitted_pars
   gatMoments(pars = pars, method)
 }
 
 #' @rdname gat-methods
 #' @export
-print.gat <- function(fit) {
+print.gat <- function(x, ...) {
+  fit <- x
   dist <- "GAT"
   res <- rbind(fit$fitted_pars, fit$standard_errors)
   colnames(res) <- names(fit$fitted_pars)
@@ -73,7 +76,8 @@ print.gat <- function(fit) {
 
 #' @rdname gat-methods
 #' @export
-plot.gat <- function(fit, type = NULL, dist = "gat", envelope = 0.95, ...) {
+plot.gat <- function(x, type = NULL, dist = "gat", envelope = 0.95, ...) {
+  fit <- x
   if (is.null(type)) {
     selection <- 1
     while (selection) {
