@@ -43,6 +43,7 @@ summary.ast <- function(object, ...) {
   print(pars)
   cat("\nTime elapsed: ", fit$time_elapsed)
   cat("\nConvergence Message: ", fit$message)
+  cat("\n")
 }
 
 #' @rdname ast-methods
