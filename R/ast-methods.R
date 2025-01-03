@@ -71,7 +71,8 @@ print.ast <- function(x, ...) {
 
 #' @rdname ast-methods
 #' @export
-plot.ast <- function(fit, type = NULL, dist = "ast", envelope = 0.95, ...) {
+plot.ast <- function(x, type = NULL, dist = "ast", envelope = 0.95, ...) {
+  fit <- x
   if (is.null(type)) {
     selection <- 1
     while (selection) {
